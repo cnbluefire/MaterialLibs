@@ -25,14 +25,13 @@ namespace MaterialLibs
         public AnimationHamburgerIcon()
         {
             this.InitializeComponent();
-            compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
             propSet = compositor.CreatePropertySet();
             propSet.InsertScalar("progress", 0f);
             propSet.InsertScalar("isopened", 0f);
             propSet.InsertScalar("newvalue", 0f);
         }
 
-        Compositor compositor;
+        private Compositor compositor => Window.Current.Compositor;
 
         Visual TopBorderVisual;
         Visual BottomBorderVisual;
@@ -124,70 +123,77 @@ namespace MaterialLibs
             set { SetValue(ProgressProperty, value); }
         }
         public static readonly DependencyProperty ProgressProperty =
-            DependencyProperty.Register("Progress", typeof(double), typeof(AnimationHamburgerIcon), new PropertyMetadata(0, (s, a) =>
+            DependencyProperty.Register("Progress", typeof(double), typeof(AnimationHamburgerIcon), new PropertyMetadata(0, ProgressPropertyChanged));
+
+        private static void ProgressPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue == e.OldValue) return;
+            var sender = d as AnimationHamburgerIcon;
+
+            float progress = Convert.ToSingle(e.NewValue);
+            float oldprogress = Convert.ToSingle(e.OldValue);
+            if (progress > 1f || progress < 0f) throw new ArgumentException("Progress必须在0到1之间！");
+
+            ProgressPropertyChanged(sender, progress, oldprogress);
+        }
+
+        private static void ProgressPropertyChanged(AnimationHamburgerIcon sender,float progress,float oldprogress)
+        {
+            if (sender.propSet == null) return;
+
+            sender.propSet.StopAnimation("progress");
+            if (Math.Abs(oldprogress - progress) < 0.05f)
             {
-                if (a.NewValue == a.OldValue) return;
-                var sender = s as AnimationHamburgerIcon;
-
-                float progress = Convert.ToSingle(a.NewValue);
-                if (progress > 1f || progress < 0f) throw new ArgumentException("Progress必须在0到1之间！");
-
-                if (sender.propSet == null) return;
-
-                sender.propSet.StopAnimation("progress");
-                if (Math.Abs(Convert.ToSingle(a.OldValue) - progress) < 0.05f)
+                sender.propSet.InsertScalar("progress", progress);
+                if (sender.IsOpenedAnimation != null)
                 {
-                    sender.propSet.InsertScalar("progress", progress);
-                    if (sender.IsOpenedAnimation != null)
+                    if (progress == 1)
                     {
-                        if (progress == 1)
-                        {
-                            sender.propSet.StopAnimation("isopened");
-                            sender.propSet.InsertScalar("isopened", 1f);
-                        }
-                        if (progress == 0)
-                        {
-                            sender.propSet.StopAnimation("isopened");
-                            sender.propSet.InsertScalar("isopened", 0f);
-                        }
+                        sender.propSet.StopAnimation("isopened");
+                        sender.propSet.InsertScalar("isopened", 1f);
+                    }
+                    if (progress == 0)
+                    {
+                        sender.propSet.StopAnimation("isopened");
+                        sender.propSet.InsertScalar("isopened", 0f);
                     }
                 }
-                else
+            }
+            else
+            {
+                if (sender.ProgressAnimation == null) return;
+                sender.propSet.InsertScalar("newvalue", progress);
+                sender.propSet.StartAnimation("progress", sender.ProgressAnimation);
+                if (sender.IsOpenedAnimation != null)
                 {
-                    if (sender.ProgressAnimation == null) return;
-                    sender.propSet.InsertScalar("newvalue", progress);
-                    sender.propSet.StartAnimation("progress", sender.ProgressAnimation);
-                    if (sender.IsOpenedAnimation != null)
+                    if (progress == 1)
                     {
-                        if (progress == 1)
-                        {
-                            sender.propSet.StopAnimation("isopened");
-                            sender.propSet.StartAnimation("isopened", sender.IsOpenedAnimation);
-                        }
-                        if (progress == 0)
-                        {
-                            sender.propSet.StopAnimation("isopened");
-                            sender.propSet.StartAnimation("isopened", sender.IsNotOpenedAnimation);
-                        }
+                        sender.propSet.StopAnimation("isopened");
+                        sender.propSet.StartAnimation("isopened", sender.IsOpenedAnimation);
+                    }
+                    if (progress == 0)
+                    {
+                        sender.propSet.StopAnimation("isopened");
+                        sender.propSet.StartAnimation("isopened", sender.IsNotOpenedAnimation);
                     }
                 }
+            }
 
-                if (progress == 1)
-                {
-                    sender.TopBorder.Visibility = Visibility.Collapsed;
-                    sender.CenterBorder.Visibility = Visibility.Collapsed;
-                    sender.BottomBorder.Visibility = Visibility.Collapsed;
-                    sender.BackBorder.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    sender.TopBorder.Visibility = Visibility.Visible;
-                    sender.CenterBorder.Visibility = Visibility.Visible;
-                    sender.BottomBorder.Visibility = Visibility.Visible;
-                    sender.BackBorder.Visibility = Visibility.Collapsed;
-                }
-            }));
-
+            if (progress == 1)
+            {
+                sender.TopBorder.Visibility = Visibility.Collapsed;
+                sender.CenterBorder.Visibility = Visibility.Collapsed;
+                sender.BottomBorder.Visibility = Visibility.Collapsed;
+                sender.BackBorder.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                sender.TopBorder.Visibility = Visibility.Visible;
+                sender.CenterBorder.Visibility = Visibility.Visible;
+                sender.BottomBorder.Visibility = Visibility.Visible;
+                sender.BackBorder.Visibility = Visibility.Collapsed;
+            }
+        }
 
         public bool IsEnded
         {
@@ -213,6 +219,10 @@ namespace MaterialLibs
         private void ContentBorder_Loaded(object sender, RoutedEventArgs e)
         {
             InitConpositionResources();
+            if (IsEnded)
+            {
+                ProgressPropertyChanged(this, 1f, 0f);
+            }
         }
     }
 }

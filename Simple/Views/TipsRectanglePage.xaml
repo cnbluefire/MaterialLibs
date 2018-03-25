@@ -1,0 +1,139 @@
+﻿<Page
+    x:Class="Simple.Views.TipsRectanglePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Simple.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="20">
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
+                <TextBlock>Pivot use TipsRectangleService:</TextBlock>
+                <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
+                    <Pivot Style="{StaticResource AnimationHeaderPivot}" >
+                        <PivotItem Header="ItemHeader1">
+                            This is the first PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader2">
+                            This is the second PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader3">
+                            This is the third PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader4">
+                            This is the 4th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader5">
+                            This is the 5th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader6">
+                            This is the 6th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader7">
+                            This is the 7th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader8">
+                            This is the 8th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader9">
+                            This is the 9th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader10">
+                            This is the 10th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader11">
+                            This is the 11th PivotItem.
+                        </PivotItem>
+                        <PivotItem Header="ItemHeader12">
+                            This is the 12th PivotItem.
+                        </PivotItem>
+                    </Pivot>
+                </Border>
+                <TextBlock>ListView use TipsRectangleService:</TextBlock>
+                <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
+                    <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutTipsContainerStyle}">
+                        <ListViewItem >
+                            This imis the first ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the second ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the third ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 4th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 5th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 6th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 7th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 8th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 9th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 10th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 11th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 12th ListViewItem.
+                        </ListViewItem>
+                    </ListView>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
+                    <ListView ItemContainerStyle="{StaticResource ListViewItemWithTipsContainerStyle}">
+                        <ListViewItem >
+                            This imis the first ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the second ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the third ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 4th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 5th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 6th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 7th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 8th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 9th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 10th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 11th ListViewItem.
+                        </ListViewItem>
+                        <ListViewItem >
+                            This is the 12th ListViewItem.
+                        </ListViewItem>
+                    </ListView>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
