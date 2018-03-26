@@ -89,6 +89,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Border>
+                <TextBlock>GridView use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
                     <GridView ItemContainerStyle="{StaticResource GridViewItemWithoutTipsContainerStyle}" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
                               m_helper:TipsRectangleHelper.TipTargetName="BorderBackground"
