@@ -6,10 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:Simple.Views"
-    xmlns:lib="using:MaterialLibs"
+    xmlns:m_helper="using:MaterialLibs.Helpers"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" lib:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="True">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="False">
         <Pivot Style="{StaticResource AnimationHeaderPivot}">
             <PivotItem Header="Ripple">
                 <view:RipplePage />

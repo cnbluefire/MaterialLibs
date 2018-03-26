@@ -13,10 +13,10 @@ namespace Simple.Converter
         {
             if(value is bool v)
             {
-                if (v) return MaterialLibs.RippleHelperState.Pressed;
-                else return MaterialLibs.RippleHelperState.Released;
+                if (v) return MaterialLibs.Helpers.RippleHelperState.Pressed;
+                else return MaterialLibs.Helpers.RippleHelperState.Released;
             }
-            return MaterialLibs.RippleHelperState.None;
+            return MaterialLibs.Helpers.RippleHelperState.None;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

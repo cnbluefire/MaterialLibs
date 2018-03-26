@@ -5,134 +5,104 @@
     xmlns:local="using:Simple.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:m_helper="using:MaterialLibs.Helpers"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="20">
-        <ScrollViewer>
-            <StackPanel Orientation="Vertical">
-                <TextBlock>Pivot use TipsRectangleService:</TextBlock>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+        <ScrollViewer IsVerticalScrollChainingEnabled="True">
+            <StackPanel Orientation="Vertical" Margin="20">
+                <TextBlock>ListView like PivotHeader use TipsRectangleHelper:</TextBlock>
+                <Border BorderBrush="Black" BorderThickness="1" Margin="40,10">
+                    <ListView ItemContainerStyle="{StaticResource PivotHeaderListViewItemContainerStyle}" ItemsSource="{x:Bind Items}" SelectedIndex="{Binding ElementName=DemoPivot,Path=SelectedIndex,Mode=TwoWay}" SelectionMode="Extended" 
+                              m_helper:TipsRectangleHelper.TipTargetName="FocusPipe"
+                              ScrollViewer.IsVerticalScrollChainingEnabled="True" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                              ScrollViewer.HorizontalScrollMode="Auto"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollMode="Disabled">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsStackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+                <TextBlock>Pivot use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
-                    <Pivot Style="{StaticResource AnimationHeaderPivot}" >
-                        <PivotItem Header="ItemHeader1">
-                            This is the first PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader2">
-                            This is the second PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader3">
-                            This is the third PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader4">
-                            This is the 4th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader5">
-                            This is the 5th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader6">
-                            This is the 6th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader7">
-                            This is the 7th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader8">
-                            This is the 8th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader9">
-                            This is the 9th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader10">
-                            This is the 10th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader11">
-                            This is the 11th PivotItem.
-                        </PivotItem>
-                        <PivotItem Header="ItemHeader12">
-                            This is the 12th PivotItem.
-                        </PivotItem>
+                    <Pivot x:Name="DemoPivot" Style="{StaticResource AnimationHeaderPivot}" ItemsSource="{x:Bind Items}">
+                        <Pivot.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}" />
+                            </DataTemplate>
+                        </Pivot.HeaderTemplate>
+                        <Pivot.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{Binding Content}" HorizontalAlignment="Center" Pivot.SlideInAnimationGroup="GroupOne" />
+                                    <Image Grid.Row="1" Source="{Binding Image}" Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Pivot.SlideInAnimationGroup="GroupTwo"  />
+                                </Grid>
+                            </DataTemplate>
+                        </Pivot.ItemTemplate>
                     </Pivot>
                 </Border>
-                <TextBlock>ListView use TipsRectangleService:</TextBlock>
+                <TextBlock>ListView use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
-                    <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutTipsContainerStyle}">
-                        <ListViewItem >
-                            This imis the first ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the second ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the third ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 4th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 5th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 6th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 7th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 8th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 9th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 10th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 11th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 12th ListViewItem.
-                        </ListViewItem>
+                    <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutTipsContainerStyle}" ItemsSource="{x:Bind Items}"  SelectionMode="Extended" 
+                              m_helper:TipsRectangleHelper.TipTargetName="BorderBackground"
+                              ScrollViewer.IsVerticalScrollChainingEnabled="True" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Content}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
-                    <ListView ItemContainerStyle="{StaticResource ListViewItemWithTipsContainerStyle}">
-                        <ListViewItem >
-                            This imis the first ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the second ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the third ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 4th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 5th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 6th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 7th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 8th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 9th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 10th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 11th ListViewItem.
-                        </ListViewItem>
-                        <ListViewItem >
-                            This is the 12th ListViewItem.
-                        </ListViewItem>
+                    <ListView ItemContainerStyle="{StaticResource ListViewItemWithTipsContainerStyle}" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
+                              m_helper:TipsRectangleHelper.TipTargetName="FocusPipe"
+                              ScrollViewer.IsVerticalScrollChainingEnabled="True" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Content}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </Border>
-
+                <TextBlock>ListBox use TipsRectangleHelper:</TextBlock>
+                <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
+                    <ListBox ItemContainerStyle="{StaticResource ListBoxItemWithoutTipsContainerStyle}" ItemsSource="{x:Bind Items}"  SelectionMode="Extended" 
+                              m_helper:TipsRectangleHelper.TipTargetName="PressedBackground"
+                              ScrollViewer.IsVerticalScrollChainingEnabled="True" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Content}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
+                    <GridView ItemContainerStyle="{StaticResource GridViewItemWithoutTipsContainerStyle}" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
+                              m_helper:TipsRectangleHelper.TipTargetName="BorderBackground"
+                              ScrollViewer.IsVerticalScrollChainingEnabled="True" >
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid x:Name="rootGrid" Width="250" Height="250">
+                                    <Image Source="{Binding Image}" Stretch="Uniform" />
+                                    <TextBlock Text="{Binding Content}" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>

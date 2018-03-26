@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Simple.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,6 +27,13 @@ namespace Simple.Views
         public TipsRectanglePage()
         {
             this.InitializeComponent();
+            Items = new ObservableCollection<ListViewModel>();
+            for(int i = 0; i < 20; i++)
+            {
+                Items.Add(new ListViewModel() { Title = "Item" + i, Content = "This is Item" + i,Image = new Uri("ms-appx:///Assets/imgs/" + i + ".jpg")});
+            }
         }
+
+        ObservableCollection<ListViewModel> Items { get; set; }
     }
 }

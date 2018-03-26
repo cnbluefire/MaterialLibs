@@ -100,6 +100,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ColorModel.cs" />
+    <Compile Include="Models\ListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\TipsRectanglePage.xaml.cs">
       <DependentUpon>TipsRectanglePage.xaml</DependentUpon>
@@ -118,6 +119,26 @@
     <None Include="Simple_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\imgs\0.jpg" />
+    <Content Include="Assets\imgs\1.jpg" />
+    <Content Include="Assets\imgs\10.jpg" />
+    <Content Include="Assets\imgs\11.jpg" />
+    <Content Include="Assets\imgs\12.jpg" />
+    <Content Include="Assets\imgs\13.jpg" />
+    <Content Include="Assets\imgs\14.jpg" />
+    <Content Include="Assets\imgs\15.jpg" />
+    <Content Include="Assets\imgs\16.jpg" />
+    <Content Include="Assets\imgs\17.jpg" />
+    <Content Include="Assets\imgs\18.jpg" />
+    <Content Include="Assets\imgs\19.jpg" />
+    <Content Include="Assets\imgs\2.jpg" />
+    <Content Include="Assets\imgs\3.jpg" />
+    <Content Include="Assets\imgs\4.jpg" />
+    <Content Include="Assets\imgs\5.jpg" />
+    <Content Include="Assets\imgs\6.jpg" />
+    <Content Include="Assets\imgs\7.jpg" />
+    <Content Include="Assets\imgs\8.jpg" />
+    <Content Include="Assets\imgs\9.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

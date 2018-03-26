@@ -109,18 +109,19 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimationHamburgerIcon.xaml.cs">
+    <Compile Include="Common\VisualTreeExtension.cs" />
+    <Compile Include="Controls\AnimationHamburgerIcon.xaml.cs">
       <DependentUpon>AnimationHamburgerIcon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CoreSocialistValuesHelper.cs" />
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="Particle.cs" />
-    <Compile Include="ParticleCanvas.xaml.cs">
+    <Compile Include="Helpers\CoreSocialistValuesHelper.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Models\Particle.cs" />
+    <Compile Include="Controls\ParticleCanvas.xaml.cs">
       <DependentUpon>ParticleCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RippleHelper.cs" />
+    <Compile Include="Helpers\RippleHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TipsRectangleService.cs" />
+    <Compile Include="Helpers\TipsRectangleHelper.cs" />
     <None Include="Targets\MaterialLibs.targets">
       <SubType>Designer</SubType>
     </None>
@@ -143,11 +144,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AnimationHamburgerIcon.xaml">
+    <Page Include="Controls\AnimationHamburgerIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ParticleCanvas.xaml">
+    <Page Include="Controls\ParticleCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
