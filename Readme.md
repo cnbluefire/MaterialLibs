@@ -1,4 +1,4 @@
-# MaterialLibs
+﻿# MaterialLibs
 为UWP添加一些炫酷的特效
 ## Documentation
 ### RippleStateHelper
@@ -189,6 +189,7 @@ Pivot请在generic.xaml中搜索
 * 设置VisualHelper.CenterPoint="Bind"，会将CenterPointer绑定到自身的中心上，也就是Vector3(this.Target.Size.X / 2 ,this.Target.Size.Y / 2 ,0f);
 
 ### ImplicitAnimations
+![](DemoImages/ImplicitAnimation.gif)
 * API还在调整，不推荐现在使用。
 * Implicit.Animations响应系统Tiggers，例如Target标记为Offset的动画会响应位置改变，标记为Opacity的动画会响应透明度的改变；其他例如标记为Scale，Rotation之类的，需要使用VisualHelper设置对应的Visual属性。
 * Implicit.ShowAnimation和HideAnimation分别对应元素出现和消失时的动画（包括加载、卸载、设置Visibility），由于某些未知原因，某些情况下某些动画会无法播放，还请自行实验。
@@ -230,6 +231,7 @@ Pivot请在generic.xaml中搜索
 ```
 
 # ScrollHeaderPanel
+![](DemoImages/ScrollHeaderPanel.gif)
 * 使元素与ScrollViewer的滚动数值关联。
 * UseQuickBack为True的时候，可能会有掉帧现象，暂时无法解决。
 * 要动画的Header**不要**放在ListView.Header里。
