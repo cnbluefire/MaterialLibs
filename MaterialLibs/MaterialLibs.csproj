@@ -60,6 +60,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
@@ -82,6 +83,7 @@
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -104,17 +106,41 @@
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Animations\Base\IAnimationFactoryBase.cs" />
+    <Compile Include="Animations\Base\IAnimationKeyFrameBase.cs" />
+    <Compile Include="Animations\AnimationGroup.cs" />
+    <Compile Include="Animations\Base\IAnimationBase.cs" />
+    <Compile Include="Animations\Collection\AnimationCollection.cs" />
+    <Compile Include="Animations\Collection\KeyFrameCollection.cs" />
+    <Compile Include="Animations\EasingFunction\CubicBezierEasingFunction.cs" />
+    <Compile Include="Animations\EasingFunction\EasingFunctionBase.cs" />
+    <Compile Include="Animations\EasingFunction\LinearEasingFunction.cs" />
+    <Compile Include="Animations\EasingFunction\StepEasingFunction.cs" />
+    <Compile Include="Animations\Factory\AnimationGroupFactory.cs" />
+    <Compile Include="Animations\KeyFrame\KeyFrame.cs" />
+    <Compile Include="Animations\KeyFrame\FinalKeyFrame.cs" />
+    <Compile Include="Animations\KeyFrame\StartingKeyFrame.cs" />
+    <Compile Include="Common\ScrollHeaderStateChangedEvent.cs" />
     <Compile Include="Common\VisualTreeExtension.cs" />
+    <Compile Include="Common\WeakReferenceList.cs" />
     <Compile Include="Controls\AnimationHamburgerIcon.xaml.cs">
       <DependentUpon>AnimationHamburgerIcon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ScrollHeaderPanel.xaml.cs">
+      <DependentUpon>ScrollHeaderPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\CoreSocialistValuesHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Animations\Implicit.cs" />
+    <Compile Include="Animations\Factory\AnimationFactory.cs" />
+    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Models\Particle.cs" />
     <Compile Include="Controls\ParticleCanvas.xaml.cs">
       <DependentUpon>ParticleCanvas.xaml</DependentUpon>
@@ -152,7 +178,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ScrollHeaderPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

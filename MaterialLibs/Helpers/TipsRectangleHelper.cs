@@ -18,7 +18,7 @@ namespace MaterialLibs.Helpers
     public class TipsRectangleHelper : DependencyObject
     {
         private static Dictionary<string, TipsRectangleServiceItem> TokenRectangles = new Dictionary<string, TipsRectangleServiceItem>();
-        private static Collection<Selector> Selectors = new Collection<Selector>();
+        private static Collection<WeakReference<Selector>> Selectors = new Collection<WeakReference<Selector>>();
 
         public static string GetToken(FrameworkElement obj)
         {
@@ -114,21 +114,37 @@ namespace MaterialLibs.Helpers
             {
                 if (d is Selector selector)
                 {
+                    bool IsIn = false;
+                    WeakReference<Selector> weak_tmp = null;
+                    foreach (var item in Selectors)
+                    {
+                        if (item.TryGetTarget(out Selector tmp))
+                        {
+                            if (tmp == selector)
+                            {
+                                IsIn = true;
+                                weak_tmp = item;
+                            }
+                        }
+                    }
                     if (string.IsNullOrEmpty(TargetName))
                     {
-                        if (Selectors.Contains(selector))
+                        if (IsIn)
                         {
-                            Selectors.Remove(selector);
+                            Selectors.Remove(weak_tmp);
                             selector.SelectionChanged -= Selector_SelectionChanged;
                         }
                     }
                     else
                     {
-                        if (!Selectors.Contains(selector))
+                        if (!IsIn)
                         {
                             if (selector is ListViewBase || selector is ListBox)
-                                Selectors.Add(selector);
-                            selector.SelectionChanged += Selector_SelectionChanged;
+                            {
+                                weak_tmp = new WeakReference<Selector>(selector);
+                                Selectors.Add(weak_tmp);
+                                selector.SelectionChanged += Selector_SelectionChanged;
+                            }
                         }
                     }
 

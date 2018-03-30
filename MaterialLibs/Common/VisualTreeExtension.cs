@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;using Windows.UI.Xaml;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 namespace MaterialLibs.Common
 {
@@ -29,6 +30,30 @@ namespace MaterialLibs.Common
             }
             return null;
         }
+
+        public static T VisualTreeFindName<T>(this DependencyObject element, string name)
+            where T : FrameworkElement
+        {
+            T retValue = null;
+            var childrenCount = VisualTreeHelper.GetChildrenCount(element);
+            for (var i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+                var type = child as T;
+                if (type != null && name.Equals(type.Name,StringComparison.OrdinalIgnoreCase))
+                {
+                    retValue = type;
+                    break;
+                }
+                retValue = VisualTreeFindName<T>(child, name);
+                if (retValue != null)
+                {
+                    break;
+                }
+            }
+            return retValue;
+        }
+
         public static T VisualTreeFind<T>(this DependencyObject element)
             where T : DependencyObject
         {

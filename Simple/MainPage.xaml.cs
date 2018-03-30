@@ -26,5 +26,15 @@ namespace Simple
         {
             this.InitializeComponent();
         }
+
+        private void Frame_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender == RipplePageFrame) RipplePageFrame.Navigate(typeof(Views.RipplePage));
+            else if (sender == ParticlePageFrame) ParticlePageFrame.Navigate(typeof(Views.ParticlePage));
+            else if (sender == TipsRectanglePageFrame) TipsRectanglePageFrame.Navigate(typeof(Views.TipsRectanglePage));
+            else if (sender == ImplicitAnimationPageFrame) ImplicitAnimationPageFrame.Navigate(typeof(Views.ImplicitAnimationPage));
+            else if (sender == ScrollHeaderPageFrame) ScrollHeaderPageFrame.Navigate(typeof(Views.ScrollHeaderPage));
+            else if (sender == AboutPageFrame) AboutPageFrame.Navigate(typeof(Views.AboutPage));
+        }
     }
 }

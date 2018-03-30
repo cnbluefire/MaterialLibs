@@ -1,6 +1,8 @@
 /*/bin/
 /*/obj/
 /*/Targets/
+/*/AppPackages/
 /.vs/
+/*/Simple_StoreKey.pfx
 *.nupkg
 *.nuspec

@@ -12,13 +12,22 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="False">
         <Pivot Style="{StaticResource AnimationHeaderPivot}">
             <PivotItem Header="Ripple">
-                <view:RipplePage />
+                <Frame x:Name="RipplePageFrame" Loaded="Frame_Loaded"/>
             </PivotItem>
             <PivotItem Header="Particle">
-                <view:ParticlePage />
+                <Frame x:Name="ParticlePageFrame" Loaded="Frame_Loaded"/>
             </PivotItem>
             <PivotItem Header="TipsRectangle">
-                <view:TipsRectanglePage />
+                <Frame x:Name="TipsRectanglePageFrame" Loaded="Frame_Loaded"/>
+            </PivotItem>
+            <PivotItem Header="ImplicitAnimation">
+                <Frame x:Name="ImplicitAnimationPageFrame" Loaded="Frame_Loaded"/>
+            </PivotItem>
+            <PivotItem Header="ScrollHeader">
+                <Frame x:Name="ScrollHeaderPageFrame" Loaded="Frame_Loaded"/>
+            </PivotItem>
+            <PivotItem Header="About">
+                <Frame x:Name="AboutPageFrame" Loaded="Frame_Loaded"/>
             </PivotItem>
         </Pivot>
     </Grid>

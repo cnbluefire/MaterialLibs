@@ -1,0 +1,165 @@
+﻿<Page
+    x:Class="Simple.Views.ScrollHeaderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Simple.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:m_control="using:MaterialLibs.Controls"
+    xmlns:m_helper="using:MaterialLibs.Helpers"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Play Header Offset,Scale and Opacity Animation with ScrollViewer Properties" />
+                <ToggleSwitch x:Name="UseQuickBackToggle" Header="UseQuickBack" />
+                <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
+                    <Grid m_helper:VisualHelper.Clip="0,0,0,0">
+                        <ListView x:Name="ScrollHeaderListView" VerticalAlignment="Stretch" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
+                              ScrollViewer.IsVerticalScrollChainingEnabled="True" >
+                            <ListView.Header>
+                                <Border Height="200" />
+                            </ListView.Header>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Content}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <m_control:ScrollHeaderPanel Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                                 TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
+                                                 Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                 OffsetYFrom="0" OffsetYTo="-150" ScrollHeaderStateChanged="ScrollHeaderPanel_ScrollHeaderStateChanged" >
+                            <Grid Background="#FFDAA72E" m_helper:VisualHelper.Clip="0,0,0,0">
+                                <m_control:ScrollHeaderPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
+                                                         ContentCenterPoint="bind" Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                         ScaleFrom="1" ScaleTo="1.1"
+                                                         OpacityFrom="1" OpacityTo="0">
+                                    <Image Source="/Assets/imgs/12.jpg" Stretch="UniformToFill" VerticalAlignment="Center" />
+                                </m_control:ScrollHeaderPanel>
+                                <m_control:ScrollHeaderPanel Height="50" Width="50" VerticalAlignment="Top" HorizontalAlignment="Left" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
+                                                             Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="1.1">
+                                    <Button Height="45" Width="45" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <SymbolIcon Symbol="Back"></SymbolIcon>
+                                    </Button>
+                                </m_control:ScrollHeaderPanel>
+                                <m_control:ScrollHeaderPanel Height="50" Width="50" VerticalAlignment="Top" HorizontalAlignment="Right" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
+                                                             ContentCenterPoint="50,0" Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="1.1">
+                                    <Button Height="45" Width="45" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                        <SymbolIcon Symbol="More" ></SymbolIcon>
+                                    </Button>
+                                </m_control:ScrollHeaderPanel>
+                                <Grid Margin="55,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <m_control:ScrollHeaderPanel Height="60" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
+                                                             Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="0.9">
+                                        <TextBlock FontSize="40" Text="This is the First List Title" />
+                                    </m_control:ScrollHeaderPanel>
+                                    <m_control:ScrollHeaderPanel Grid.Row="1" Height="40" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
+                                                             Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="0.5" 
+                                                             OpacityFrom="1" OpacityTo="0">
+                                        <TextBlock FontSize="30" Text="This is the Second List Title" />
+                                    </m_control:ScrollHeaderPanel>
+                                </Grid>
+                            </Grid>
+                        </m_control:ScrollHeaderPanel>
+                        <m_control:ScrollHeaderPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                                                 TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
+                                                 Threshold="50" UseQuickBack="True"
+                                                 OffsetYFrom="-50" OffsetYTo="50" ScrollHeaderStateChanged="ScrollHeaderPanel_ScrollHeaderStateChanged" >
+                            <Border CornerRadius="25" Height="50" Width="50" Background="Gray" HorizontalAlignment="Right" Margin="0,0,20,0">
+                                <SymbolIcon Symbol="Add" Foreground="White" />
+                            </Border>
+                        </m_control:ScrollHeaderPanel>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
+                    <Grid m_helper:VisualHelper.Clip="0,0,0,0">
+                        <GridView x:Name="ScrollHeaderGridView" VerticalAlignment="Stretch" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
+                              ScrollViewer.IsVerticalScrollChainingEnabled="True" >
+                            <GridView.Header>
+                                <Border Height="200" />
+                            </GridView.Header>
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="150" Height="150">
+                                        <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" Source="{Binding Image}" />
+                                        <TextBlock Text="{Binding Content}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                        <m_control:ScrollHeaderPanel Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                                 TargetScroller="{x:Bind ScrollHeaderGridView}" TargetScrollerName="ScrollViewer" 
+                                                 Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                 OffsetYFrom="0" OffsetYTo="-150" ScrollHeaderStateChanged="ScrollHeaderPanel_ScrollHeaderStateChanged" >
+                            <Grid Background="#FF475292" m_helper:VisualHelper.Clip="0,0,0,0">
+                                <m_control:ScrollHeaderPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TargetScroller="{x:Bind ScrollHeaderGridView}" TargetScrollerName="ScrollViewer" 
+                                                         ContentCenterPoint="bind" Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                         ScaleFrom="1" ScaleTo="1.1"
+                                                         OpacityFrom="1" OpacityTo="0">
+                                    <Image Source="/Assets/imgs/13.jpg" Stretch="UniformToFill" VerticalAlignment="Center" />
+                                </m_control:ScrollHeaderPanel>
+                                <m_control:ScrollHeaderPanel Height="50" Width="50" VerticalAlignment="Top" HorizontalAlignment="Left" TargetScroller="{x:Bind ScrollHeaderGridView}" TargetScrollerName="ScrollViewer" 
+                                                             Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="1.1">
+                                    <Button Height="45" Width="45" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <SymbolIcon Symbol="Back"></SymbolIcon>
+                                    </Button>
+                                </m_control:ScrollHeaderPanel>
+                                <m_control:ScrollHeaderPanel Height="50" Width="50" VerticalAlignment="Top" HorizontalAlignment="Right" TargetScroller="{x:Bind ScrollHeaderGridView}" TargetScrollerName="ScrollViewer" 
+                                                             ContentCenterPoint="50,0" Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="1.1">
+                                    <Button Height="45" Width="45" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                        <SymbolIcon Symbol="More" ></SymbolIcon>
+                                    </Button>
+                                </m_control:ScrollHeaderPanel>
+                                <Grid Margin="55,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <m_control:ScrollHeaderPanel Height="60" TargetScroller="{x:Bind ScrollHeaderGridView}" TargetScrollerName="ScrollViewer" 
+                                                             Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="0.9">
+                                        <TextBlock FontSize="40" Text="This is the First List Title" />
+                                    </m_control:ScrollHeaderPanel>
+                                    <m_control:ScrollHeaderPanel Grid.Row="1" Height="40" TargetScroller="{x:Bind ScrollHeaderGridView}" TargetScrollerName="ScrollViewer" 
+                                                             Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
+                                                             OffsetYFrom="0" OffsetYTo="150" 
+                                                             ScaleFrom="1" ScaleTo="0.5" 
+                                                             OpacityFrom="1" OpacityTo="0">
+                                        <TextBlock FontSize="30" Text="This is the Second List Title" />
+                                    </m_control:ScrollHeaderPanel>
+                                </Grid>
+                            </Grid>
+                        </m_control:ScrollHeaderPanel>
+                        <m_control:ScrollHeaderPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                                                 TargetScroller="{x:Bind ScrollHeaderGridView}" TargetScrollerName="ScrollViewer" 
+                                                 Threshold="50" UseQuickBack="True"
+                                                 OffsetYFrom="-50" OffsetYTo="50" ScrollHeaderStateChanged="ScrollHeaderPanel_ScrollHeaderStateChanged" >
+                            <Border CornerRadius="25" Height="50" Width="50" Background="Gray" HorizontalAlignment="Right" Margin="0,0,20,0">
+                                <SymbolIcon Symbol="Add" Foreground="White" />
+                            </Border>
+                        </m_control:ScrollHeaderPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
