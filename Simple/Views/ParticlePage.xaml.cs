@@ -45,11 +45,5 @@ namespace Simple.Views
         }
 
         ObservableCollection<ColorModel> KnownColors { get; set; }
-
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
-            mainSplitView.IsPaneOpen = !mainSplitView.IsPaneOpen;
-            anIcon.IsEnded = mainSplitView.IsPaneOpen;
-        }
     }
 }

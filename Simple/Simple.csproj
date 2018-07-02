@@ -110,11 +110,14 @@
     <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BigbangPage.xaml.cs">
+      <DependentUpon>BigbangPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImplicitAnimationPage.xaml.cs">
       <DependentUpon>ImplicitAnimationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScrollHeaderPage.xaml.cs">
-      <DependentUpon>ScrollHeaderPage.xaml</DependentUpon>
+    <Compile Include="Views\PerspectivePage.xaml.cs">
+      <DependentUpon>PerspectivePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TipsRectanglePage.xaml.cs">
       <DependentUpon>TipsRectanglePage.xaml</DependentUpon>
@@ -206,13 +209,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\BigbangPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ImplicitAnimationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScrollHeaderPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\PerspectivePage.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\TipsRectanglePage.xaml">
       <SubType>Designer</SubType>

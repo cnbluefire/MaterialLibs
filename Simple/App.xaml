@@ -4,47 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Simple"
     xmlns:m_helper="using:MaterialLibs.Helpers"
-    xmlns:m_animation="using:MaterialLibs.Animations"
-    xmlns:m_easing="using:MaterialLibs.Animations.EasingFunction"
     RequestedTheme="Light">
     <Application.Resources>
-        <m_easing:CubicBezierEasingFunction x:Key="cbease" ControlPoint="0.17,0.67,0.63,1" />
-        <m_animation:AnimationCollection x:Key="OffsetAnimation">
-            <m_animation:AnimationGroup Target="Offset">
-                <m_animation:Animation AnimationMode="Vector3" Target="Offset" EasingFunction="{StaticResource cbease}" >
-                    <m_animation:StartingKeyFrame Progress="0" />
-                    <m_animation:FinalKeyFrame Progress="1" />
-                </m_animation:Animation>
-                <m_animation:Animation AnimationMode="Scalar" Target="RotationAngleInDegrees" EasingFunction="{StaticResource cbease}" Duration="0:0:0.5" >
-                    <m_animation:KeyFrame Progress="0.5" Value="20f" />
-                    <m_animation:KeyFrame Progress="1" Value="0f" />
-                </m_animation:Animation>
-            </m_animation:AnimationGroup>
-        </m_animation:AnimationCollection>
-        <m_animation:AnimationGroup x:Name="GlobalShowAnimation">
-            <m_animation:Animation AnimationMode="Vector3" Target="Offset" Duration="0:0:0.33">
-                <m_animation:KeyFrame Progress="0" Value="Vector3(this.StartingValue.X,this.StartingValue.Y-500f,this.StartingValue.Z)" />
-                <m_animation:StartingKeyFrame Progress="1" />
-            </m_animation:Animation>
-            <m_animation:Animation AnimationMode="Scalar" Target="Opacity" Duration="0:0:0.33">
-                <m_animation:KeyFrame Progress="0" Value="0f" />
-                <m_animation:KeyFrame Progress="1" Value="1f" />
-            </m_animation:Animation>
-        </m_animation:AnimationGroup>
-        <m_animation:AnimationGroup x:Name="GlobalHideAnimation">
-            <m_animation:Animation AnimationMode="Vector3" Target="Offset" Duration="0:0:0.33">
-                <m_animation:StartingKeyFrame Progress="0" />
-                <m_animation:KeyFrame Progress="1" Value="Vector3(this.StartingValue.X,this.StartingValue.Y-500f,this.StartingValue.Z)" />
-            </m_animation:Animation>
-            <m_animation:Animation AnimationMode="Scalar" Target="Opacity" Duration="0:0:0.33">
-                <m_animation:KeyFrame Progress="0" Value="0f" />
-                <m_animation:KeyFrame Progress="1" Value="1f" />
-            </m_animation:Animation>
-        </m_animation:AnimationGroup>
-        <Style TargetType="Border" x:Key="AnimationBorder">
-            <Setter Property="m_animation:Implicit.ShowAnimation" Value="{StaticResource GlobalShowAnimation}" />
-            <Setter Property="m_animation:Implicit.HideAnimation" Value="{StaticResource GlobalHideAnimation}" />
-        </Style>
         <Style TargetType="Pivot" x:Key="AnimationHeaderPivot">
             <Setter Property="Margin" Value="0" />
             <Setter Property="Padding" Value="0" />
@@ -2403,7 +2364,6 @@
             <Setter Property="FocusVisualPrimaryThickness" Value="2" />
             <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
             <Setter Property="FocusVisualSecondaryThickness" Value="1" />
-            <Setter Property="m_animation:Implicit.Animations" Value="{StaticResource OffsetAnimation}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="GridViewItem">

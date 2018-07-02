@@ -112,34 +112,27 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Animations\Base\IAnimationFactoryBase.cs" />
-    <Compile Include="Animations\Base\IAnimationKeyFrameBase.cs" />
-    <Compile Include="Animations\AnimationGroup.cs" />
-    <Compile Include="Animations\Base\IAnimationBase.cs" />
-    <Compile Include="Animations\Collection\AnimationCollection.cs" />
-    <Compile Include="Animations\Collection\KeyFrameCollection.cs" />
-    <Compile Include="Animations\EasingFunction\CubicBezierEasingFunction.cs" />
-    <Compile Include="Animations\EasingFunction\EasingFunctionBase.cs" />
-    <Compile Include="Animations\EasingFunction\LinearEasingFunction.cs" />
-    <Compile Include="Animations\EasingFunction\StepEasingFunction.cs" />
-    <Compile Include="Animations\Factory\AnimationGroupFactory.cs" />
-    <Compile Include="Animations\KeyFrame\KeyFrame.cs" />
-    <Compile Include="Animations\KeyFrame\FinalKeyFrame.cs" />
-    <Compile Include="Animations\KeyFrame\StartingKeyFrame.cs" />
-    <Compile Include="Common\ScrollHeaderStateChangedEvent.cs" />
     <Compile Include="Common\VisualTreeExtension.cs" />
-    <Compile Include="Common\WeakReferenceList.cs" />
     <Compile Include="Controls\AnimationHamburgerIcon.xaml.cs">
       <DependentUpon>AnimationHamburgerIcon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ScrollHeaderPanel.xaml.cs">
-      <DependentUpon>ScrollHeaderPanel.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\BigbangPanel.cs" />
+    <Compile Include="Controls\BigbangView.cs" />
+    <Compile Include="Controls\HamburgerView.cs" />
+    <Compile Include="Controls\HamburgerViewItem.cs" />
+    <Compile Include="CustomTransitions\Bases\CustomTransitionMode.cs" />
+    <Compile Include="CustomTransitions\Bases\HideTransitionBase.cs" />
+    <Compile Include="CustomTransitions\Bases\ShowTransitionBase.cs" />
+    <Compile Include="CustomTransitions\FlipHideTransition.cs" />
+    <Compile Include="CustomTransitions\FlipShowTransition.cs" />
+    <Compile Include="CustomTransitions\FlipTransitionMode.cs" />
+    <Compile Include="CustomTransitions\OffsetShowTransition.cs" />
+    <Compile Include="CustomTransitions\ScaleHideTransition.cs" />
+    <Compile Include="CustomTransitions\ScaleShowTransition.cs" />
     <Compile Include="Helpers\CoreSocialistValuesHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
-    <Compile Include="Animations\Implicit.cs" />
-    <Compile Include="Animations\Factory\AnimationFactory.cs" />
-    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Helpers\ImplicitHelper.cs" />
+    <Compile Include="Helpers\TransitionsHelper.cs" />
     <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Models\Particle.cs" />
     <Compile Include="Controls\ParticleCanvas.xaml.cs">
@@ -148,6 +141,7 @@
     <Compile Include="Helpers\RippleHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\TipsRectangleHelper.cs" />
+    <Compile Include="CustomTransitions\Bases\CustomTransitionBase.cs" />
     <None Include="Targets\MaterialLibs.targets">
       <SubType>Designer</SubType>
     </None>
@@ -178,9 +172,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ScrollHeaderPanel.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup />

@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Simple.Views;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UltraBook.Controls;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,16 +28,61 @@ namespace Simple
         public MainPage()
         {
             this.InitializeComponent();
+
+            ThemeItem = new HamburgerViewItem() { Content = "Theme", Icon = "\uE809", Tag = typeof(RipplePage) };
+
+            PrimaryList = new ObservableCollection<HamburgerViewItem>()
+            {
+                new HamburgerViewItem(){Content = "Ripple",Icon = "\uEDA4",Tag = typeof(RipplePage)},
+                new HamburgerViewItem(){Content = "Particle",Icon = "\uEBD2",Tag = typeof(ParticlePage)},
+                new HamburgerViewItem(){Content = "TipsRectangle",Icon = "\uE71D",Tag = typeof(TipsRectanglePage)},
+                new HamburgerViewItem(){Content = "ImplicitAnimation",Icon = "\uF133",Tag = typeof(ImplicitAnimationPage)},
+                new HamburgerViewItem(){Content = "Bigbang",Icon = "\uE1A1",Tag = typeof(BigbangPage)},
+                new HamburgerViewItem(){Content = "Perspective",Icon = "\uE809",Tag = typeof(PerspectivePage)},
+            };
+
+            SecondaryList = new ObservableCollection<HamburgerViewItem>()
+            {
+                ThemeItem,
+                new HamburgerViewItem(){Content = "About",Icon = "\uED54",Tag = typeof(AboutPage)},
+            };
         }
 
-        private void Frame_Loaded(object sender, RoutedEventArgs e)
+        HamburgerViewItem ThemeItem { get; set; }
+        public ObservableCollection<HamburgerViewItem> PrimaryList { get; set; }
+        public ObservableCollection<HamburgerViewItem> SecondaryList { get; set; }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender == RipplePageFrame) RipplePageFrame.Navigate(typeof(Views.RipplePage));
-            else if (sender == ParticlePageFrame) ParticlePageFrame.Navigate(typeof(Views.ParticlePage));
-            else if (sender == TipsRectanglePageFrame) TipsRectanglePageFrame.Navigate(typeof(Views.TipsRectanglePage));
-            else if (sender == ImplicitAnimationPageFrame) ImplicitAnimationPageFrame.Navigate(typeof(Views.ImplicitAnimationPage));
-            else if (sender == ScrollHeaderPageFrame) ScrollHeaderPageFrame.Navigate(typeof(Views.ScrollHeaderPage));
-            else if (sender == AboutPageFrame) AboutPageFrame.Navigate(typeof(Views.AboutPage));
+            _HamburgerView.SelectedItem = PrimaryList[0];
+            ContentFrame.Navigate(typeof(RipplePage));
+        }
+
+        private void _HamburgerView_ItemClick(object sender, MaterialLibs.Controls.HamburgerViewItemClickEventArgs e)
+        {
+
+        }
+
+        private void _HamburgerView_SelectionChanging(object sender, MaterialLibs.Controls.HamburgerViewSelectionChangingEventArgs e)
+        {
+
+        }
+
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            UpdateBackState();
+        }
+
+        private void UpdateBackState()
+        {
+            if (ContentFrame.CanGoBack)
+            {
+                _HamburgerView.IsBackButtonEnable = true;
+            }
+            else
+            {
+                _HamburgerView.IsBackButtonEnable = false;
+            }
         }
     }
 }

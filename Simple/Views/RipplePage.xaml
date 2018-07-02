@@ -15,35 +15,22 @@
         <converter:TrueFalseConverter x:Key="TrueFalseConverter" />
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <SplitView x:Name="mainSplitView" DisplayMode="Inline" IsPaneOpen="True" OpenPaneLength="400" PaneBackground="#CCFFFFFF">
-            <SplitView.Pane>
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Padding="16,58,0,0">
-                    <TextBlock Text="RippleHelperState"/>
-                    <ToggleSwitch x:Name="RippleHelperState" Header="{x:Bind RippleHelperState.IsOn,Converter={StaticResource RippleHelperStateConverter},Mode=OneWay}" />
-                    <ToggleSwitch x:Name="IsFillEnable" Header="IsFillEnable" />
-                    <Slider x:Name="RippleDuration" Header="RippleDuration" Minimum="0.001" Maximum="10" StepFrequency="0.1" LargeChange="0.1" Value="0.8" />
-                    <Slider x:Name="RippleRadius" Header="RippleRadius" Minimum="0" Maximum="1500" StepFrequency="1" LargeChange="1" Value="50" IsEnabled="{x:Bind IsFillEnable.IsOn,Converter={StaticResource TrueFalseConverter},Mode=OneWay}" />
-                </StackPanel>
-            </SplitView.Pane>
-            <Button Content="Click Me!" HorizontalAlignment="Center" Padding="100,100" 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Padding="16,58,0,0">
+            <TextBlock Text="RippleHelperState"/>
+            <ToggleSwitch x:Name="RippleHelperState" Header="{x:Bind RippleHelperState.IsOn,Converter={StaticResource RippleHelperStateConverter},Mode=OneWay}" />
+            <ToggleSwitch x:Name="IsFillEnable" Header="IsFillEnable" />
+            <Slider x:Name="RippleDuration" Header="RippleDuration" Minimum="0.001" Maximum="10" StepFrequency="0.1" LargeChange="0.1" Value="0.8" />
+            <Slider x:Name="RippleRadius" Header="RippleRadius" Minimum="0" Maximum="1500" StepFrequency="1" LargeChange="1" Value="50" IsEnabled="{x:Bind IsFillEnable.IsOn,Converter={StaticResource TrueFalseConverter},Mode=OneWay}" />
+        </StackPanel>
+        <Button Content="Click Me!" HorizontalAlignment="Center" Padding="100,100" Grid.Column="1"
                 m_helper:RippleHelper.RippleHelperState="{x:Bind RippleHelperState.IsOn,Converter={StaticResource RippleHelperStateConverter},Mode=OneWay}" 
                 m_helper:RippleHelper.RippleDuration="{x:Bind sys:TimeSpan.FromSeconds(RippleDuration.Value),Mode=OneWay}" 
                 m_helper:RippleHelper.IsFillEnable="{x:Bind IsFillEnable.IsOn,Mode=OneWay}"
                 m_helper:RippleHelper.RippleColor="{ThemeResource SystemBaseLowColor}"
                 m_helper:RippleHelper.RippleRadius="{x:Bind RippleRadius.Value,Mode=OneWay}"/>
-        </SplitView>
-        <Button x:Name="HamburgerButton" Width="48" Height="48" Padding="0" Margin="10"
-                HorizontalAlignment="Left" VerticalAlignment="Top"
-                Background="Transparent" Foreground="Black" Click="HamburgerButton_Click">
-            <Button.Resources>
-                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="Transparent" />
-                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="Transparent" />
-                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="Black" />
-                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="Black" />
-            </Button.Resources>
-            <Button.Content>
-                <m_control:AnimationHamburgerIcon x:Name="anIcon" IsEnded="True"/>
-            </Button.Content>
-        </Button>
     </Grid>
 </Page>

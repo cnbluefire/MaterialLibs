@@ -7,28 +7,33 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:Simple.Views"
     xmlns:m_helper="using:MaterialLibs.Helpers"
-    mc:Ignorable="d">
+    xmlns:m_control="using:MaterialLibs.Controls"
+    mc:Ignorable="d" Loaded="Page_Loaded">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="False">
-        <Pivot Style="{StaticResource AnimationHeaderPivot}">
-            <PivotItem Header="Ripple">
-                <Frame x:Name="RipplePageFrame" Loaded="Frame_Loaded"/>
-            </PivotItem>
-            <PivotItem Header="Particle">
-                <Frame x:Name="ParticlePageFrame" Loaded="Frame_Loaded"/>
-            </PivotItem>
-            <PivotItem Header="TipsRectangle">
-                <Frame x:Name="TipsRectanglePageFrame" Loaded="Frame_Loaded"/>
-            </PivotItem>
-            <PivotItem Header="ImplicitAnimation">
-                <Frame x:Name="ImplicitAnimationPageFrame" Loaded="Frame_Loaded"/>
-            </PivotItem>
-            <PivotItem Header="ScrollHeader">
-                <Frame x:Name="ScrollHeaderPageFrame" Loaded="Frame_Loaded"/>
-            </PivotItem>
-            <PivotItem Header="About">
-                <Frame x:Name="AboutPageFrame" Loaded="Frame_Loaded"/>
-            </PivotItem>
-        </Pivot>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Normal"/>
+                <VisualState x:Name="Inline">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="601" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="_HamburgerView.DisplayMode" Value="Inline" />
+                        <Setter Target="ContentFrame.Margin" Value="8,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <m_control:HamburgerView x:Name="_HamburgerView" PrimaryItemsSource="{x:Bind PrimaryList}" SecondaryItemsSource="{x:Bind SecondaryList}" LeftHeader="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem}" IsBackButtonEnable="False" ItemClick="_HamburgerView_ItemClick" SelectionChanging="_HamburgerView_SelectionChanging" >
+            <m_control:HamburgerView.LeftHeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="8,0,0,0">
+                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="{Binding Content}" />
+                    </Grid>
+                </DataTemplate>
+            </m_control:HamburgerView.LeftHeaderTemplate>
+            <Frame x:Name="ContentFrame" Margin="52,0,8,0" Navigated="ContentFrame_Navigated" />
+        </m_control:HamburgerView>
     </Grid>
 </Page>

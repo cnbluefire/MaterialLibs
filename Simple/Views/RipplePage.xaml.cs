@@ -27,10 +27,5 @@ namespace Simple.Views
             this.InitializeComponent();
         }
 
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
-            mainSplitView.IsPaneOpen = !mainSplitView.IsPaneOpen;
-            anIcon.IsEnded = mainSplitView.IsPaneOpen;
-        }
     }
 }

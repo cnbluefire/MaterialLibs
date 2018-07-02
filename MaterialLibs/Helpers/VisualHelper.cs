@@ -337,5 +337,67 @@ namespace MaterialLibs.Helpers
 
                 }
             }));
+
+
+
+        public static bool GetIsPerspectiveEnable(FrameworkElement obj)
+        {
+            return (bool)obj.GetValue(IsPerspectiveEnableProperty);
+        }
+
+        public static void SetIsPerspectiveEnable(FrameworkElement obj, bool value)
+        {
+            obj.SetValue(IsPerspectiveEnableProperty, value);
+        }
+
+        public static readonly DependencyProperty IsPerspectiveEnableProperty =
+            DependencyProperty.RegisterAttached("IsPerspectiveEnable", typeof(bool), typeof(VisualHelper), new PropertyMetadata(false, IsPerspectiveEnablePropertyChanged));
+
+        private static void IsPerspectiveEnablePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue != (bool)e.OldValue)
+            {
+                if (d is FrameworkElement element)
+                {
+                    if ((bool)e.NewValue)
+                    {
+                        element.SizeChanged += Element_SizeChanged;
+                    }
+                    else
+                    {
+                        var host = ElementCompositionPreview.GetElementVisual(element);
+                        host.TransformMatrix = Matrix4x4.Identity;
+                        element.SizeChanged -= Element_SizeChanged;
+                    }
+                }
+            }
+        }
+
+        private static void Element_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (sender is FrameworkElement element)
+            {
+                UpdateTransformMatrix(element);
+            }
+        }
+
+        private static void UpdateTransformMatrix(FrameworkElement element)
+        {
+            var host = ElementCompositionPreview.GetElementVisual(element);
+            var size = element.RenderSize.ToVector2();
+            if (size.X == 0 || size.Y == 0) return;
+            var n = -1f / size.X;
+
+            Matrix4x4 perspective = new Matrix4x4(
+                1.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, n,
+                0.0f, 0.0f, 0.0f, 1.0f);
+
+            host.TransformMatrix = 
+                Matrix4x4.CreateTranslation(-size.X / 2, -size.Y / 2, 0f) * 
+                perspective *
+                Matrix4x4.CreateTranslation(size.X / 2, size.Y / 2, 0f);
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using MaterialLibs.Animations;
-using MaterialLibs.Helpers;
+﻿using MaterialLibs.Helpers;
 using Simple.Models;
 using System;
 using System.Collections.Generic;
