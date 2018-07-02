@@ -2364,6 +2364,7 @@
             <Setter Property="FocusVisualPrimaryThickness" Value="2" />
             <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
             <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+            <Setter Property="m_helper:ImplicitHelper.Targets" Value="Offset" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="GridViewItem">

@@ -181,7 +181,7 @@ namespace MaterialLibs.Helpers
         }
 
         public static readonly DependencyProperty CenterPointProperty =
-            DependencyProperty.RegisterAttached("CenterPoint", typeof(string), typeof(VisualHelper), new PropertyMetadata("0,0", (s, a) =>
+            DependencyProperty.RegisterAttached("CenterPoint", typeof(string), typeof(VisualHelper), new PropertyMetadata("0,0,0", (s, a) =>
             {
                 if (a.NewValue != a.OldValue)
                 {
@@ -202,7 +202,7 @@ namespace MaterialLibs.Helpers
                                     }
                                     else
                                     {
-                                        visual.CenterPoint = (value_str + ",0f").ToVector3();
+                                        visual.CenterPoint = (value_str).ToVector3();
                                     }
                                 }
                                 else

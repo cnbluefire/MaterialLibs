@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:m_helper="using:MaterialLibs.Helpers"
+    xmlns:m_trans="using:MaterialLibs.CustomTransitions"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -13,10 +14,10 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800" />
+                        <AdaptiveTrigger MinWindowWidth="601" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="stack.Orientation" Value="Vertical" />
+                        <Setter Target="stack.Orientation" Value="Horizontal" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -25,14 +26,26 @@
             <StackPanel>
                 <TextBlock Text="Use Implicit Animation"/>
                 <Border BorderBrush="Black" BorderThickness="1" Margin="40,10">
-                    <StackPanel x:Name="stack" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" >
+                    <StackPanel x:Name="stack" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" MinHeight="120" m_helper:VisualHelper.IsPerspectiveEnable="True">
                         <Button x:Name="ShowHideButton" Click="ShowHideButton_Click" Content="ShowHideButton" Margin="10"
                                 PointerEntered="ShowHideButton_PointerEntered" PointerExited="ShowHideButton_PointerExited"
                                 m_helper:VisualHelper.CenterPoint="Bind" m_helper:ImplicitHelper.Targets="Offset,Scale" m_helper:ImplicitHelper.Duration="0:0:0.33" >
                         </Button>
-                        <Rectangle x:Name="rect1" Height="100" Width="100" Fill="Red" >
+                        <Rectangle x:Name="rect1" Height="100" Width="100" Fill="Red" m_helper:VisualHelper.CenterPoint="Bind" >
+                            <m_helper:TransitionsHelper.Show>
+                                <m_trans:FlipShowTransition From="Left" />
+                            </m_helper:TransitionsHelper.Show>
+                            <m_helper:TransitionsHelper.Hide>
+                                <m_trans:ScaleHideTransition ScaleX="1.5" ScaleY="1.5" />
+                            </m_helper:TransitionsHelper.Hide>
                         </Rectangle>
                         <Rectangle x:Name="rect2" Height="100" Width="100" Fill="Green" m_helper:VisualHelper.CenterPoint="Bind">
+                            <m_helper:TransitionsHelper.Show>
+                                <m_trans:FlipShowTransition From="Right" />
+                            </m_helper:TransitionsHelper.Show>
+                            <m_helper:TransitionsHelper.Hide>
+                                <m_trans:OffsetHideTransition OffsetY="200" />
+                            </m_helper:TransitionsHelper.Hide>
                         </Rectangle>
                     </StackPanel>
                 </Border>

@@ -176,120 +176,84 @@ Pivot请在generic.xaml中搜索
 * 一定要在VisualTransition中，处理Selected到Unselected和Selected到Normal的转换时间，让原Tips晚一段时间消失，动画才能正确播放。
 
 ### VisualHelper
-* VisualHelper.Opacity：设置Visual透明度。
-* VisualHelper.RotationAngle：设置Visual旋转的弧度值。
-* VisualHelper.RotationAngleInDegrees：设置Visual旋转角度值。
-* VisualHelper.RotationAxis：设置Visual在三维坐标系中的旋转角度值。
-* VisualHelper.Size：设置Visual的大小。不一定生效。
-* VisualHelper.Offset：设置Visual相对坐标系的位移，可能会影响到布局。
-* VisualHelper.Scale：设置Visual的缩放，缩放中心和AnchorPoint与CenterPoint有关。
-* VisualHelper.Clip：设置Visual的Clip，分别是"左,上,右,下"，含义是从边到中心收缩的距离，比如"2,2,2,2"将Visual四个边都裁剪2像素，设置为"0,0,0,0"，Visual内的子元素超出Visual范围将不可见。设置为null将取消Clip。
-* VisualHelper.AnchorPoint：设置Visual的锚点，左上角为"0,0"，右下角为"1,1"，可以设置缩放、旋转的基准，但是可能影响布局，推荐使用VisualHelper.CenterPoint。
-* 设置VisualHelper.CenterPoint将设置Visual的缩放和旋转基准点，例如设置VisualHelper.CenterPoint="0,50"，缩放将以Visual所在坐标系的(0,50)为中心进行缩放。
+* VisualHelper.Opacity(Float)：设置Visual透明度。
+* VisualHelper.RotationAngle(Float)：设置Visual旋转的弧度值。
+* VisualHelper.RotationAngleInDegrees(Float)：设置Visual旋转角度值。
+* VisualHelper.RotationAxis(Vector3)：设置Visual在三维坐标系中的旋转角度值。
+* VisualHelper.Size(Vector2)：设置Visual的大小。不一定生效。
+* VisualHelper.Offset(Vector3)：设置Visual相对坐标系的位移，可能会影响到布局。
+* VisualHelper.Scale(Vector3)：设置Visual的缩放，缩放中心和AnchorPoint与CenterPoint有关。
+* VisualHelper.Clip(Vector4(Left,Top,Right,Bottom))：设置Visual的Clip，分别是"左,上,右,下"，含义是从边到中心收缩的距离，比如"2,2,2,2"将Visual四个边都裁剪2像素，设置为"0,0,0,0"，Visual内的子元素超出Visual范围将不可见。设置为null将取消Clip。
+* VisualHelper.AnchorPoint(Vector2)：设置Visual的锚点，左上角为"0,0"，右下角为"1,1"，可以设置缩放、旋转的基准，但是可能影响布局，推荐使用VisualHelper.CenterPoint。
+* 设置VisualHelper.CenterPoint(Vector3)将设置Visual的缩放和旋转基准点，例如设置VisualHelper.CenterPoint="0,50"，缩放将以Visual所在坐标系的(0,50)为中心进行缩放。
 * 设置VisualHelper.CenterPoint="Bind"，会将CenterPointer绑定到自身的中心上，也就是Vector3(this.Target.Size.X / 2 ,this.Target.Size.Y / 2 ,0f);
+* 设置VisualHelper.IsPerspectiveEnable="True"，给容器添加景深效果。
+
+```
+<Border m_helper:VisualHelper.IsPerspectiveEnable="True">
+    <Rectangle Width="200" Height="100" m_Helper:VisualHelper.RotationAngleInDegrees="30" VisualHelper.RotationAxis="1,0,0" />
+</Border>
+```
+![](DemoImages/Perspective.png)
 
 ### ImplicitAnimations
 ![](DemoImages/ImplicitAnimation.gif)
-* API还在调整，不推荐现在使用。
-* Implicit.Animations响应系统Tiggers，例如Target标记为Offset的动画会响应位置改变，标记为Opacity的动画会响应透明度的改变；其他例如标记为Scale，Rotation之类的，需要使用VisualHelper设置对应的Visual属性。
-* Implicit.ShowAnimation和HideAnimation分别对应元素出现和消失时的动画（包括加载、卸载、设置Visibility），由于某些未知原因，某些情况下某些动画会无法播放，还请自行实验。
+* ImplicitHelper.Target响应系统Tiggers，例如Target标记为Offset的动画会响应位置改变，标记为Opacity的动画会响应透明度的改变；其他例如标记为Scale，Rotation之类的，需要使用VisualHelper设置对应的Visual属性。
+* ImplicitHelper.Duration设置动画播放时常。
 
 ```
-    <Grid.Resources>
-        <m_easing:CubicBezierEasingFunction x:Key="cbease" ControlPoint="0.17,0.67,0.63,1" />
-        <m_animation:AnimationCollection x:Key="ScaleAnimation" >
-            <m_animation:Animation AnimationMode="Vector3" Target="Scale" Duration="0:0:1" EasingFunction="{StaticResource cbease}">
-                <m_animation:StartingKeyFrame Progress="0"  />
-                <m_animation:FinalKeyFrame Progress="1" />
-            </m_animation:Animation>
-        </m_animation:AnimationCollection>
-        <m_animation:AnimationGroup x:Key="ShowAnimation">
-            <m_animation:Animation AnimationMode="Vector3" Target="Scale" Duration="0:0:1" EasingFunction="{StaticResource cbease}">
-                <m_animation:KeyFrame Progress="0" Value="Vector3(0f,0f,0f)" />
-                <m_animation:KeyFrame Progress="0.8" Value="Vector3(1.2f,1.2f,1.2f)" />
-                <m_animation:KeyFrame Progress="1" Value="Vector3(1f,1f,1f)" />
-            </m_animation:Animation>
-            <m_animation:Animation AnimationMode="Scalar" Target="Opacity" Duration="0:0:1" EasingFunction="{StaticResource cbease}">
-                <m_animation:KeyFrame Progress="0" Value="0f" />
-                <m_animation:KeyFrame Progress="1" Value="1f" />
-            </m_animation:Animation>
-        </m_animation:AnimationGroup>
-        <m_animation:Animation x:Key="HideAnimation" AnimationMode="Scalar" Target="Opacity" Duration="0:0:1">
-            <m_animation:KeyFrame Progress="0" Value="1f" />
-            <m_animation:KeyFrame Progress="1" Value="0f" />
-        </m_animation:Animation>
-    </Grid.Resources>
+<Image Source="{Binding Image}" Stretch="Uniform" 
+    PointerEntered="ShowHideButton_PointerEntered" PointerExited="ShowHideButton_PointerExited"
+    m_helper:VisualHelper.CenterPoint="Bind" m_helper:ImplicitHelper.Targets="Offset,Scale" m_helper:ImplicitHelper.Duration="0:0:0.33" />
+
+private void ShowHideButton_PointerEntered(object sender, PointerRoutedEventArgs e)
+{
+if (sender is UIElement s)
+    VisualHelper.SetScale(s, "1.15,1.15,1.15");
+}
+
+private void ShowHideButton_PointerExited(object sender, PointerRoutedEventArgs e)
+{
+if (sender is UIElement s)
+    VisualHelper.SetScale(s, "1,1,1");
+}
 ```
 
 ```
-    <Button x:Name="ShowHideButton" Content="ShowHideButton" 
-            m_helper:VisualHelper.CenterPoint="Bind" m_animation:Implicit.Animations="{StaticResource ScaleAnimation}">
-    </Button>
-    <Rectangle Fill="Red" Width="50" Height="50" m_helper:VisualHelper.CenterPoint="Bind"
-            m_animation:Implicit.ShowAnimation="{StaticResource ShowAnimation}" 
-            m_animation:Implicit.HideAnimation="{StaticResource HideAnimation}" />
+<Style TargetType="GridViewItem" x:Key="GridViewItemWithImplicitAnimationContainerStyle">
+    <Setter Property="m_helper:ImplicitHelper.Targets" Value="Offset" />
+    <Setter Property="m_helper:ImplicitHelper.Duration" Value="0:0:0.3" />
+</Style>
 ```
 
-# ScrollHeaderPanel
-![](DemoImages/ScrollHeaderPanel.gif)
-* 使元素与ScrollViewer的滚动数值关联。
-* UseQuickBack为True的时候，可能会有掉帧现象，暂时无法解决。
-* 要动画的Header**不要**放在ListView.Header里。
-* 请在滚动块顶部留下足够的空白，比如ListView的Header设为内容为空，高度等于ScrollHeaderPanel的Border；ScrollViewer内部的面板设置足够的Margin.Top。
+### CustomTransition
+* 给UIElement的添加、删除、显示与隐藏添加动画。
+* 内置了Offset、Scale、Flip三组Transition，并且提供了ShowTransitionBase和HideTransitionBase，允许用户创建自定义的Transition。
+* 使用ScaleShowTransition/ScaleHideTransition的UIElement建议设置m_helper:VisualHelper.CenterPoint="Bind"以启用中心缩放。
+* 使用FlipShowTransition/FlipHideTransition的UIElement建议设置VisualHelper.IsPerspectiveEnable="True"以启用景深效果。
 
 ```
-    <Grid m_helper:VisualHelper.Clip="0,0,0,0">
-        <ListView x:Name="ScrollHeaderListView" VerticalAlignment="Stretch" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
-                ScrollViewer.IsVerticalScrollChainingEnabled="True" >
-            <ListView.Header>
-                <Border Height="200" />
-            </ListView.Header>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Content}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <m_control:ScrollHeaderPanel Height="200" VerticalAlignment="Top" HorizontalAlignment="Stretch"
-                                    TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
-                                    Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
-                                    OffsetYFrom="0" OffsetYTo="-150" ScrollHeaderStateChanged="ScrollHeaderPanel_ScrollHeaderStateChanged" >
-            <Grid Background="#FFDAA72E" m_helper:VisualHelper.Clip="0,0,0,0">
-                <m_control:ScrollHeaderPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
-                                            ContentCenterPoint="bind" Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
-                                            ScaleFrom="1" ScaleTo="1.1"
-                                            OpacityFrom="1" OpacityTo="0">
-                    <Image Source="/Assets/imgs/12.jpg" Stretch="UniformToFill" VerticalAlignment="Center" />
-                </m_control:ScrollHeaderPanel>
-                <Grid Margin="55,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <m_control:ScrollHeaderPanel Height="60" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
-                                                Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
-                                                OffsetYFrom="0" OffsetYTo="150" 
-                                                ScaleFrom="1" ScaleTo="0.9">
-                        <TextBlock FontSize="40" Text="This is the First List Title" />
-                    </m_control:ScrollHeaderPanel>
-                    <m_control:ScrollHeaderPanel Grid.Row="1" Height="40" TargetScroller="{x:Bind ScrollHeaderListView}" TargetScrollerName="ScrollViewer" 
-                                                Threshold="150" UseQuickBack="{x:Bind UseQuickBackToggle.IsOn,Mode=OneWay}"
-                                                OffsetYFrom="0" OffsetYTo="150" 
-                                                ScaleFrom="1" ScaleTo="0.5" 
-                                                OpacityFrom="1" OpacityTo="0">
-                        <TextBlock FontSize="30" Text="This is the Second List Title" />
-                    </m_control:ScrollHeaderPanel>
-                </Grid>
-            </Grid>
-        </m_control:ScrollHeaderPanel>
-    </Grid>
+<StackPanel m_helper:VisualHelper.IsPerspectiveEnable="True">
+    <Rectangle x:Name="rect1" Height="100" Width="100" Fill="Red" m_helper:VisualHelper.CenterPoint="Bind" >
+        <m_helper:TransitionsHelper.Show>
+            <m_trans:FlipShowTransition From="Left" />
+        </m_helper:TransitionsHelper.Show>
+        <m_helper:TransitionsHelper.Hide>
+            <m_trans:ScaleHideTransition ScaleX="1.5" ScaleY="1.5" />
+        </m_helper:TransitionsHelper.Hide>
+    </Rectangle>
+    <Rectangle x:Name="rect2" Height="100" Width="100" Fill="Green" m_helper:VisualHelper.CenterPoint="Bind">
+        <m_helper:TransitionsHelper.Show>
+            <m_trans:FlipShowTransition From="Right" />
+        </m_helper:TransitionsHelper.Show>
+        <m_helper:TransitionsHelper.Hide>
+            <m_trans:OffsetHideTransition OffsetY="200" />
+        </m_helper:TransitionsHelper.Hide>
+    </Rectangle>
+</StackPanel>
 ```
+![](DemoImages/CustomTransition.gif)
 
-* TargetScroller：设置绑定到的ScrollViewer或者含有ScrollViewer的元素。不要使用Binding，绑定请使用{x:Bind XXX,Mode=OneWay}。
-* TargetScrollerName：标记含有ScrollViewer的元素内部的ScrollViewer的名称，将通过这个名称寻找ScrollViewer。如果要绑定到ScrollViewer本身请不要设置这个属性。
-* UseQuickBack：设置为True，将在逆向滚动的时候减小进度而不是回到顶部才修改进度。
-* Threshold：设置阈值，动画将以阈值为总长度。
-* OffsetYFrom：ScrollHeaderPanel纵向开始的位置，上负下正。
-* OffsetYTo：ScrollHeaderPanel纵向最终的位置，上负下正。
-* ScaleFrom、ScaleTo、OpacityFrom、OpacityTo同上，注意不要设置为负数。
-* ScrollHeaderStateChanged：头部状态改变的事件，尽量不要在这里进行繁重工作，可能会拖慢动画速度。
+* 注意：某些情况下（例如StackPanel中），Transition不会播放。
+* 同ConnectedAnimation类似，建议设置NavigationTransitionInfo为SuppressNavigationTransitionInfo。
+* 对于在VisualState中修改布局的UIElement，使用CustomTransition可能导致布局异常。

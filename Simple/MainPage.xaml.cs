@@ -8,12 +8,14 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UltraBook.Controls;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -29,7 +31,7 @@ namespace Simple
         {
             this.InitializeComponent();
 
-            ThemeItem = new HamburgerViewItem() { Content = "Theme", Icon = "\uE809", Tag = typeof(RipplePage) };
+            ThemeItem = new HamburgerViewItem() { Content = "Theme", Icon = "\uE809" };
 
             PrimaryList = new ObservableCollection<HamburgerViewItem>()
             {
@@ -54,23 +56,53 @@ namespace Simple
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("Theme"))
+            {
+                var theme = (string)ApplicationData.Current.LocalSettings.Values["Theme"];
+                UpdateTheme(theme == "Light");
+            }
+            else
+            {
+                ApplicationData.Current.LocalSettings.Values["Theme"] = "Light";
+                UpdateTheme(true);
+            }
+
             _HamburgerView.SelectedItem = PrimaryList[0];
-            ContentFrame.Navigate(typeof(RipplePage));
+            ContentFrame.Navigate(typeof(RipplePage), new SuppressNavigationTransitionInfo());
         }
 
         private void _HamburgerView_ItemClick(object sender, MaterialLibs.Controls.HamburgerViewItemClickEventArgs e)
         {
-
+            if(e.ClickedItem == ThemeItem)
+            {
+                UpdateTheme(RequestedTheme == ElementTheme.Dark);
+            }
+            else
+            {
+                ContentFrame.Navigate((Type)((HamburgerViewItem)e.ClickedItem).Tag,null, new SuppressNavigationTransitionInfo());
+            }
         }
 
         private void _HamburgerView_SelectionChanging(object sender, MaterialLibs.Controls.HamburgerViewSelectionChangingEventArgs e)
         {
-
+            if (e.SelectedItem == ThemeItem)
+            {
+                e.CancelSelection = true;
+            }
         }
 
         private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
         {
             UpdateBackState();
+            _HamburgerView.SelectedItem =
+                PrimaryList.FirstOrDefault(x => x.Tag == ContentFrame.SourcePageType) ??
+                SecondaryList.FirstOrDefault(x => x.Tag == ContentFrame.SourcePageType);
+        }
+
+        private void UpdateTheme(bool Light)
+        {
+            if (Light) RequestedTheme = ElementTheme.Light;
+            else RequestedTheme = ElementTheme.Dark;
         }
 
         private void UpdateBackState()
@@ -82,6 +114,14 @@ namespace Simple
             else
             {
                 _HamburgerView.IsBackButtonEnable = false;
+            }
+        }
+
+        private void _HamburgerView_BackButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (ContentFrame.CanGoBack)
+            {
+                ContentFrame.GoBack(new SuppressNavigationTransitionInfo());
             }
         }
     }

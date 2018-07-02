@@ -25,7 +25,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <m_control:HamburgerView x:Name="_HamburgerView" PrimaryItemsSource="{x:Bind PrimaryList}" SecondaryItemsSource="{x:Bind SecondaryList}" LeftHeader="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem}" IsBackButtonEnable="False" ItemClick="_HamburgerView_ItemClick" SelectionChanging="_HamburgerView_SelectionChanging" >
+        <m_control:HamburgerView x:Name="_HamburgerView" PrimaryItemsSource="{x:Bind PrimaryList}" SecondaryItemsSource="{x:Bind SecondaryList}" LeftHeader="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem}" IsBackButtonEnable="False" ItemClick="_HamburgerView_ItemClick" SelectionChanging="_HamburgerView_SelectionChanging" BackButtonClick="_HamburgerView_BackButtonClick" >
             <m_control:HamburgerView.LeftHeaderTemplate>
                 <DataTemplate>
                     <Grid Margin="8,0,0,0">
