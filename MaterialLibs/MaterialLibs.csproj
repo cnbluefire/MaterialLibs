@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="Controls\BigbangPanel.cs" />
     <Compile Include="Controls\BigbangView.cs" />
+    <Compile Include="Controls\CardView.cs" />
     <Compile Include="Controls\HamburgerView.cs" />
     <Compile Include="Controls\HamburgerViewItem.cs" />
     <Compile Include="CustomTransitions\Bases\CustomTransitionMode.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="CustomTransitions\FlipTransitionMode.cs" />
     <Compile Include="CustomTransitions\OffsetHideTransition.cs" />
     <Compile Include="CustomTransitions\OffsetShowTransition.cs" />
+    <Compile Include="CustomTransitions\OpacityHideTransition.cs" />
+    <Compile Include="CustomTransitions\OpacityShowTransition.cs" />
     <Compile Include="CustomTransitions\ScaleHideTransition.cs" />
     <Compile Include="CustomTransitions\ScaleShowTransition.cs" />
     <Compile Include="Helpers\CoreSocialistValuesHelper.cs" />

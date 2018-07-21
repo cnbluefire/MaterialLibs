@@ -348,7 +348,7 @@ namespace MaterialLibs.Controls
         private void _PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             StartPoint = e.GetCurrentPoint(ItemsGrid).Position;
-            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch && _ScrollViewer.ExtentHeight > _ScrollViewer.ViewportHeight)
             {
                 if (ItemsGrid != null)
                 {

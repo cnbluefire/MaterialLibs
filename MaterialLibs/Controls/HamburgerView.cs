@@ -235,7 +235,7 @@ namespace MaterialLibs.Controls
             _LeftHeaderPresenter = GetTemplateChild("LeftHeaderPresenter") as ContentPresenter;
             _RightHeaderPresenter = GetTemplateChild("RightHeaderPresenter") as ContentPresenter;
             UpdateDisplayMode(HamburgerViewDisplayMode.Overlay);
-            UpdateHeaderBorderMinHeight();
+            UpdateHeaderLayout();
         }
 
 
@@ -283,16 +283,29 @@ namespace MaterialLibs.Controls
             }
         }
 
-        private void UpdateHeaderBorderMinHeight()
+        private void UpdateHeaderLayout()
         {
-            if (_HeaderBorder == null) return;
-            if (BackButtonVisibility == Visibility.Visible)
+            if (IsFullScreen)
             {
-                _HeaderBorder.Margin = new Thickness(0, 96, 0, 0);
+                if (BackButtonVisibility == Visibility.Visible)
+                {
+                    VisualStateManager.GoToState(this, "ShowBackButtonFullScreen", true);
+                }
+                else
+                {
+                    VisualStateManager.GoToState(this, "FullScreen", true);
+                }
             }
             else
             {
-                _HeaderBorder.Margin = new Thickness(0, 52, 0, 0);
+                if (BackButtonVisibility == Visibility.Visible)
+                {
+                    VisualStateManager.GoToState(this, "ShowBackButton", true);
+                }
+                else
+                {
+                    VisualStateManager.GoToState(this, "Normal", true);
+                }
             }
         }
 
@@ -473,6 +486,12 @@ namespace MaterialLibs.Controls
             set { SetValue(BackButtonVisibilityProperty, value); }
         }
 
+        public bool IsFullScreen
+        {
+            get { return (bool)GetValue(IsFullScreenProperty); }
+            set { SetValue(IsFullScreenProperty, value); }
+        }
+
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register("Content", typeof(object), typeof(HamburgerView), new PropertyMetadata(null));
 
@@ -524,7 +543,8 @@ namespace MaterialLibs.Controls
         public static readonly DependencyProperty BackButtonVisibilityProperty =
             DependencyProperty.Register("BackButtonVisibility", typeof(Visibility), typeof(HamburgerView), new PropertyMetadata(Visibility.Visible, BackButtonVisibilityPropertyChanged));
 
-
+        public static readonly DependencyProperty IsFullScreenProperty =
+            DependencyProperty.Register("IsFullScreen", typeof(bool), typeof(HamburgerView), new PropertyMetadata(false, IsFullScreenPropertyChanged));
 
         private static void DisplayModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -612,13 +632,22 @@ namespace MaterialLibs.Controls
             {
                 if (d is HamburgerView sender)
                 {
-                    if (sender._HeaderBorder != null)
-                    {
-                        sender.UpdateHeaderBorderMinHeight();
-                    }
+                    sender.UpdateHeaderLayout();
                 }
             }
         }
+
+        private static void IsFullScreenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != e.OldValue)
+            {
+                if (d is HamburgerView sender)
+                {
+                    sender.UpdateHeaderLayout();
+                }
+            }
+        }
+
 
         public event EventHandler DisplayModeChanged;
         public event EventHandler<HamburgerViewItemClickEventArgs> ItemClick;

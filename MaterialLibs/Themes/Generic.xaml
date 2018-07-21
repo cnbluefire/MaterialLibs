@@ -1370,13 +1370,45 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
+                            <VisualStateGroup x:Name="HeaderState">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="FullScreen">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AppTitleBarRow" Storyboard.TargetProperty="Height" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderBorder" Storyboard.TargetProperty="Margin" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0,52,0,0" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="ShowBackButton">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderBorder" Storyboard.TargetProperty="Margin" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0,128,0,0" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="ShowBackButtonFullScreen">
+                                    <Storyboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AppTitleBarRow" Storyboard.TargetProperty="Height" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderBorder" Storyboard.TargetProperty="Margin" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="0,96,0,0" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="PaneColumn" Width="0" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="32" x:Name="AppTitleBarRow" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="8" />
                             <RowDefinition Height="*" />
@@ -1407,18 +1439,142 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Border x:Name="HeaderBorder" Margin="0,96,0,0" >
+                            <Border x:Name="HeaderBorder" Margin="0,84,0,0" >
                                 <ContentPresenter x:Name="PaneHeaderPresenter" Content="{TemplateBinding PaneHeader}" />
                             </Border>
                             <ListView x:Name="PrimaryListView" Grid.Row="1" Style="{StaticResource HamburgerViewListStyle}" ItemsSource="{TemplateBinding PrimaryItemsSource}" />
                             <ListView x:Name="SecondaryListView" Grid.Row="2" Style="{StaticResource HamburgerViewListStyle}" ItemsSource="{TemplateBinding SecondaryItemsSource}" />
                         </Grid>
-                        <Button x:Name="BackButton" Grid.ColumnSpan="2" Grid.Row="0" IsEnabled="{TemplateBinding IsBackButtonEnable}" Visibility="{TemplateBinding BackButtonVisibility}" Style="{StaticResource HamburgerButtonStyle}" Content="&#xE72B;"/>
-                        <Button x:Name="HamburgerButton" Grid.ColumnSpan="2" Grid.Row="1" Style="{StaticResource HamburgerButtonStyle}" Content="&#xE700;"/>
+                        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2" Grid.Row="1">
+                            <Button x:Name="BackButton" IsEnabled="{TemplateBinding IsBackButtonEnable}" Visibility="{TemplateBinding BackButtonVisibility}" Style="{StaticResource HamburgerButtonStyle}" Content="&#xE72B;"/>
+                            <Button x:Name="HamburgerButton" Style="{StaticResource HamburgerButtonStyle}" Content="&#xE700;"/>
+                        </StackPanel>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
+    <Style TargetType="control:CardView">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="IsOpen" Value="False" />
+        <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="Radius" Value="15" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="LightDismissLayerBackground" Value="{ThemeResource SplitViewLightDismissOverlayBackground}" />
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding }" FontSize="20" FontWeight="SemiBold" IsColorFontEnabled="True"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="control:CardView">
+                    <Grid x:Name="RootGrid" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <Grid.Resources>
+                            <Style x:Key="CloseButtonStyle" TargetType="Button">
+                                <Setter Property="FontFamily" Value="{ThemeResource SymbolThemeFontFamily}" />
+                                <Setter Property="FontSize" Value="15" />
+                                <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid x:Name="RootGrid" Height="40" Width="40" Background="Transparent">
+                                                <Rectangle x:Name="BackgroundRectangle" Fill="{ThemeResource SystemControlHighlightListMediumBrush}" Opacity="0" Width="40" Height="40" RadiusX="20" RadiusY="20" />
+                                                <TextBlock x:Name="NormalGlyph"
+                                                    FontWeight="SemiLight"
+                                                    FontFamily="{TemplateBinding FontFamily}"
+                                                    FontSize="{TemplateBinding FontSize}"
+                                                    Text="&#xE711;"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    AutomationProperties.AccessibilityView="Raw" >
+                                                </TextBlock>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="CommonStates">
+                                                        <VisualState x:Name="Normal" >
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="BackgroundRectangle" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1" />
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="PointerOver">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="BackgroundRectangle" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0:0:0.1" />
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NormalGlyph" Storyboard.TargetProperty="Foreground">
+                                                                    <DiscreteObjectKeyFrame Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}" KeyTime="0" />
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Pressed">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="BackgroundRectangle" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1" />
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NormalGlyph" Storyboard.TargetProperty="Foreground">
+                                                                    <DiscreteObjectKeyFrame Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}" KeyTime="0" />
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Disabled">
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NormalGlyph" Storyboard.TargetProperty="Foreground">
+                                                                    <DiscreteObjectKeyFrame Value="{ThemeResource SystemControlDisabledBaseMediumLowBrush}" KeyTime="0" />
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Grid.Resources>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ViewOpenState">
+                                <VisualState x:Name="IsOpen">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IsNotOpen">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="LightDismissLayer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding LightDismissLayerBackground}" Visibility="{TemplateBinding LightDismissLayerVisibility}"/>
+                        <Border x:Name="ContentBorder" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                             Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Width}" 
+                             Height="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Height}"
+                             MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent},Path=MinWidth}" MaxWidth="{Binding RelativeSource={RelativeSource TemplatedParent},Path=MaxWidth}"
+                             MinHeight="{Binding RelativeSource={RelativeSource TemplatedParent},Path=MinHeight}" MaxHeight="{Binding RelativeSource={RelativeSource TemplatedParent},Path=MaxHeight}">
+                            <Grid x:Name="ContentGrid" Margin="{TemplateBinding Padding}" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" MinHeight="52" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.RenderTransform>
+                                    <TranslateTransform x:Name="ContentGridTrans" />
+                                </Grid.RenderTransform>
+                                <Rectangle x:Name="ShadowHost" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <Rectangle x:Name="BorderBackground" Grid.RowSpan="3" Fill="{TemplateBinding Background}" RadiusX="{TemplateBinding Radius}" RadiusY="{TemplateBinding Radius}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <ContentPresenter x:Name="Header" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,5" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" />
+                                <ContentPresenter x:Name="Content" Grid.Row="1"  Content="{TemplateBinding Content}" Margin="12,5" />
+                                <ContentPresenter x:Name="Footer" Grid.Row="2" HorizontalAlignment="Stretch" Margin="12,5" Content="{TemplateBinding Footer}" />
+                                <Button x:Name="CloseButton" HorizontalAlignment="Right" Style="{StaticResource CloseButtonStyle}" Margin="6" Visibility="{TemplateBinding CloseButtonVisibility}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

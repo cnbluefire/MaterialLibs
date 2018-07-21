@@ -15,10 +15,10 @@
         <converter:TrueFalseConverter x:Key="TrueFalseConverter" />
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Padding="16,58,0,0">
             <TextBlock Text="RippleHelperState"/>
             <ToggleSwitch x:Name="RippleHelperState" Header="{x:Bind RippleHelperState.IsOn,Converter={StaticResource RippleHelperStateConverter},Mode=OneWay}" />
@@ -26,7 +26,7 @@
             <Slider x:Name="RippleDuration" Header="RippleDuration" Minimum="0.001" Maximum="10" StepFrequency="0.1" LargeChange="0.1" Value="0.8" />
             <Slider x:Name="RippleRadius" Header="RippleRadius" Minimum="0" Maximum="1500" StepFrequency="1" LargeChange="1" Value="50" IsEnabled="{x:Bind IsFillEnable.IsOn,Converter={StaticResource TrueFalseConverter},Mode=OneWay}" />
         </StackPanel>
-        <Button Content="Click Me!" HorizontalAlignment="Center" Padding="100,100" Grid.Column="1"
+        <Button Content="Click Me!" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Margin="20"
                 m_helper:RippleHelper.RippleHelperState="{x:Bind RippleHelperState.IsOn,Converter={StaticResource RippleHelperStateConverter},Mode=OneWay}" 
                 m_helper:RippleHelper.RippleDuration="{x:Bind sys:TimeSpan.FromSeconds(RippleDuration.Value),Mode=OneWay}" 
                 m_helper:RippleHelper.IsFillEnable="{x:Bind IsFillEnable.IsOn,Mode=OneWay}"

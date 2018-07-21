@@ -135,7 +135,12 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Padding="16,58,0,0">
+        <m_control:ParticleCanvas x:Name="particleCanvas" Grid.ColumnSpan="2"
+                            LineColor="{x:Bind ((model:ColorModel)LineColor.SelectedItem).Color,Mode=OneWay}"
+                            ParticleColor="{x:Bind ((model:ColorModel)ParticleColor.SelectedItem).Color,Mode=OneWay}"
+                            Paused="{x:Bind Paused.IsOn,Mode=OneWay}"
+                            IsPointerEnable="{x:Bind IsPointerEnable.IsOn,Mode=OneWay}"/>
+        <StackPanel x:Name="SettingStackPanel" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Padding="16,58,0,0" Background="Transparent">
             <ToggleSwitch x:Name="Paused" Header="Paused" />
             <ToggleSwitch x:Name="IsPointerEnable" Header="IsPointerEnable" IsOn="True" />
             <Slider x:Name="Density" Header="Density" Minimum="0" Maximum="9" StepFrequency="1" LargeChange="1" Value="{x:Bind particleCanvas.Density,Mode=TwoWay}" />
@@ -154,10 +159,6 @@
                 <ListBox x:Name="ParticleColor" Grid.Row="1" Background="Transparent" Grid.Column="1" ItemsSource="{x:Bind KnownColors}" ItemTemplate="{StaticResource ColorListBoxDataTemplate}" ItemContainerStyle="{StaticResource ColorListBoxItemStyle}"></ListBox>
             </Grid>
         </StackPanel>
-        <m_control:ParticleCanvas x:Name="particleCanvas" Grid.Column="1"
-                            LineColor="{x:Bind ((model:ColorModel)LineColor.SelectedItem).Color,Mode=OneWay}"
-                            ParticleColor="{x:Bind ((model:ColorModel)ParticleColor.SelectedItem).Color,Mode=OneWay}"
-                            Paused="{x:Bind Paused.IsOn,Mode=OneWay}"
-                            IsPointerEnable="{x:Bind IsPointerEnable.IsOn,Mode=OneWay}"/>
+        <Button x:Name="SettingButton" Width="44" Height="44" BorderThickness="0" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8" FontFamily="{ThemeResource SymbolThemeFontFamily}" Content="&#xE115;" Click="SettingButton_Click" />
     </Grid>
 </Page>

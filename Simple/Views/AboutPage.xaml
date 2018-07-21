@@ -10,7 +10,7 @@
     <Page.Resources>
         <model:InformationModel x:Key="Info" />
     </Page.Resources>
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="8">
         <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled">
             <StackPanel Orientation="Vertical">
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" DataContext="{StaticResource Info}">
@@ -18,6 +18,9 @@
                     <LineBreak />
                     <Run Text="版本：" />
                     <Run Text="{Binding Version}" />
+                    <LineBreak />
+                    <Run Text="库版本：" />
+                    <Run Text="{Binding LibVersion}" />
                     <LineBreak />
                     <Hyperlink NavigateUri="{Binding weibo}">Blue_Fire蓝火</Hyperlink>
                     <Run> | </Run>

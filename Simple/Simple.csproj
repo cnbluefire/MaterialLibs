@@ -100,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converter\RippleHelperStateConverter.cs" />
+    <Compile Include="Factorys\AppTitleBarFactory.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -112,6 +113,9 @@
     </Compile>
     <Compile Include="Views\BigbangPage.xaml.cs">
       <DependentUpon>BigbangPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CardViewPage.xaml.cs">
+      <DependentUpon>CardViewPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImplicitAnimationPage.xaml.cs">
       <DependentUpon>ImplicitAnimationPage.xaml</DependentUpon>
@@ -212,6 +216,10 @@
     <Page Include="Views\BigbangPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CardViewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImplicitAnimationPage.xaml">
       <SubType>Designer</SubType>

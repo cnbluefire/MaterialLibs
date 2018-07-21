@@ -3,6 +3,7 @@
 /*/Targets/
 /*/AppPackages/
 /.vs/
+/*/BundleArtifacts/
 /*/Simple_StoreKey.pfx
 *.nupkg
 *.nuspec

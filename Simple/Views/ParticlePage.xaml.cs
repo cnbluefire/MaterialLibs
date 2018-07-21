@@ -45,5 +45,17 @@ namespace Simple.Views
         }
 
         ObservableCollection<ColorModel> KnownColors { get; set; }
+
+        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(SettingStackPanel.Visibility == Visibility.Visible)
+            {
+                SettingStackPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SettingStackPanel.Visibility = Visibility.Visible;
+            }
+        }
     }
 }

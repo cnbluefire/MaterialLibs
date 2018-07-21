@@ -1,11 +1,12 @@
-﻿using Simple.Views;
+﻿using MaterialLibs.Controls;
+using Simple.Factorys;
+using Simple.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using UltraBook.Controls;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -41,6 +42,7 @@ namespace Simple
                 new HamburgerViewItem(){Content = "ImplicitAnimation",Icon = "\uF133",Tag = typeof(ImplicitAnimationPage)},
                 new HamburgerViewItem(){Content = "Bigbang",Icon = "\uE1A1",Tag = typeof(BigbangPage)},
                 new HamburgerViewItem(){Content = "Perspective",Icon = "\uE809",Tag = typeof(PerspectivePage)},
+                new HamburgerViewItem(){Content = "CardView",Icon = "\uEC6C",Tag = typeof(CardViewPage)},
             };
 
             SecondaryList = new ObservableCollection<HamburgerViewItem>()
@@ -48,8 +50,11 @@ namespace Simple
                 ThemeItem,
                 new HamburgerViewItem(){Content = "About",Icon = "\uED54",Tag = typeof(AboutPage)},
             };
+
+            appTitleBarFactory = new AppTitleBarFactory(AppTitleBar);
         }
 
+        AppTitleBarFactory appTitleBarFactory;
         HamburgerViewItem ThemeItem { get; set; }
         public ObservableCollection<HamburgerViewItem> PrimaryList { get; set; }
         public ObservableCollection<HamburgerViewItem> SecondaryList { get; set; }
@@ -73,13 +78,14 @@ namespace Simple
 
         private void _HamburgerView_ItemClick(object sender, MaterialLibs.Controls.HamburgerViewItemClickEventArgs e)
         {
-            if(e.ClickedItem == ThemeItem)
+            if (e.ClickedItem == ThemeItem)
             {
                 UpdateTheme(RequestedTheme == ElementTheme.Dark);
+                ApplicationData.Current.LocalSettings.Values["Theme"] = RequestedTheme.ToString();
             }
             else
             {
-                ContentFrame.Navigate((Type)((HamburgerViewItem)e.ClickedItem).Tag,null, new SuppressNavigationTransitionInfo());
+                ContentFrame.Navigate((Type)((HamburgerViewItem)e.ClickedItem).Tag, null, new SuppressNavigationTransitionInfo());
             }
         }
 
@@ -101,8 +107,17 @@ namespace Simple
 
         private void UpdateTheme(bool Light)
         {
-            if (Light) RequestedTheme = ElementTheme.Light;
-            else RequestedTheme = ElementTheme.Dark;
+            if (Light)
+            {
+                RequestedTheme = ElementTheme.Light;
+                ThemeItem.Icon = "\uE706";
+            }
+            else
+            {
+                RequestedTheme = ElementTheme.Dark;
+                ThemeItem.Icon = "\uE708";
+            }
+            appTitleBarFactory.Theme = RequestedTheme;
         }
 
         private void UpdateBackState()
@@ -110,10 +125,12 @@ namespace Simple
             if (ContentFrame.CanGoBack)
             {
                 _HamburgerView.IsBackButtonEnable = true;
+                _HamburgerView.BackButtonVisibility = Visibility.Visible;
             }
             else
             {
                 _HamburgerView.IsBackButtonEnable = false;
+                _HamburgerView.BackButtonVisibility = Visibility.Collapsed;
             }
         }
 

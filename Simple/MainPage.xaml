@@ -25,15 +25,16 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <m_control:HamburgerView x:Name="_HamburgerView" PrimaryItemsSource="{x:Bind PrimaryList}" SecondaryItemsSource="{x:Bind SecondaryList}" LeftHeader="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem}" IsBackButtonEnable="False" ItemClick="_HamburgerView_ItemClick" SelectionChanging="_HamburgerView_SelectionChanging" BackButtonClick="_HamburgerView_BackButtonClick" >
+        <m_control:HamburgerView x:Name="_HamburgerView" PrimaryItemsSource="{x:Bind PrimaryList}" SecondaryItemsSource="{x:Bind SecondaryList}" LeftHeader="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem}" IsBackButtonEnable="False" ItemClick="_HamburgerView_ItemClick" SelectionChanging="_HamburgerView_SelectionChanging" BackButtonVisibility="Collapsed" BackButtonClick="_HamburgerView_BackButtonClick" >
             <m_control:HamburgerView.LeftHeaderTemplate>
                 <DataTemplate>
-                    <Grid Margin="8,0,0,0">
+                    <Grid Margin="8,0,0,0" Padding="0,32,0,16">
                         <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="{Binding Content}" />
                     </Grid>
                 </DataTemplate>
             </m_control:HamburgerView.LeftHeaderTemplate>
             <Frame x:Name="ContentFrame" Margin="52,0,8,0" Navigated="ContentFrame_Navigated" />
         </m_control:HamburgerView>
+        <Grid x:Name="AppTitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0" Background="Transparent" />
     </Grid>
 </Page>

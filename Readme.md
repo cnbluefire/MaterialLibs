@@ -1,4 +1,4 @@
-﻿# MaterialLibs
+# MaterialLibs
 为UWP添加一些炫酷的特效
 ## Documentation
 ### RippleStateHelper
@@ -257,3 +257,31 @@ if (sender is UIElement s)
 * 注意：某些情况下（例如StackPanel中），Transition不会播放。
 * 同ConnectedAnimation类似，建议设置NavigationTransitionInfo为SuppressNavigationTransitionInfo。
 * 对于在VisualState中修改布局的UIElement，使用CustomTransition可能导致布局异常。
+
+### CardView
+
+![](DemoImages/CardView.gif)
+
+* 尽可能使CardView占满当前布局根，然后使用Padding调整距顶部位置。
+* 使用IsOpen而不是Visibility控制是否显示。
+
+```
+<m_control:CardView x:Name="Card" Header="I am a Card!" Padding="24,50,24,24" MaxWidth="500" IsOpen="True">
+    <m_control:CardView.HeaderTemplate>
+        <DataTemplate>
+            <Grid Padding="12,5" >
+                <TextBlock Text="{Binding }" FontSize="20" FontWeight="SemiBold" IsColorFontEnabled="True"/>
+            </Grid>
+        </DataTemplate>
+    </m_control:CardView.HeaderTemplate>
+    <ListView ItemsSource="{x:Bind items}" ScrollViewer.IsVerticalScrollChainingEnabled="True">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <Grid Height="50" >
+                    <TextBlock Text="{Binding }" VerticalAlignment="Center" />
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</m_control:CardView>
+```
