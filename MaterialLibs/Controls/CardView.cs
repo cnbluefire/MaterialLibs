@@ -48,9 +48,11 @@ namespace MaterialLibs.Controls
         private ExpressionAnimation LightDismissLayerOpacityExp;
         private Vector3KeyFrameAnimation OpenAnimation;
         private Vector3KeyFrameAnimation CloseAnimation;
+        private Vector3KeyFrameAnimation ToOpenAnimation;
 
         private bool _IsLoaded;
         private bool _IsJudging;
+        private float _FirstHeight;
 
         protected override void OnApplyTemplate()
         {
@@ -135,6 +137,7 @@ namespace MaterialLibs.Controls
         {
             if (DesignMode.DesignModeEnabled) return;
             Compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+
             if (BorderBackground != null)
             {
                 BorderBackgroundVisual = ElementCompositionPreview.GetElementVisual(BorderBackground);
@@ -175,7 +178,7 @@ namespace MaterialLibs.Controls
             m_source.IsPositionYRailsEnabled = true;
             m_source.ManipulationRedirectionMode = VisualInteractionSourceRedirectionMode.CapableTouchpadOnly;
             m_source.PositionYChainingMode = InteractionChainingMode.Auto;
-            m_source.PositionYSourceMode = InteractionSourceMode.EnabledWithInertia;
+            m_source.PositionYSourceMode = InteractionSourceMode.EnabledWithoutInertia;
 
             m_tracker.InteractionSources.Add(m_source);
 
@@ -191,7 +194,11 @@ namespace MaterialLibs.Controls
             m_close.Condition.SetReferenceParameter("host", ContentBorderVisual);
             m_close.RestingValue.SetReferenceParameter("host", ContentBorderVisual);
 
-            m_tracker.ConfigurePositionYInertiaModifiers(new[] { m_open, m_close });
+
+            //Release模式会爆炸
+            //var modifiers = new InteractionTrackerInertiaRestingValue[] { m_open, m_close };
+            //m_tracker.ConfigurePositionYInertiaModifiers(modifiers);
+
 
             ContentOffsetExp = Compositor.CreateExpressionAnimation("-tracker.Position.Y");
             ContentOffsetExp.SetReferenceParameter("tracker", m_tracker);
@@ -208,6 +215,11 @@ namespace MaterialLibs.Controls
             //OpenAnimation.InsertKeyFrame(1f, Vector3.Zero);
             OpenAnimation.SetReferenceParameter("host", ContentBorderVisual);
             OpenAnimation.Duration = TimeSpan.FromSeconds(0.3d);
+
+            ToOpenAnimation = Compositor.CreateVector3KeyFrameAnimation();
+            ToOpenAnimation.InsertKeyFrame(1f, new Vector3(0f, 5f, 0f));
+            ToOpenAnimation.SetReferenceParameter("host", ContentBorderVisual);
+            ToOpenAnimation.Duration = TimeSpan.FromSeconds(0.3d);
 
             CloseAnimation = Compositor.CreateVector3KeyFrameAnimation();
             CloseAnimation.InsertExpressionKeyFrame(1f, "Vector3(0f, -host.Size.Y, 0f)");
@@ -241,21 +253,39 @@ namespace MaterialLibs.Controls
 
         private void JudgeIsOpen()
         {
-            if (!_IsLoaded) return;
-            if (m_tracker != null)
+            if (_IsLoaded)
             {
-                _IsJudging = true;
-                if (m_tracker.Position.Y == 0f)
+                if (m_tracker != null)
                 {
-                    IsOpen = true;
-                    VisualStateManager.GoToState(this, "IsOpen", false);
+                    _IsJudging = true;
+                    if (m_tracker.Position.Y == 0f)
+                    {
+                        IsOpen = true;
+                        VisualStateManager.GoToState(this, "IsOpen", false);
+                    }
+                    else if (ContentBorder != null && m_tracker.Position.Y < -ContentBorder.ActualHeight + 0.1d)
+                    {
+                        IsOpen = false;
+                        VisualStateManager.GoToState(this, "IsNotOpen", false);
+                    }
+                    else
+                    {
+                        if (ContentBorder != null)
+                        {
+                            if (m_tracker.Position.Y > -ContentBorder.ActualHeight / 4)
+                            {
+                                IsOpen = true;
+                                m_tracker.TryUpdatePositionWithAnimation(ToOpenAnimation);
+                            }
+                            else
+                            {
+                                IsOpen = false;
+                                m_tracker.TryUpdatePositionWithAnimation(CloseAnimation);
+                            }
+                        }
+                    }
+                    _IsJudging = false;
                 }
-                else if (ContentBorder != null && m_tracker.Position.Y < -ContentBorder.ActualHeight + 1)
-                {
-                    IsOpen = false;
-                    VisualStateManager.GoToState(this, "IsNotOpen", false);
-                }
-                _IsJudging = false;
             }
         }
 

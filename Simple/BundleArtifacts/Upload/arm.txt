@@ -1,6 +1,6 @@
-MainPackage=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Upload\Simple_1.9.1.0_ARM.appx
-SymbolPackage=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Upload\Simple_1.9.1.0\Simple_1.9.1.0_ARM.appxsym
-ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.1.0_scale-100.appx
-ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.1.0_scale-125.appx
-ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.1.0_scale-150.appx
-ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.1.0_scale-400.appx
+MainPackage=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Upload\Simple_1.9.2.0_ARM.appx
+SymbolPackage=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Upload\Simple_1.9.2.0\Simple_1.9.2.0_ARM.appxsym
+ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.2.0_scale-100.appx
+ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.2.0_scale-125.appx
+ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.2.0_scale-150.appx
+ResourcePack=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Simple_1.9.2.0_scale-400.appx
