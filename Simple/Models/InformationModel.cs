@@ -14,7 +14,7 @@ namespace Simple.Models
                                     Package.Current.Id.Version.Minor,
                                     Package.Current.Id.Version.Build,
                                     Package.Current.Id.Version.Revision);
-        public string LibVersion => "0.1.12.0";
+        public string LibVersion => "0.1.13.0";
         public string github => "https://github.com/cnbluefire/MaterialLibs";
         public string blog => "https://www.cnblogs.com/blue-fire/";
         public string weibo => "https://weibo.com/u/2255001067";
