@@ -44,7 +44,6 @@ namespace Simple
                 new HamburgerViewItem(){Content = "Perspective",Icon = "\uE809",Tag = typeof(PerspectivePage)},
                 new HamburgerViewItem(){Content = "CardView",Icon = "\uEC6C",Tag = typeof(CardViewPage)},
                 new HamburgerViewItem(){Content = "DraggedBadge",Icon = "\uE783",Tag = typeof(DraggedBadgePage)},
-                new HamburgerViewItem(){Content = "Test",Icon = "\uE783",Tag = typeof(TestPage)},
             };
 
             SecondaryList = new ObservableCollection<HamburgerViewItem>()

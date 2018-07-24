@@ -1462,8 +1462,8 @@
         <Setter Property="IsOpen" Value="False" />
         <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
-        <Setter Property="Radius" Value="15" />
-        <Setter Property="Padding" Value="12" />
+        <Setter Property="Radius" Value="8" />
+        <Setter Property="Padding" Value="24" />
         <Setter Property="LightDismissLayerBackground" Value="{ThemeResource SplitViewLightDismissOverlayBackground}" />
         <Setter Property="HeaderTemplate">
             <Setter.Value>
@@ -1594,22 +1594,28 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="control:DraggedBadge">
-                    <Grid x:Name="RootGrid" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                    <Grid x:Name="RootGrid" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="DragState">
                                 <VisualStateGroup.Transitions>
-                                    <VisualTransition From="Dragging" To="Normal" GeneratedDuration="0:0:0.1" >
+                                    <VisualTransition From="Dragging" To="Normal" >
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0:0:0.1">
                                                 <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="Collapsed" />
                                             </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0.1">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="Visible" />
+                                            </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualTransition>
-                                    <VisualTransition From="Dragging" To="Overflow" GeneratedDuration="0:0:0.05" >
+                                    <VisualTransition From="Dragging" To="Overflow" >
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0:0:0.05">
                                                 <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Collapsed" />
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualTransition>
@@ -1620,6 +1626,9 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                                         </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Overflow" >
@@ -1627,37 +1636,49 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                                         </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Canvas x:Name="DragCanvas" Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-                            <Path x:Name="DragPath" Canvas.ZIndex="-2" Fill="{TemplateBinding Background}" >
-                                <Path.Data>
-                                    <PathGeometry>
-                                        <PathFigure x:Name="PathFigure1">
-                                            <QuadraticBezierSegment x:Name="Bezier1" />
-                                            <LineSegment x:Name="Line1" />
-                                            <QuadraticBezierSegment x:Name="Bezier2" />
-                                        </PathFigure>
-                                    </PathGeometry>
-                                </Path.Data>
-                            </Path>
-                            <Ellipse x:Name="BaseCircle" Width="15" Height="15" Canvas.ZIndex="-1" Fill="{TemplateBinding Background}">
-                                <Ellipse.RenderTransform>
-                                    <CompositeTransform x:Name="BaseCircleTrans" CenterX="7.5" CenterY="7.5" />
-                                </Ellipse.RenderTransform>
-                            </Ellipse>
-                            <model:PointerTracker x:Name="TargetTracker" xmlns:model="using:MaterialLibs.Models" />
-                            <model:PointerTracker x:Name="SourceTracker" xmlns:model="using:MaterialLibs.Models" />
-                        </Canvas>
                         <Grid x:Name="ContentGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ManipulationMode="{TemplateBinding ManipulationMode}">
-                            <Grid.RenderTransform>
-                                <TranslateTransform x:Name="ContentGridTrans" />
-                            </Grid.RenderTransform>
                             <Rectangle x:Name="BackgroundRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding Background}" />
-                            <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Grid>
+                        <Popup x:Name="ContentPopup">
+                            <Grid x:Name="TopMostContentRoot" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                                <Canvas x:Name="DragCanvas" Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                                    <Path x:Name="DragPath" Canvas.ZIndex="-2" Fill="{TemplateBinding Background}" >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathFigure x:Name="PathFigure1">
+                                                    <QuadraticBezierSegment x:Name="Bezier1" />
+                                                    <LineSegment x:Name="Line1" />
+                                                    <QuadraticBezierSegment x:Name="Bezier2" />
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Ellipse x:Name="BaseCircle" Width="15" Height="15" Canvas.ZIndex="-1" Fill="{TemplateBinding Background}">
+                                        <Ellipse.RenderTransform>
+                                            <CompositeTransform x:Name="BaseCircleTrans" CenterX="7.5" CenterY="7.5" />
+                                        </Ellipse.RenderTransform>
+                                    </Ellipse>
+                                    <model:PointTracker x:Name="TargetTracker" xmlns:model="using:MaterialLibs.Models" />
+                                    <model:PointTracker x:Name="SourceTracker" xmlns:model="using:MaterialLibs.Models" />
+                                </Canvas>
+                                <Grid x:Name="PopupContentGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ManipulationMode="{TemplateBinding ManipulationMode}">
+                                    <Grid.RenderTransform>
+                                        <TranslateTransform x:Name="ContentGridTrans" />
+                                    </Grid.RenderTransform>
+                                    <Rectangle x:Name="PopupBackgroundRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding Background}" />
+                                    <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                </Grid>
+                            </Grid>
+                        </Popup>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

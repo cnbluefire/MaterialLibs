@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Composition;
 using Windows.UI.Composition.Interactions;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Markup;
@@ -29,10 +31,19 @@ namespace MaterialLibs.Controls
             this.AddHandler(PointerPressedEvent, new PointerEventHandler(_PointerPressed), true);
             this.AddHandler(PointerReleasedEvent, new PointerEventHandler(_PointerReleased), true);
             this.AddHandler(PointerCanceledEvent, new PointerEventHandler(_PointerCanceled), true);
+            this.AddHandler(PointerMovedEvent, new PointerEventHandler(_PointerMoved), true);
+
+            _GestureRecognizer = new GestureRecognizer();
+            _GestureRecognizer.GestureSettings = GestureSettings.ManipulationTranslateX | GestureSettings.ManipulationTranslateY;
+            _GestureRecognizer.ManipulationStarted += _ManipulationStarted;
+            _GestureRecognizer.ManipulationUpdated += _ManipulationUpdate;
+            _GestureRecognizer.ManipulationCompleted += _ManipulationCompleted;
         }
 
         private Rectangle BackgroundRectangle;
+        private Rectangle PopupBackgroundRectangle;
         private Grid ContentGrid;
+        private Grid PopupContentGrid;
         private Canvas DragCanvas;
         private PathFigure PathFigure1;
         private QuadraticBezierSegment Bezier1;
@@ -40,25 +51,29 @@ namespace MaterialLibs.Controls
         private LineSegment Line1;
         private CompositeTransform BaseCircleTrans;
         private TranslateTransform ContentGridTrans;
-        private PointerTracker TargetTracker;
-        private PointerTracker SourceTracker;
+        private PointTracker TargetTracker;
+        private PointTracker SourceTracker;
+        private Popup ContentPopup;
+        private Grid TopMostContentRoot;
 
         private Storyboard TargetMoveComplateAnimation;
         private PointAnimation _TargetPointAnimation;
         private Storyboard SourceMoveComplateAnimation;
         private PointAnimation _SourcePointAnimation;
 
-        private bool IsShown;
-        private bool IsMouse;
-        private bool IsCanceled = true;
+        private GestureRecognizer _GestureRecognizer;
 
-        private Point PressedPoint;
+        private bool IsOverflow;
+        private bool IsDragging;
+        private bool IsOverflowAnimating;
 
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             BackgroundRectangle = GetTemplateChild("BackgroundRectangle") as Rectangle;
+            PopupBackgroundRectangle = GetTemplateChild("PopupBackgroundRectangle") as Rectangle;
             ContentGrid = GetTemplateChild("ContentGrid") as Grid;
+            PopupContentGrid = GetTemplateChild("PopupContentGrid") as Grid;
             DragCanvas = GetTemplateChild("DragCanvas") as Canvas;
             PathFigure1 = GetTemplateChild("PathFigure1") as PathFigure;
             Bezier1 = GetTemplateChild("Bezier1") as QuadraticBezierSegment;
@@ -66,8 +81,10 @@ namespace MaterialLibs.Controls
             Line1 = GetTemplateChild("Line1") as LineSegment;
             BaseCircleTrans = GetTemplateChild("BaseCircleTrans") as CompositeTransform;
             ContentGridTrans = GetTemplateChild("ContentGridTrans") as TranslateTransform;
-            TargetTracker = GetTemplateChild("TargetTracker") as PointerTracker;
-            SourceTracker = GetTemplateChild("SourceTracker") as PointerTracker;
+            TargetTracker = GetTemplateChild("TargetTracker") as PointTracker;
+            SourceTracker = GetTemplateChild("SourceTracker") as PointTracker;
+            ContentPopup = GetTemplateChild("ContentPopup") as Popup;
+            TopMostContentRoot = GetTemplateChild("TopMostContentRoot") as Grid;
 
             if (BackgroundRectangle != null)
             {
@@ -75,44 +92,28 @@ namespace MaterialLibs.Controls
             }
         }
 
-        protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
+        private void _ManipulationStarted(object sender, ManipulationStartedEventArgs e)
         {
-            base.OnManipulationStarted(e);
-            if (!IsShown)
-            {
-                VisualStateManager.GoToState(this, "Dragging", false);
-                IsShown = true;
-            }
+            IsOverflow = false;
+            IsOverflowAnimating = false;
+            IsDragging = true;
+            VisualStateManager.GoToState(this, "Dragging", false);
         }
 
-        protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
+        private void _ManipulationUpdate(object sender, ManipulationUpdatedEventArgs e)
         {
-            base.OnManipulationDelta(e);
             TargetTracker.Position = e.Cumulative.Translation;
         }
 
-        protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
+        private void _ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
-            base.OnManipulationCompleted(e);
             Judge();
-            if (IsShown)
-            {
-                VisualStateManager.GoToState(this, "Normal", true);
-                IsShown = false;
-            }
         }
 
         private void TargetTracker_PositionChanged(object sender, PositionChangedEventArgs args)
         {
-            if (ContentGridTrans != null)
-            {
-                ContentGridTrans.X = args.Position.X;
-                ContentGridTrans.Y = args.Position.Y;
-            }
-
             UpdatePosition();
         }
-
 
         private void SourceTracker_PositionChanged(object sender, PositionChangedEventArgs args)
         {
@@ -122,19 +123,19 @@ namespace MaterialLibs.Controls
                 BaseCircleTrans.TranslateX = args.Position.X;
                 BaseCircleTrans.TranslateY = args.Position.Y;
             }
-
-
         }
 
         private void TargetMoveComplateAnimation_Completed(object sender, object e)
         {
-
+            ContentPopup.IsOpen = false;
         }
 
         private void SourceMoveComplateAnimation_Completed(object sender, object e)
         {
+            IsOverflowAnimating = false;
             SourceTracker.Position = new Point(0, 0);
-            VisualStateManager.GoToState(this, "Normal", false);
+            SetBezier1(new Point(0d, 0d), new Point(0d, 0d), new Point(0d, 0d));
+            SetBezier2(new Point(0d, 0d), new Point(0d, 0d), new Point(0d, 0d));
         }
 
         private void _Loaded(object sender, RoutedEventArgs e)
@@ -149,33 +150,44 @@ namespace MaterialLibs.Controls
                 var radius = Math.Min(e.NewSize.Width, e.NewSize.Height) / 2;
                 BackgroundRectangle.RadiusX = radius;
                 BackgroundRectangle.RadiusY = radius;
+                PopupBackgroundRectangle.RadiusX = radius;
+                PopupBackgroundRectangle.RadiusY = radius;
             }
         }
 
         private void _PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            PressedPoint = e.GetCurrentPoint(ContentGrid).Position;
-            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
-            {
-                IsMouse = false;
-            }
-            else
-            {
-                IsMouse = true;
-            }
-            IsCanceled = true;
+            ContentPopup.Width = this.ActualWidth;
+            ContentPopup.Height = this.ActualHeight;
+            PopupContentGrid.Width = ContentGrid.ActualWidth;
+            PopupContentGrid.Height = ContentGrid.ActualHeight;
+            this.CapturePointer(e.Pointer);
+            _GestureRecognizer.ProcessDownEvent(e.GetCurrentPoint(ContentGrid));
+            ContentPopup.IsOpen = true;
+        }
+
+        private void _PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            _GestureRecognizer.ProcessMoveEvents(e.GetIntermediatePoints(ContentGrid));
         }
 
         private void _PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            PressedPoint = new Point(0d, 0d);
-            IsCanceled = true;
+            _GestureRecognizer.ProcessUpEvent(e.GetCurrentPoint(ContentGrid));
+            this.ReleasePointerCapture(e.Pointer);
+            if(TargetTracker.Position.X == 0 && TargetTracker.Position.Y == 0)
+            {
+                ContentPopup.IsOpen = false;
+            }
         }
 
         private void _PointerCanceled(object sender, PointerRoutedEventArgs e)
         {
-            PressedPoint = new Point(0d, 0d);
-            IsCanceled = true;
+            _GestureRecognizer.ProcessUpEvent(e.GetCurrentPoint(ContentGrid));
+            if (TargetTracker.Position.X == 0 && TargetTracker.Position.Y == 0)
+            {
+                ContentPopup.IsOpen = false;
+            }
         }
 
         private void SetupTracker()
@@ -187,7 +199,7 @@ namespace MaterialLibs.Controls
                 _TargetPointAnimation = new PointAnimation();
                 Storyboard.SetTarget(_TargetPointAnimation, TargetTracker);
                 Storyboard.SetTargetProperty(_TargetPointAnimation, "Position");
-                _TargetPointAnimation.EasingFunction = new ElasticEase() { EasingMode = EasingMode.EaseOut, Oscillations = 1 };
+                _TargetPointAnimation.EasingFunction = new ElasticEase() { EasingMode = EasingMode.EaseOut };
                 _TargetPointAnimation.EnableDependentAnimation = true;
                 _TargetPointAnimation.Duration = TimeSpan.FromSeconds(0.1d);
                 _TargetPointAnimation.To = new Point(0, 0);
@@ -233,51 +245,61 @@ namespace MaterialLibs.Controls
 
                 var baseCircleRadius = (Math.Abs(ThresholdRadius - len) / ThresholdRadius * 10 + 5) / 2;
 
-                if (BaseCircleTrans != null)
+                if (lenToO > ThresholdRadius)
                 {
-                    var scale = baseCircleRadius / 7.5;
-                    BaseCircleTrans.ScaleX = scale;
-                    BaseCircleTrans.ScaleY = scale;
-                }
-
-                if (lenToO < ThresholdRadius)
-                {
-                    IsCanceled = true;
+                    IsOverflow = true;
+                    if (IsDragging)
+                    {
+                        VisualStateManager.GoToState(this, "Overflow", true);
+                        _SourcePointAnimation.To = TargetTracker.Position;
+                        SourceMoveComplateAnimation.Begin();
+                        IsDragging = false;
+                        IsOverflowAnimating = true;
+                    }
                 }
                 else
                 {
-                    if (IsShown)
-                    {
-                        _SourcePointAnimation.To = TargetTracker.Position;
-                        SourceMoveComplateAnimation.Begin();
-                        VisualStateManager.GoToState(this, "Overflow", true);
-                        IsShown = false;
-                    }
-                    IsCanceled = false;
+                    IsOverflow = false;
                 }
+
                 //x1 x2为锚点的两侧 x3为中点 x4 x5为目标的两侧
                 //+5是移动到中心
 
-                var x1 = sina * baseCircleRadius + SourceTracker.Position.X + 7.5;
-                var y1 = -cosa * baseCircleRadius + SourceTracker.Position.Y + 7.5;
+                if (IsDragging || IsOverflowAnimating)
+                {
+                    var x1 = sina * baseCircleRadius + SourceTracker.Position.X + 7.5;
+                    var y1 = -cosa * baseCircleRadius + SourceTracker.Position.Y + 7.5;
 
-                var x2 = -sina * baseCircleRadius + SourceTracker.Position.X + 7.5;
-                var y2 = cosa * baseCircleRadius + SourceTracker.Position.Y + 7.5;
+                    var x2 = -sina * baseCircleRadius + SourceTracker.Position.X + 7.5;
+                    var y2 = cosa * baseCircleRadius + SourceTracker.Position.Y + 7.5;
 
-                var x3 = (TargetTracker.Position.X + SourceTracker.Position.X) / 2 + 7.5;
-                var y3 = (TargetTracker.Position.Y + SourceTracker.Position.Y) / 2 + 7.5;
+                    var x3 = (TargetTracker.Position.X + SourceTracker.Position.X) / 2 + 7.5;
+                    var y3 = (TargetTracker.Position.Y + SourceTracker.Position.Y) / 2 + 7.5;
 
-                var target_radius = Math.Min(ContentGrid.ActualWidth, ContentGrid.ActualHeight) / 2;
+                    var target_radius = Math.Min(PopupContentGrid.ActualWidth, PopupContentGrid.ActualHeight) / 2;
 
-                var x4 = sina * target_radius + TargetTracker.Position.X + 7.5;
-                var y4 = -cosa * target_radius + TargetTracker.Position.Y + 7.5;
+                    var x4 = sina * target_radius + TargetTracker.Position.X + 7.5;
+                    var y4 = -cosa * target_radius + TargetTracker.Position.Y + 7.5;
 
-                var x5 = -sina * target_radius + TargetTracker.Position.X + 7.5;
-                var y5 = cosa * target_radius + TargetTracker.Position.Y + 7.5;
+                    var x5 = -sina * target_radius + TargetTracker.Position.X + 7.5;
+                    var y5 = cosa * target_radius + TargetTracker.Position.Y + 7.5;
 
-                SetBezier1(new Point(x1, y1), new Point(x3, y3), new Point(x4, y4));
-                SetBezier2(new Point(x5, y5), new Point(x3, y3), new Point(x2, y2));
+                    if (BaseCircleTrans != null)
+                    {
+                        var scale = baseCircleRadius / 7.5;
+                        BaseCircleTrans.ScaleX = scale;
+                        BaseCircleTrans.ScaleY = scale;
+                    }
 
+                    SetBezier1(new Point(x1, y1), new Point(x3, y3), new Point(x4, y4));
+                    SetBezier2(new Point(x5, y5), new Point(x3, y3), new Point(x2, y2));
+                }
+
+                if (ContentGridTrans != null)
+                {
+                    ContentGridTrans.X = TargetTracker.Position.X;
+                    ContentGridTrans.Y = TargetTracker.Position.Y;
+                }
             }
         }
 
@@ -323,19 +345,21 @@ namespace MaterialLibs.Controls
         {
             if (TargetTracker != null)
             {
-                if (IsCanceled)
+                if (IsOverflow)
+                {
+                    VisualStateManager.GoToState(this, "Normal", true);
+                    this.Visibility = Visibility.Collapsed;
+                    OnDragCompleted();
+                }
+                else
                 {
                     if (TargetTracker.Position.X != 0 || TargetTracker.Position.Y != 0)
                     {
                         _TargetPointAnimation.From = TargetTracker.Position;
                         TargetMoveComplateAnimation.Begin();
                     }
+                    VisualStateManager.GoToState(this, "Normal", true);
                 }
-                else
-                {
-                    this.Visibility = Visibility.Collapsed;
-                }
-                OnDragCompleted(IsCanceled);
             }
 
         }
@@ -349,11 +373,11 @@ namespace MaterialLibs.Controls
         public static readonly DependencyProperty ThresholdRadiusProperty =
             DependencyProperty.Register("ThresholdRadius", typeof(double), typeof(DraggedBadge), new PropertyMetadata(100d, (s, a) =>
             {
-                if(a.NewValue != a.OldValue)
+                if (a.NewValue != a.OldValue)
                 {
-                    if(s is DraggedBadge sender)
+                    if (s is DraggedBadge sender)
                     {
-                        if((double)a.NewValue <= 0)
+                        if ((double)a.NewValue <= 0)
                         {
                             throw new ArgumentOutOfRangeException("ThresholdRadius 必须大于0");
                         }
@@ -363,9 +387,9 @@ namespace MaterialLibs.Controls
 
 
         public event DragCompletedEventHandler DragCompleted;
-        private void OnDragCompleted(bool IsCanceled)
+        private void OnDragCompleted()
         {
-            DragCompleted.Invoke(this, new DragCompletedEventArgs(IsCanceled));
+            DragCompleted.Invoke(this, new DragCompletedEventArgs());
         }
     }
 
@@ -373,10 +397,6 @@ namespace MaterialLibs.Controls
 
     public class DragCompletedEventArgs : EventArgs
     {
-        public DragCompletedEventArgs(bool IsCanceled)
-        {
-            this.IsCanceled = IsCanceled;
-        }
-        public bool IsCanceled { get; private set; }
+        internal DragCompletedEventArgs() { }
     }
 }

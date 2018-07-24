@@ -13,7 +13,7 @@
             <RowDefinition Height="100" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <control:DraggedBadge HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0" Content="123" DragCompleted="_DragCompleted" />
+        <control:DraggedBadge HorizontalAlignment="Center" VerticalAlignment="Center" ThresholdRadius="500" Width="60" Height="60" Content="Drag Me!" DragCompleted="_DragCompleted" />
         <ListView Grid.Row="1" ItemsSource="{x:Bind list}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">

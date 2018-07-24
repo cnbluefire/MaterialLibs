@@ -285,3 +285,12 @@ if (sender is UIElement s)
     </ListView>
 </m_control:CardView>
 ```
+
+### DraggedBadge
+
+![](DemoImages/DraggedBadge.gif)
+
+```
+<m_control:DraggedBadge HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0" Content="{Binding Count}" DragCompleted="_DragCompleted" />
+
+```

@@ -126,9 +126,6 @@
     <Compile Include="Views\PerspectivePage.xaml.cs">
       <DependentUpon>PerspectivePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TipsRectanglePage.xaml.cs">
       <DependentUpon>TipsRectanglePage.xaml</DependentUpon>
     </Compile>
@@ -238,10 +235,6 @@
     <Page Include="Views\PerspectivePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\TestPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TipsRectanglePage.xaml">
       <SubType>Designer</SubType>
