@@ -119,6 +119,7 @@
     <Compile Include="Controls\BigbangPanel.cs" />
     <Compile Include="Controls\BigbangView.cs" />
     <Compile Include="Controls\CardView.cs" />
+    <Compile Include="Controls\DraggedBadge.cs" />
     <Compile Include="Controls\HamburgerView.cs" />
     <Compile Include="Controls\HamburgerViewItem.cs" />
     <Compile Include="CustomTransitions\Bases\CustomTransitionMode.cs" />
@@ -143,6 +144,7 @@
       <DependentUpon>ParticleCanvas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RippleHelper.cs" />
+    <Compile Include="Models\PointerTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\TipsRectangleHelper.cs" />
     <Compile Include="CustomTransitions\Bases\CustomTransitionBase.cs" />

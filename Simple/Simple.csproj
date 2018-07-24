@@ -19,7 +19,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <PackageCertificateKeyFile>Simple_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>482FC7A0DE3E1253C2AE80DCD44F430A9A90ED32</PackageCertificateThumbprint>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>arm</AppxBundlePlatforms>
   </PropertyGroup>
@@ -117,11 +117,17 @@
     <Compile Include="Views\CardViewPage.xaml.cs">
       <DependentUpon>CardViewPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DraggedBadgePage.xaml.cs">
+      <DependentUpon>DraggedBadgePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImplicitAnimationPage.xaml.cs">
       <DependentUpon>ImplicitAnimationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PerspectivePage.xaml.cs">
       <DependentUpon>PerspectivePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TipsRectanglePage.xaml.cs">
       <DependentUpon>TipsRectanglePage.xaml</DependentUpon>
@@ -221,6 +227,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DraggedBadgePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ImplicitAnimationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -228,6 +238,10 @@
     <Page Include="Views\PerspectivePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TipsRectanglePage.xaml">
       <SubType>Designer</SubType>

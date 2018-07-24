@@ -1,1 +1,1 @@
-C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Upload\Simple_1.9.2.0\Simple_1.9.2.0_x86_x64_arm.appxbundle
+C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\ARM\Release\Upload\Simple_1.9.3.0\Simple_1.9.3.0_x86_x64_arm.appxbundle

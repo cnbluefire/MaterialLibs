@@ -52,7 +52,6 @@ namespace MaterialLibs.Controls
 
         private bool _IsLoaded;
         private bool _IsJudging;
-        private float _FirstHeight;
 
         protected override void OnApplyTemplate()
         {
@@ -93,8 +92,9 @@ namespace MaterialLibs.Controls
         {
             if (m_tracker != null)
             {
+                var height = (float)e.NewSize.Height;
                 m_tracker.MaxPosition = new Vector3(0f, 0f, 0f);
-                m_tracker.MinPosition = new Vector3(0f, -(float)e.NewSize.Height, 0f);
+                m_tracker.MinPosition = new Vector3(0f, -height, 0f);
             }
             if (ShadowVisual != null)
             {
@@ -171,8 +171,9 @@ namespace MaterialLibs.Controls
             if (Compositor == null) return;
             if (ContentBorderVisual == null) return;
             m_tracker = InteractionTracker.CreateWithOwner(Compositor, this);
+            var height = (float)ContentBorder.ActualHeight;
             m_tracker.MaxPosition = new Vector3(0f, 0f, 0f);
-            m_tracker.MinPosition = new Vector3(0f, -(float)ContentBorder.ActualHeight, 0f);
+            m_tracker.MinPosition = new Vector3(0f, -height, 0f);
 
             m_source = VisualInteractionSource.Create(ContentBorderVisual);
             m_source.IsPositionYRailsEnabled = true;
@@ -200,7 +201,7 @@ namespace MaterialLibs.Controls
             //m_tracker.ConfigurePositionYInertiaModifiers(modifiers);
 
 
-            ContentOffsetExp = Compositor.CreateExpressionAnimation("-tracker.Position.Y");
+            ContentOffsetExp = Compositor.CreateExpressionAnimation("Max(-15f, -tracker.Position.Y)");
             ContentOffsetExp.SetReferenceParameter("tracker", m_tracker);
             ContentBorderVisual.StartAnimation("Translation.Y", ContentOffsetExp);
 
@@ -212,7 +213,6 @@ namespace MaterialLibs.Controls
             OpenAnimation = Compositor.CreateVector3KeyFrameAnimation();
             OpenAnimation.InsertExpressionKeyFrame(0f, "Vector3(0f, -host.Size.Y, 0f)");
             OpenAnimation.InsertKeyFrame(1f, new Vector3(0f, 15f, 0f));
-            //OpenAnimation.InsertKeyFrame(1f, Vector3.Zero);
             OpenAnimation.SetReferenceParameter("host", ContentBorderVisual);
             OpenAnimation.Duration = TimeSpan.FromSeconds(0.3d);
 
@@ -236,6 +236,8 @@ namespace MaterialLibs.Controls
                 if (m_tracker != null)
                 {
                     m_tracker.TryUpdatePositionWithAnimation(OpenAnimation);
+                    //m_tracker.TryUpdatePositionWithAdditionalVelocity(new Vector3(0f,1000f, 0f));
+
                 }
             }
             else
@@ -243,6 +245,7 @@ namespace MaterialLibs.Controls
                 if (m_tracker != null)
                 {
                     m_tracker.TryUpdatePositionWithAnimation(CloseAnimation);
+                    //m_tracker.TryUpdatePositionWithAdditionalVelocity(new Vector3(0f,-1000f, 0f));
                 }
                 else
                 {
@@ -398,6 +401,7 @@ namespace MaterialLibs.Controls
                 {
                     if (s is CardView sender)
                     {
+                        sender.OnIsOpenChanged();
                         if (sender._IsJudging) return;
                         sender.UpdateIsOpen();
                     }
@@ -431,6 +435,12 @@ namespace MaterialLibs.Controls
         public static readonly DependencyProperty IsRedirectForManipulationEnableProperty =
             DependencyProperty.Register("IsRedirectForManipulationEnable", typeof(bool), typeof(CardView), new PropertyMetadata(true));
 
+        public event IsOpenChangedEventHandler IsOpenChanged;
+        private void OnIsOpenChanged()
+        {
+            IsOpenChanged?.Invoke(this, new IsOpenChangedEventArgs(IsOpen));
+        }
+
         #region InteractionEvent
         public void CustomAnimationStateEntered(InteractionTracker sender, InteractionTrackerCustomAnimationStateEnteredArgs args)
         {
@@ -450,6 +460,7 @@ namespace MaterialLibs.Controls
         public void InteractingStateEntered(InteractionTracker sender, InteractionTrackerInteractingStateEnteredArgs args)
         {
 
+
         }
 
         public void RequestIgnored(InteractionTracker sender, InteractionTrackerRequestIgnoredArgs args)
@@ -462,6 +473,18 @@ namespace MaterialLibs.Controls
 
         }
         #endregion
+    }
+
+    public delegate void IsOpenChangedEventHandler(object sender, IsOpenChangedEventArgs args);
+
+    public class IsOpenChangedEventArgs : EventArgs
+    {
+        internal IsOpenChangedEventArgs(bool isOpen)
+        {
+            IsOpen = isOpen;
+        }
+
+        public bool IsOpen { get; set; }
     }
 }
 

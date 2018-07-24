@@ -1457,6 +1457,8 @@
     <Style TargetType="control:CardView">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+        <Setter Property="VerticalContentAlignment" Value="Bottom"></Setter>
         <Setter Property="IsOpen" Value="False" />
         <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
@@ -1550,7 +1552,7 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Rectangle x:Name="LightDismissLayer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding LightDismissLayerBackground}" Visibility="{TemplateBinding LightDismissLayerVisibility}"/>
-                        <Border x:Name="ContentBorder" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                        <Border x:Name="ContentBorder" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Bottom"
                              Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Width}" 
                              Height="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Height}"
                              MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent},Path=MinWidth}" MaxWidth="{Binding RelativeSource={RelativeSource TemplatedParent},Path=MaxWidth}"
@@ -1572,6 +1574,90 @@
                                 <Button x:Name="CloseButton" HorizontalAlignment="Right" Style="{StaticResource CloseButtonStyle}" Margin="6" Visibility="{TemplateBinding CloseButtonVisibility}"/>
                             </Grid>
                         </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="control:DraggedBadge">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="Red" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="ManipulationMode" Value="TranslateX, TranslateY" />
+        <!--<Setter Property="Width" Value="18" />
+        <Setter Property="Height" Value="18" />-->
+        <Setter Property="Padding" Value="8,3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="control:DraggedBadge">
+                    <Grid x:Name="RootGrid" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="DragState">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Dragging" To="Normal" GeneratedDuration="0:0:0.1" >
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0:0:0.1">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Dragging" To="Overflow" GeneratedDuration="0:0:0.05" >
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0:0:0.05">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Dragging" >
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Overflow" >
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Canvas x:Name="DragCanvas" Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                            <Path x:Name="DragPath" Canvas.ZIndex="-2" Fill="{TemplateBinding Background}" >
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathFigure x:Name="PathFigure1">
+                                            <QuadraticBezierSegment x:Name="Bezier1" />
+                                            <LineSegment x:Name="Line1" />
+                                            <QuadraticBezierSegment x:Name="Bezier2" />
+                                        </PathFigure>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                            <Ellipse x:Name="BaseCircle" Width="15" Height="15" Canvas.ZIndex="-1" Fill="{TemplateBinding Background}">
+                                <Ellipse.RenderTransform>
+                                    <CompositeTransform x:Name="BaseCircleTrans" CenterX="7.5" CenterY="7.5" />
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                            <model:PointerTracker x:Name="TargetTracker" xmlns:model="using:MaterialLibs.Models" />
+                            <model:PointerTracker x:Name="SourceTracker" xmlns:model="using:MaterialLibs.Models" />
+                        </Canvas>
+                        <Grid x:Name="ContentGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ManipulationMode="{TemplateBinding ManipulationMode}">
+                            <Grid.RenderTransform>
+                                <TranslateTransform x:Name="ContentGridTrans" />
+                            </Grid.RenderTransform>
+                            <Rectangle x:Name="BackgroundRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding Background}" />
+                            <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
