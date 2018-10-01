@@ -4,6 +4,7 @@
 /*/AppPackages/
 /.vs/
 /*/BundleArtifacts/
-/*/Simple_StoreKey.pfx
+*.pfx
 *.nupkg
 *.nuspec
+/*/Package.StoreAssociation.xml
