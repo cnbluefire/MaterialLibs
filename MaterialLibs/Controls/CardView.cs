@@ -68,6 +68,8 @@ namespace MaterialLibs.Controls
             {
                 ContentBorder.SizeChanged += ContentBorder_SizeChanged;
                 ContentBorder.AddHandler(PointerPressedEvent, new PointerEventHandler(ContentBorder_PointerPressed), true);
+                ContentBorder.AddHandler(PointerReleasedEvent, new PointerEventHandler(ContentBorder_PointerReleased), true);
+                ContentBorder.AddHandler(PointerCanceledEvent, new PointerEventHandler(ContentBorder_PointerCanceled), true);
             }
             if (LightDismissLayer != null)
             {
@@ -117,10 +119,29 @@ namespace MaterialLibs.Controls
                 {
                     if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
                     {
-                        m_source.TryRedirectForManipulation(e.GetCurrentPoint(ContentBorder));
+                        //Mobile RengeBase导致VisualInteractionSource.TryRedirectForManipulation出错
+                        //if (e.OriginalSource is Rectangle rect && rect.Name.Contains("TrackRect"))
+                        //{
+                        //    return;
+                        //}
+                        if (ContentBorder.CapturePointer(e.Pointer))
+                        {
+                            ContentBorder.ReleasePointerCapture(e.Pointer);
+                            m_source.TryRedirectForManipulation(e.GetCurrentPoint(ContentBorder));
+                        }
                     }
                 }
             }
+        }
+
+        private void ContentBorder_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            ContentBorder.ReleasePointerCapture(e.Pointer);
+        }
+
+        private void ContentBorder_PointerCanceled(object sender, PointerRoutedEventArgs e)
+        {
+            ContentBorder.ReleasePointerCapture(e.Pointer);
         }
 
         private void LightDismissLayer_Tapped(object sender, TappedRoutedEventArgs e)
@@ -340,40 +361,40 @@ namespace MaterialLibs.Controls
             set { SetValue(LightDismissLayerVisibilityProperty, value); }
         }
 
-        public new double Width
+        public double ContentWidth
         {
-            get { return (double)GetValue(WidthProperty); }
-            set { SetValue(WidthProperty, value); }
+            get { return (double)GetValue(ContentWidthProperty); }
+            set { SetValue(ContentWidthProperty, value); }
         }
 
-        public new double Height
+        public double ContentHeight
         {
-            get { return (double)GetValue(HeightProperty); }
-            set { SetValue(HeightProperty, value); }
+            get { return (double)GetValue(ContentHeightProperty); }
+            set { SetValue(ContentHeightProperty, value); }
         }
 
-        public new double MaxWidth
+        public double ContentMaxWidth
         {
-            get { return (double)GetValue(MaxWidthProperty); }
-            set { SetValue(MaxWidthProperty, value); }
+            get { return (double)GetValue(ContentMaxWidthProperty); }
+            set { SetValue(ContentMaxWidthProperty, value); }
         }
 
-        public new double MaxHeight
+        public double ContentMaxHeight
         {
-            get { return (double)GetValue(MaxHeightProperty); }
-            set { SetValue(MaxHeightProperty, value); }
+            get { return (double)GetValue(ContentMaxHeightProperty); }
+            set { SetValue(ContentMaxHeightProperty, value); }
         }
 
-        public new double MinWidth
+        public double ContentMinWidth
         {
-            get { return (double)GetValue(MinWidthProperty); }
-            set { SetValue(MinWidthProperty, value); }
+            get { return (double)GetValue(ContentMinWidthProperty); }
+            set { SetValue(ContentMinWidthProperty, value); }
         }
 
-        public new double MinHeight
+        public double ContentMinHeight
         {
-            get { return (double)GetValue(MinHeightProperty); }
-            set { SetValue(MinHeightProperty, value); }
+            get { return (double)GetValue(ContentMinHeightProperty); }
+            set { SetValue(ContentMinHeightProperty, value); }
         }
 
         public DataTemplate HeaderTemplate
@@ -418,18 +439,18 @@ namespace MaterialLibs.Controls
             DependencyProperty.Register("CloseButtonVisibility", typeof(Visibility), typeof(CardView), new PropertyMetadata(Visibility.Visible));
         public static readonly DependencyProperty LightDismissLayerVisibilityProperty =
             DependencyProperty.Register("LightDismissLayerVisibility", typeof(Visibility), typeof(CardView), new PropertyMetadata(Visibility.Visible));
-        public static readonly new DependencyProperty WidthProperty =
-            DependencyProperty.Register("Width", typeof(double), typeof(CardView), new PropertyMetadata(double.NaN));
-        public static readonly new DependencyProperty HeightProperty =
-            DependencyProperty.Register("Height", typeof(double), typeof(CardView), new PropertyMetadata(double.NaN));
-        public static readonly new DependencyProperty MaxWidthProperty =
-            DependencyProperty.Register("MaxWidth", typeof(double), typeof(CardView), new PropertyMetadata(double.PositiveInfinity));
-        public static readonly new DependencyProperty MaxHeightProperty =
-            DependencyProperty.Register("MaxHeight", typeof(double), typeof(CardView), new PropertyMetadata(double.PositiveInfinity));
-        public static readonly new DependencyProperty MinWidthProperty =
-            DependencyProperty.Register("MinWidth", typeof(double), typeof(CardView), new PropertyMetadata(0));
-        public static readonly new DependencyProperty MinHeightProperty =
-            DependencyProperty.Register("MinHeight", typeof(double), typeof(CardView), new PropertyMetadata(0));
+        public static readonly DependencyProperty ContentWidthProperty =
+            DependencyProperty.Register("ContentWidth", typeof(double), typeof(CardView), new PropertyMetadata(double.NaN));
+        public static readonly DependencyProperty ContentHeightProperty =
+            DependencyProperty.Register("ContentHeight", typeof(double), typeof(CardView), new PropertyMetadata(double.NaN));
+        public static readonly DependencyProperty ContentMaxWidthProperty =
+            DependencyProperty.Register("ContentMaxWidth", typeof(double), typeof(CardView), new PropertyMetadata(double.PositiveInfinity));
+        public static readonly DependencyProperty ContentMaxHeightProperty =
+            DependencyProperty.Register("ContentMaxHeight", typeof(double), typeof(CardView), new PropertyMetadata(double.PositiveInfinity));
+        public static readonly DependencyProperty ContentMinWidthProperty =
+            DependencyProperty.Register("ContentMinWidth", typeof(double), typeof(CardView), new PropertyMetadata(0));
+        public static readonly DependencyProperty ContentMinHeightProperty =
+            DependencyProperty.Register("ContentMinHeight", typeof(double), typeof(CardView), new PropertyMetadata(0));
         public static readonly DependencyProperty HeaderTemplateProperty =
             DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(CardView), new PropertyMetadata(null));
         public static readonly DependencyProperty IsRedirectForManipulationEnableProperty =

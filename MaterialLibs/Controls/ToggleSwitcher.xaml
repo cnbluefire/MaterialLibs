@@ -1,0 +1,77 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MaterialLibs.Controls">
+    <Style TargetType="local:ToggleSwitcher">
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SelectedForeground" Value="{ThemeResource SystemControlForegroundAltHighBrush}" />
+        <Setter Property="SelectedBackground" Value="{ThemeResource SystemControlBackgroundAccentBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundBaseHighBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="10,5" />
+        <Setter Property="ManipulationMode" Value="System,TranslateX" />
+        <Setter Property="LeftTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Margin="10,5" TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RightTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Margin="10,5" TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ToggleSwitcher">
+                    <Border x:Name="RootBorder"
+                            Background="{TemplateBinding Background}" 
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid x:Name="RootGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <local:DivideView x:Name="ContentView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                                <Border x:Name="LeftBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="{TemplateBinding Padding}" >
+                                    <ContentPresenter x:Name="LeftContent" Content="{TemplateBinding LeftContent}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentTemplate="{TemplateBinding LeftTemplate}" />
+                                </Border>
+                                <Border x:Name="RightBorder" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="{TemplateBinding Padding}" >
+                                    <ContentPresenter x:Name="RightContent" Content="{TemplateBinding RightContent}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentTemplate="{TemplateBinding RightTemplate}" />
+                                </Border>
+                            </local:DivideView>
+                            <Grid x:Name="SelectedPieRoot" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                                <Grid.RenderTransform>
+                                    <TranslateTransform x:Name="SelectedPieTrans" />
+                                </Grid.RenderTransform>
+                                <Rectangle x:Name="PieShadowHost" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                <Rectangle x:Name="SelectedPie" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding SelectedBackground}" />
+                            </Grid>
+                            <local:DivideView x:Name="SelectedContentView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                                <local:DivideView.Clip>
+                                    <RectangleGeometry x:Name="SelectedContentViewClip" >
+                                        <RectangleGeometry.Transform>
+                                            <TranslateTransform x:Name="SelectedContentViewClipTrans" />
+                                        </RectangleGeometry.Transform>
+                                    </RectangleGeometry>
+                                </local:DivideView.Clip>
+                                <Border x:Name="LeftSelectedBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="{TemplateBinding Padding}" >
+                                    <ContentPresenter x:Name="LeftSelectedContent" Content="{TemplateBinding LeftContent}" Foreground="{TemplateBinding SelectedForeground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentTemplate="{TemplateBinding LeftTemplate}" />
+                                </Border>
+                                <Border x:Name="RightSelectedBorder" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="{TemplateBinding Padding}" >
+                                    <ContentPresenter x:Name="RightSelectedContent" Content="{TemplateBinding RightContent}" Foreground="{TemplateBinding SelectedForeground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentTemplate="{TemplateBinding RightTemplate}" />
+                                </Border>
+                            </local:DivideView>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

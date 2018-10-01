@@ -1,0 +1,41 @@
+﻿<Page
+    x:Class="Sample.Views.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Sample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Sample.Models"
+    xmlns:helper="using:MaterialLibs.Helpers"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <model:InformationModel x:Key="Info" />
+    </Page.Resources>
+    <Grid Padding="8" >
+        <ScrollViewer VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled">
+            <StackPanel Orientation="Vertical">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" DataContext="{StaticResource Info}">
+                    <Run Text="MaterialLibs是一个UWP的动画库，致力于做出最实用的动画效果。" />
+                    <LineBreak />
+                    <Run Text="版本：" />
+                    <Run Text="{Binding Version}" />
+                    <LineBreak />
+                    <Run Text="库版本：" />
+                    <Run Text="{Binding LibVersion}" />
+                    <LineBreak />
+                    <Hyperlink NavigateUri="{Binding weibo}">Blue_Fire蓝火</Hyperlink>
+                    <Run> | </Run>
+                    <Hyperlink NavigateUri="{Binding blog}">超威蓝火</Hyperlink>
+                    <Run> | </Run>
+                    <Hyperlink NavigateUri="{Binding blog2}">蓝火火的cnblog</Hyperlink>
+                    <LineBreak />
+                    <Run Text="Github:" />
+                    <Hyperlink NavigateUri="{Binding github}">MaterialLibs</Hyperlink>
+                    <LineBreak />
+                    <Hyperlink NavigateUri="{Binding privacypolicy}">没有任何卵用的隐私声明</Hyperlink>
+                    <LineBreak />
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

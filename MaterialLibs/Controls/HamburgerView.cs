@@ -1,9 +1,11 @@
 ﻿using MaterialLibs.Common;
+using MaterialLibs.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -48,6 +50,7 @@ namespace MaterialLibs.Controls
 
         Grid _rootGrid;
         Grid _paneRoot;
+        Grid _contentRoot;
         Border _headerBorder;
         Button _backButton;
         Button _hamburgerButton;
@@ -72,6 +75,13 @@ namespace MaterialLibs.Controls
                         ?.Transitions
                         ?.FirstOrDefault(x => x.From == "OpenOverlay" && x.To == "CloseOverlay")
                         ?.Storyboard;
+                    foreach (var i in group)
+                    {
+                        i.CurrentStateChanged += (s, a) =>
+                        {
+
+                        };
+                    }
                 }
             }
         }
@@ -82,6 +92,15 @@ namespace MaterialLibs.Controls
             set
             {
                 _paneRoot = value;
+            }
+        }
+
+        Grid _ContentRoot
+        {
+            get => _contentRoot;
+            set
+            {
+                _contentRoot = value;
             }
         }
 
@@ -225,6 +244,7 @@ namespace MaterialLibs.Controls
             {
                 _PaneRootTransform = _PaneRoot.RenderTransform as CompositeTransform;
             }
+            _ContentRoot = GetTemplateChild("ContentRoot") as Grid;
             _HeaderBorder = GetTemplateChild("HeaderBorder") as Border;
             _BackButton = GetTemplateChild("BackButton") as Button;
             _HamburgerButton = GetTemplateChild("HamburgerButton") as Button;
@@ -234,6 +254,16 @@ namespace MaterialLibs.Controls
             _GestureRectangle = GetTemplateChild("GestureRectangle") as Rectangle;
             _LeftHeaderPresenter = GetTemplateChild("LeftHeaderPresenter") as ContentPresenter;
             _RightHeaderPresenter = GetTemplateChild("RightHeaderPresenter") as ContentPresenter;
+
+            if (_ContentRoot != null)
+            {
+                ImplicitAnimationHelper.CreateAnimation(ElementCompositionPreview.GetElementVisual(_ContentRoot), "Offset", TimeSpan.FromSeconds(0.2d));
+            }
+            if (_HeaderBorder != null)
+            {
+                ImplicitAnimationHelper.CreateAnimation(ElementCompositionPreview.GetElementVisual(_HeaderBorder), "Offset", TimeSpan.FromSeconds(0.2d));
+            }
+
             UpdateDisplayMode(HamburgerViewDisplayMode.Overlay);
             UpdateHeaderLayout();
         }
@@ -256,11 +286,11 @@ namespace MaterialLibs.Controls
             }
             if (IsPaneOpen)
             {
-                VisualStateManager.GoToState(this, "Open" + DisplayMode.ToString(), true);
+                VisualStateManager.GoToState(this, "Open" + DisplayMode.ToString(), DisplayMode == HamburgerViewDisplayMode.Overlay);
             }
             else
             {
-                VisualStateManager.GoToState(this, "Close" + DisplayMode.ToString(), true);
+                VisualStateManager.GoToState(this, "Close" + DisplayMode.ToString(), DisplayMode == HamburgerViewDisplayMode.Overlay);
             }
         }
 
@@ -269,11 +299,11 @@ namespace MaterialLibs.Controls
             if (!_templateApplied) return;
             if (IsPaneOpen)
             {
-                VisualStateManager.GoToState(this, "Open" + DisplayMode.ToString(), true);
+                VisualStateManager.GoToState(this, "Open" + DisplayMode.ToString(), DisplayMode == HamburgerViewDisplayMode.Overlay);
             }
             else
             {
-                VisualStateManager.GoToState(this, "Close" + DisplayMode.ToString(), true);
+                VisualStateManager.GoToState(this, "Close" + DisplayMode.ToString(), DisplayMode == HamburgerViewDisplayMode.Overlay);
                 if (DisplayMode == HamburgerViewDisplayMode.Overlay && _HasManipulated)
                 {
                     _PaneRoot.Visibility = Visibility.Collapsed;
@@ -285,26 +315,23 @@ namespace MaterialLibs.Controls
 
         private void UpdateHeaderLayout()
         {
-            if (IsFullScreen)
+            string Visibility = (BackButtonVisibility == Windows.UI.Xaml.Visibility.Visible ? "Show" : "Hide") + "BackButton";
+            string IsFull = IsFullScreen ? "FullScreen" : "";
+            if (DisplayMode == HamburgerViewDisplayMode.Overlay)
             {
-                if (BackButtonVisibility == Visibility.Visible)
-                {
-                    VisualStateManager.GoToState(this, "ShowBackButtonFullScreen", true);
-                }
-                else
-                {
-                    VisualStateManager.GoToState(this, "FullScreen", true);
-                }
+                VisualStateManager.GoToState(this, Visibility + "Close" + IsFull, false);
             }
             else
             {
-                if (BackButtonVisibility == Visibility.Visible)
+                if (IsPaneOpen)
                 {
-                    VisualStateManager.GoToState(this, "ShowBackButton", true);
+                    VisualStateManager.GoToState(this, Visibility + "Close" + IsFull, false);
+                    VisualStateManager.GoToState(this, Visibility + "Open" + IsFull, false);
                 }
                 else
                 {
-                    VisualStateManager.GoToState(this, "Normal", true);
+                    VisualStateManager.GoToState(this, Visibility + "Open" + IsFull, false);
+                    VisualStateManager.GoToState(this, Visibility + "Close" + IsFull, false);
                 }
             }
         }
@@ -556,6 +583,7 @@ namespace MaterialLibs.Controls
                 {
                     sender.UpdateDisplayMode(OldMode);
                     sender.OnDisplayModeChanged();
+                    sender.UpdateHeaderLayout();
                 }
             }
         }
@@ -568,6 +596,7 @@ namespace MaterialLibs.Controls
                 if (d is HamburgerView sender)
                 {
                     sender.UpdatePaneOpenState();
+                    sender.UpdateHeaderLayout();
                 }
             }
         }
@@ -599,7 +628,7 @@ namespace MaterialLibs.Controls
                         }
                         else
                         {
-                            if (sender.DisplayMode == HamburgerViewDisplayMode.Inline)
+                            if (sender.DisplayMode == HamburgerViewDisplayMode.Inline && sender.IsPaneOpen)
                             {
                                 var OldCantainer = sender._PrimaryListView.ContainerFromItem(e.OldValue) ?? sender._SecondaryListView.ContainerFromItem(e.OldValue);
                                 var NewCantainer = sender._PrimaryListView.ContainerFromItem(e.NewValue) ?? sender._SecondaryListView.ContainerFromItem(e.NewValue);

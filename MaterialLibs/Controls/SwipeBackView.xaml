@@ -1,0 +1,90 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MaterialLibs.Controls">
+    <Style TargetType="local:SwipeBackView">
+        <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="LightDismissBackground" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:SwipeBackView">
+                    <Grid x:Name="RootGrid" 
+                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                          VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <Grid.Resources>
+                            <CubicEase x:Name="CubicEase" EasingMode="EaseOut" />
+                        </Grid.Resources>
+                        <Grid.Clip>
+                            <RectangleGeometry x:Name="RootClip" />
+                        </Grid.Clip>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ProgressStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Swiping" To="Normal" GeneratedDuration="0:0:0.4" GeneratedEasingFunction="{StaticResource CubicEase}" />
+                                    <VisualTransition From="Completed" To="Normal" GeneratedDuration="0:0:0.4" GeneratedEasingFunction="{StaticResource CubicEase}" />
+                                    <VisualTransition To="Completed" GeneratedDuration="0:0:0.4" GeneratedEasingFunction="{StaticResource CubicEase}" >
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentBorder" Storyboard.TargetProperty="Visibility" Duration="0:0:0.4">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LightDismissLayer" Storyboard.TargetProperty="Visibility" Duration="0:0:0.4">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.4" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" >
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="LightDismissLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Swiping" >
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ContentGridTrans" Storyboard.TargetProperty="X" To="0" Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="LightDismissLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Completed">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="LightDismissLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentBorder" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LightDismissLayer" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GestureRect" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="LightDismissLayer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding LightDismissBackground}" />
+                        <Grid x:Name="ContentGrid" HorizontalAlignment="Right" VerticalAlignment="Stretch" 
+                              MaxWidth="{TemplateBinding ContentMaxWidth}" MaxHeight="{TemplateBinding ContentMaxHeight}">
+                            <!--MaxWidth="{Binding RelativeSource={RelativeSource TemplatedParent},Path=ContentMaxWidth,Mode=OneWay}" MaxHeight="{Binding RelativeSource={RelativeSource TemplatedParent},Path=ContentMaxHeight,Mode=OneWay}">-->
+                            <Grid.RenderTransform>
+                                <TranslateTransform x:Name="ContentGridTrans" />
+                            </Grid.RenderTransform>
+                            <Rectangle x:Name="ShadowHost" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            <Border x:Name="ContentBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter x:Name="Content" Padding="{TemplateBinding Padding}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                            <Rectangle x:Name="GestureRect" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="10" Fill="Transparent" ManipulationMode="TranslateX" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsSwipeEnable,Mode=OneWay}" />
+                        </Grid>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

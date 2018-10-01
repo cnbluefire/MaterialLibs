@@ -50,7 +50,7 @@ namespace MaterialLibs.Controls
         private QuadraticBezierSegment Bezier2;
         private LineSegment Line1;
         private CompositeTransform BaseCircleTrans;
-        private TranslateTransform ContentGridTrans;
+        private CompositeTransform ContentGridTrans;
         private PointTracker TargetTracker;
         private PointTracker SourceTracker;
         private Popup ContentPopup;
@@ -80,7 +80,7 @@ namespace MaterialLibs.Controls
             Bezier2 = GetTemplateChild("Bezier2") as QuadraticBezierSegment;
             Line1 = GetTemplateChild("Line1") as LineSegment;
             BaseCircleTrans = GetTemplateChild("BaseCircleTrans") as CompositeTransform;
-            ContentGridTrans = GetTemplateChild("ContentGridTrans") as TranslateTransform;
+            ContentGridTrans = GetTemplateChild("ContentGridTrans") as CompositeTransform;
             TargetTracker = GetTemplateChild("TargetTracker") as PointTracker;
             SourceTracker = GetTemplateChild("SourceTracker") as PointTracker;
             ContentPopup = GetTemplateChild("ContentPopup") as Popup;
@@ -97,7 +97,7 @@ namespace MaterialLibs.Controls
             IsOverflow = false;
             IsOverflowAnimating = false;
             IsDragging = true;
-            VisualStateManager.GoToState(this, "Dragging", false);
+            VisualStateManager.GoToState(this, "Dragging", true);
         }
 
         private void _ManipulationUpdate(object sender, ManipulationUpdatedEventArgs e)
@@ -127,7 +127,7 @@ namespace MaterialLibs.Controls
 
         private void TargetMoveComplateAnimation_Completed(object sender, object e)
         {
-            ContentPopup.IsOpen = false;
+            //ContentPopup.IsOpen = false;
         }
 
         private void SourceMoveComplateAnimation_Completed(object sender, object e)
@@ -163,7 +163,7 @@ namespace MaterialLibs.Controls
             PopupContentGrid.Height = ContentGrid.ActualHeight;
             this.CapturePointer(e.Pointer);
             _GestureRecognizer.ProcessDownEvent(e.GetCurrentPoint(ContentGrid));
-            ContentPopup.IsOpen = true;
+            //ContentPopup.IsOpen = true;
         }
 
         private void _PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -175,9 +175,9 @@ namespace MaterialLibs.Controls
         {
             _GestureRecognizer.ProcessUpEvent(e.GetCurrentPoint(ContentGrid));
             this.ReleasePointerCapture(e.Pointer);
-            if(TargetTracker.Position.X == 0 && TargetTracker.Position.Y == 0)
+            if (TargetTracker.Position.X == 0 && TargetTracker.Position.Y == 0)
             {
-                ContentPopup.IsOpen = false;
+                //ContentPopup.IsOpen = false;
             }
         }
 
@@ -186,7 +186,7 @@ namespace MaterialLibs.Controls
             _GestureRecognizer.ProcessUpEvent(e.GetCurrentPoint(ContentGrid));
             if (TargetTracker.Position.X == 0 && TargetTracker.Position.Y == 0)
             {
-                ContentPopup.IsOpen = false;
+                //ContentPopup.IsOpen = false;
             }
         }
 
@@ -199,9 +199,9 @@ namespace MaterialLibs.Controls
                 _TargetPointAnimation = new PointAnimation();
                 Storyboard.SetTarget(_TargetPointAnimation, TargetTracker);
                 Storyboard.SetTargetProperty(_TargetPointAnimation, "Position");
-                _TargetPointAnimation.EasingFunction = new ElasticEase() { EasingMode = EasingMode.EaseOut };
+                _TargetPointAnimation.EasingFunction = new ElasticEase() { EasingMode = EasingMode.EaseOut, Oscillations = 1, Springiness = 0.5 };
                 _TargetPointAnimation.EnableDependentAnimation = true;
-                _TargetPointAnimation.Duration = TimeSpan.FromSeconds(0.1d);
+                _TargetPointAnimation.Duration = TimeSpan.FromSeconds(0.2d);
                 _TargetPointAnimation.To = new Point(0, 0);
 
                 TargetMoveComplateAnimation = new Storyboard();
@@ -297,8 +297,8 @@ namespace MaterialLibs.Controls
 
                 if (ContentGridTrans != null)
                 {
-                    ContentGridTrans.X = TargetTracker.Position.X;
-                    ContentGridTrans.Y = TargetTracker.Position.Y;
+                    ContentGridTrans.TranslateX = TargetTracker.Position.X;
+                    ContentGridTrans.TranslateY = TargetTracker.Position.Y;
                 }
             }
         }
@@ -347,8 +347,7 @@ namespace MaterialLibs.Controls
             {
                 if (IsOverflow)
                 {
-                    VisualStateManager.GoToState(this, "Normal", true);
-                    this.Visibility = Visibility.Collapsed;
+                    IsActive = false;
                     OnDragCompleted();
                 }
                 else
@@ -370,6 +369,12 @@ namespace MaterialLibs.Controls
             set { SetValue(ThresholdRadiusProperty, value); }
         }
 
+        public bool IsActive
+        {
+            get { return (bool)GetValue(IsActiveProperty); }
+            set { SetValue(IsActiveProperty, value); }
+        }
+
         public static readonly DependencyProperty ThresholdRadiusProperty =
             DependencyProperty.Register("ThresholdRadius", typeof(double), typeof(DraggedBadge), new PropertyMetadata(100d, (s, a) =>
             {
@@ -385,6 +390,24 @@ namespace MaterialLibs.Controls
                 }
             }));
 
+        public static readonly DependencyProperty IsActiveProperty =
+            DependencyProperty.Register("IsActive", typeof(bool), typeof(DraggedBadge), new PropertyMetadata(true, (s, a) =>
+            {
+                if (a.NewValue != a.OldValue)
+                {
+                    if (s is DraggedBadge sender)
+                    {
+                        if ((bool)a.NewValue)
+                        {
+                            VisualStateManager.GoToState(sender, "Normal", true);
+                        }
+                        else
+                        {
+                            VisualStateManager.GoToState(sender, "Collapsed", true);
+                        }
+                    }
+                }
+            }));
 
         public event DragCompletedEventHandler DragCompleted;
         private void OnDragCompleted()

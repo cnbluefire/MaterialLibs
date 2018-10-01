@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="Sample.Views.SwipeBackPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Sample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:m_control="using:MaterialLibs.Controls"
+    mc:Ignorable="d">
+
+    <Grid  Margin="20,0" BorderThickness="1" BorderBrush="{ThemeResource SystemControlBackgroundBaseMediumBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ToggleSwitch x:Name="IsOpenSwitch">IsOpen</ToggleSwitch>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Style="{StaticResource HeaderTextBlockStyle}" >This is MainPage</TextBlock>
+        <m_control:SwipeBackView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsOpen="{x:Bind IsOpenSwitch.IsOn,Mode=TwoWay}">
+            <Grid Background="Pink" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Style="{StaticResource HeaderTextBlockStyle}">This is ChildPage</TextBlock>
+            </Grid>
+        </m_control:SwipeBackView>
+    </Grid>
+</Page>

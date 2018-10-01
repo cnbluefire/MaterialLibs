@@ -1,0 +1,126 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MaterialLibs.Controls" 
+    xmlns:m_helper="using:MaterialLibs.Helpers">
+    <Style TargetType="local:CardView">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+        <Setter Property="VerticalContentAlignment" Value="Bottom"></Setter>
+        <Setter Property="IsOpen" Value="False" />
+        <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="Radius" Value="8" />
+        <Setter Property="Padding" Value="24" />
+        <Setter Property="LightDismissLayerBackground" Value="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" />
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding }" FontSize="20" FontWeight="SemiBold" IsColorFontEnabled="True"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:CardView">
+                    <Grid x:Name="RootGrid" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <Grid.Resources>
+                            <Style x:Key="CloseButtonStyle" TargetType="Button">
+                                <Setter Property="FontFamily" Value="{ThemeResource SymbolThemeFontFamily}" />
+                                <Setter Property="FontSize" Value="15" />
+                                <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid x:Name="RootGrid" Height="40" Width="40" Background="Transparent">
+                                                <Rectangle x:Name="BackgroundRectangle" Fill="{ThemeResource SystemControlHighlightListMediumBrush}" Opacity="0" Width="40" Height="40" RadiusX="20" RadiusY="20" />
+                                                <TextBlock x:Name="NormalGlyph"
+                                                    FontWeight="SemiLight"
+                                                    FontFamily="{TemplateBinding FontFamily}"
+                                                    FontSize="{TemplateBinding FontSize}"
+                                                    Text="&#xE711;"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    AutomationProperties.AccessibilityView="Raw" >
+                                                </TextBlock>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="CommonStates">
+                                                        <VisualState x:Name="Normal" >
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="BackgroundRectangle" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1" />
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="PointerOver">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="BackgroundRectangle" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0:0:0.1" />
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Pressed">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="BackgroundRectangle" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1" />
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Disabled">
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="NormalGlyph" Storyboard.TargetProperty="Foreground">
+                                                                    <DiscreteObjectKeyFrame Value="{ThemeResource SystemControlDisabledBaseMediumLowBrush}" KeyTime="0" />
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Grid.Resources>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ViewOpenState">
+                                <VisualState x:Name="IsOpen">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IsNotOpen">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="LightDismissLayer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding LightDismissLayerBackground}" Visibility="{TemplateBinding LightDismissLayerVisibility}"/>
+                        <Border x:Name="ContentBorder" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Bottom"
+                             Width="{TemplateBinding ContentWidth}" 
+                             Height="{TemplateBinding ContentHeight}"
+                             MinWidth="{TemplateBinding ContentMinWidth}" MaxWidth="{TemplateBinding ContentMaxWidth}"
+                             MinHeight="{TemplateBinding ContentMinHeight}" MaxHeight="{TemplateBinding ContentMaxHeight}">
+                            <Grid x:Name="ContentGrid" Margin="{TemplateBinding Padding}" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" MinHeight="52" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.RenderTransform>
+                                    <TranslateTransform x:Name="ContentGridTrans" />
+                                </Grid.RenderTransform>
+                                <Rectangle x:Name="ShadowHost" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <Rectangle x:Name="BorderBackground" m_helper:TransitionsHelper.Background="{TemplateBinding Background}" Grid.RowSpan="3" RadiusX="{TemplateBinding Radius}" RadiusY="{TemplateBinding Radius}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <ContentPresenter x:Name="Header" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,5" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" />
+                                <ContentPresenter x:Name="Content" Grid.Row="1"  Content="{TemplateBinding Content}" Margin="12,5" />
+                                <ContentPresenter x:Name="Footer" Grid.Row="2" HorizontalAlignment="Stretch" Margin="12,5" Content="{TemplateBinding Footer}" />
+                                <Button x:Name="CloseButton" HorizontalAlignment="Right" Style="{StaticResource CloseButtonStyle}" Margin="6" Foreground="{TemplateBinding Foreground}" Visibility="{TemplateBinding CloseButtonVisibility}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

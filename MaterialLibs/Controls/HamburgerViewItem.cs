@@ -16,11 +16,11 @@ namespace MaterialLibs.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        private string _Icon;
-        private string _Content;
+        private object _Icon;
+        private object _Content;
         private object _Tag;
 
-        public string Icon
+        public object Icon
         {
             get => _Icon;
             set
@@ -30,7 +30,7 @@ namespace MaterialLibs.Controls
             }
         }
 
-        public string Content
+        public object Content
         {
             get => _Content;
             set

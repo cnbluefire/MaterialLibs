@@ -1,2 +1,0 @@
-MainPackage=C:\Users\blue-\source\repos\MaterialLibs\Simple\bin\x64\Release\Simple_1.9.3.0_x64.appx
-SymbolPackage=C:\Users\blue-\source\repos\MaterialLibs\Simple\AppPackages\Simple_1.9.3.0_Test\Simple_1.9.3.0_x64.appxsym

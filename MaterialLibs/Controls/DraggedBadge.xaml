@@ -1,0 +1,168 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MaterialLibs.Controls">
+    <Style TargetType="local:DraggedBadge">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="Red" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="ManipulationMode" Value="TranslateX, TranslateY" />
+        <!--<Setter Property="Width" Value="18" />
+        <Setter Property="Height" Value="18" />-->
+        <Setter Property="Padding" Value="8,3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:DraggedBadge">
+                    <Grid x:Name="RootGrid" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="DragState">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition From="Dragging" To="Normal" >
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPopup" Storyboard.TargetProperty="IsOpen" Duration="0:0:0.2">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="False" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0:0:0.2">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0.2">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Visible" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Dragging" To="Overflow" >
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPopup" Storyboard.TargetProperty="IsOpen" Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0:0:0.05">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Overflow" To="Normal">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPopup" Storyboard.TargetProperty="IsOpen" Duration="0:0:0.2">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="False" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0.2">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Collapsed" />
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Visible" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Overflow" To="Collapsed" >
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPopup" Storyboard.TargetProperty="IsOpen" Duration="0:0:0.1">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="False" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Collapsed" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Storyboard.TargetName="ContentGridTrans" Storyboard.TargetProperty="ScaleX" To="2" Duration="0:0:0.1" />
+                                            <DoubleAnimation Storyboard.TargetName="ContentGridTrans" Storyboard.TargetProperty="ScaleY" To="2" Duration="0:0:0.1" />
+                                            <DoubleAnimation Storyboard.TargetName="PopupContentGrid" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1" />
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" >
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPopup" Storyboard.TargetProperty="IsOpen" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="False" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Dragging" >
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPopup" Storyboard.TargetProperty="IsOpen" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Overflow" >
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ContentGridTrans" Storyboard.TargetProperty="ScaleX" To="1" Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="ContentGridTrans" Storyboard.TargetProperty="ScaleY" To="1" Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="PopupContentGrid" Storyboard.TargetProperty="Opacity" To="1" Duration="0" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPopup" Storyboard.TargetProperty="IsOpen" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DragCanvas" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid x:Name="ContentGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ManipulationMode="{TemplateBinding ManipulationMode}" Visibility="Visible">
+                            <Rectangle x:Name="BackgroundRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding Background}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Grid>
+                        <Popup x:Name="ContentPopup">
+                            <Grid x:Name="TopMostContentRoot" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                                <Canvas x:Name="DragCanvas" Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                                    <Path x:Name="DragPath" Canvas.ZIndex="-2" Fill="{TemplateBinding Background}" >
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathFigure x:Name="PathFigure1">
+                                                    <QuadraticBezierSegment x:Name="Bezier1" />
+                                                    <LineSegment x:Name="Line1" />
+                                                    <QuadraticBezierSegment x:Name="Bezier2" />
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                    <Ellipse x:Name="BaseCircle" Width="15" Height="15" Canvas.ZIndex="-1" Fill="{TemplateBinding Background}">
+                                        <Ellipse.RenderTransform>
+                                            <CompositeTransform x:Name="BaseCircleTrans" CenterX="7.5" CenterY="7.5" />
+                                        </Ellipse.RenderTransform>
+                                    </Ellipse>
+                                    <model:PointTracker x:Name="TargetTracker" xmlns:model="using:MaterialLibs.Models" />
+                                    <model:PointTracker x:Name="SourceTracker" xmlns:model="using:MaterialLibs.Models" />
+                                </Canvas>
+                                <Grid x:Name="PopupContentGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ManipulationMode="{TemplateBinding ManipulationMode}" RenderTransformOrigin="0.5,0.5">
+                                    <Grid.RenderTransform>
+                                        <CompositeTransform x:Name="ContentGridTrans" />
+                                    </Grid.RenderTransform>
+                                    <Rectangle x:Name="PopupBackgroundRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding Background}" />
+                                    <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                                </Grid>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
