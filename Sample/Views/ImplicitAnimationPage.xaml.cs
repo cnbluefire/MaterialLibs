@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -28,7 +29,14 @@ namespace Sample.Views
         public ImplicitAnimationPage()
         {
             this.InitializeComponent();
+            this.Loaded += ImplicitAnimationPage_Loaded;
             Items = new ObservableCollection<ListViewModel>();
+
+        }
+
+        private async void ImplicitAnimationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Yield();
             for (int i = 0; i < 20; i++)
             {
                 Items.Add(new ListViewModel() { Title = "Item" + i, Content = "This is Item" + i, Image = new Uri("ms-appx:///Assets/imgs/" + i + ".jpg") });

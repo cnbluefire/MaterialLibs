@@ -22,6 +22,9 @@
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -116,6 +119,9 @@
     </Compile>
     <Compile Include="Views\CardViewPage.xaml.cs">
       <DependentUpon>CardViewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChromeFlyoutPage.xaml.cs">
+      <DependentUpon>ChromeFlyoutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DraggedBadgePage.xaml.cs">
       <DependentUpon>DraggedBadgePage.xaml</DependentUpon>
@@ -225,6 +231,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CardViewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChromeFlyoutPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -23,7 +23,6 @@ namespace MaterialLibs.Controls
             this.SizeChanged += ToggleSwitcher_SizeChanged;
         }
 
-        Border RootBorder;
         Grid RootGrid;
         DivideView ContentView;
         Border LeftBorder;
@@ -31,6 +30,7 @@ namespace MaterialLibs.Controls
         Grid SelectedPieRoot;
         Rectangle PieShadowHost;
         Rectangle SelectedPie;
+        Rectangle BackgroundRectangle;
         DivideView SelectedContentView;
         Border LeftSelectedBorder;
         Border RightSelectedBorder;
@@ -62,9 +62,9 @@ namespace MaterialLibs.Controls
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            RootBorder = GetTemplateChild("RootBorder") as Border;
             RootGrid = GetTemplateChild("RootGrid") as Grid;
             SelectedPieRoot = GetTemplateChild("SelectedPieRoot") as Grid;
+            BackgroundRectangle = GetTemplateChild("BackgroundRectangle") as Rectangle;
             PieShadowHost = GetTemplateChild("PieShadowHost") as Rectangle;
             SelectedPie = GetTemplateChild("SelectedPie") as Rectangle;
 
@@ -198,9 +198,10 @@ namespace MaterialLibs.Controls
         private void UpdateSize()
         {
             Radius = this.ActualHeight / 2;
-            if (RootBorder != null)
+            if (BackgroundRectangle != null)
             {
-                RootBorder.CornerRadius = new CornerRadius(Radius);
+                BackgroundRectangle.RadiusX = Radius;
+                BackgroundRectangle.RadiusY = Radius;
             }
             if (SelectedPieRoot != null)
             {

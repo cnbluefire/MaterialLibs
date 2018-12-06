@@ -1,9 +1,12 @@
 ﻿using MaterialLibs.Controls;
+using MaterialLibs.Factorys;
+using MaterialLibs.Services;
 using Sample.Factorys;
 using Sample.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -45,6 +48,7 @@ namespace Sample
                 new HamburgerViewItem(){Content = "CardView",Icon = "\uEC6C",Tag = typeof(CardViewPage)},
                 new HamburgerViewItem(){Content = "DraggedBadge",Icon = "\uE783",Tag = typeof(DraggedBadgePage)},
                 new HamburgerViewItem(){Content = "SwipeBack",Icon = "\uE111",Tag = typeof(SwipeBackPage)},
+                new HamburgerViewItem(){Content = "ChromeFlyout",Icon = "\uE111",Tag = typeof(ChromeFlyoutPage)},
             };
 
             SecondaryList = new ObservableCollection<HamburgerViewItem>()
@@ -54,8 +58,10 @@ namespace Sample
             };
 
             appTitleBarFactory = new AppTitleBarFactory(AppTitleBar);
-
+            service = new NavigationBloomTransitionService() { CurrentFrame = ContentFrame };
         }
+
+        NavigationBloomTransitionService service;
 
         ToggleSwitcher ThemeSwitcher;
         AppTitleBarFactory appTitleBarFactory;
@@ -63,7 +69,7 @@ namespace Sample
         public ObservableCollection<HamburgerViewItem> PrimaryList { get; set; }
         public ObservableCollection<HamburgerViewItem> SecondaryList { get; set; }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("Theme"))
             {
@@ -77,10 +83,11 @@ namespace Sample
             }
 
             _HamburgerView.SelectedItem = PrimaryList[0];
-            ContentFrame.Navigate(typeof(RipplePage), new SuppressNavigationTransitionInfo());
+            //ContentFrame.Navigate(typeof(RipplePage), new SuppressNavigationTransitionInfo());
+            await service.NavigateAndBloomFromUIElementAsync(ContentFrame, Windows.UI.Colors.White, typeof(RipplePage));
         }
 
-        private void _HamburgerView_ItemClick(object sender, MaterialLibs.Controls.HamburgerViewItemClickEventArgs e)
+        private async void _HamburgerView_ItemClick(object sender, MaterialLibs.Controls.HamburgerViewItemClickEventArgs e)
         {
             if (e.ClickedItem == ThemeItem)
             {
@@ -89,7 +96,8 @@ namespace Sample
             }
             else
             {
-                ContentFrame.Navigate((Type)((HamburgerViewItem)e.ClickedItem).Tag, null, new SuppressNavigationTransitionInfo());
+                //ContentFrame.Navigate((Type)((HamburgerViewItem)e.ClickedItem).Tag, null, new SuppressNavigationTransitionInfo());
+                await service.NavigateAndBloomFromUIElementAsync(ContentFrame, Windows.UI.Colors.White, (Type)((HamburgerViewItem)e.ClickedItem).Tag);
             }
         }
 
@@ -172,9 +180,9 @@ namespace Sample
 
         private void ToggleSwitcher_StateChanged(object sender, StateChangedEventArgs e)
         {
-            if(e.State == ToggleSwitcherState.Left)
+            if (e.State == ToggleSwitcherState.Left)
             {
-                if(RequestedTheme != ElementTheme.Light)
+                if (RequestedTheme != ElementTheme.Light)
                 {
                     UpdateTheme(true);
                 }

@@ -1,0 +1,28 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MaterialLibs.Controls">
+    <Style TargetType="local:DropShadowView">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:DropShadowView">
+                    <Grid Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <Canvas x:Name="DropShadowHost" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

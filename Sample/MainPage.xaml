@@ -10,7 +10,7 @@
     xmlns:m_control="using:MaterialLibs.Controls"
     mc:Ignorable="d" Loaded="Page_Loaded">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="False">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="True">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Normal"/>

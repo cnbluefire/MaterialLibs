@@ -5,11 +5,14 @@
     xmlns:local="using:Sample"
     xmlns:m_helper="using:MaterialLibs.Helpers"
     xmlns:brush="using:MaterialLibs.Brushes"
+    xmlns:style="using:MaterialLibs.Styles"
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <brush:FluentAccentBrushesResources />
+                <style:ChromeFlyoutMenuResources />
+                <style:BorderlessResources />
             </ResourceDictionary.MergedDictionaries>
         <Style TargetType="Pivot" x:Key="AnimationHeaderPivot">
             <Setter Property="Margin" Value="0" />

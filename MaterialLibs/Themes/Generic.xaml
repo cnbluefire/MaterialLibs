@@ -12,5 +12,6 @@
         <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/DraggedBadge.xaml" />
         <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/SwipeBackView.xaml" />
         <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/ToggleSwitcher.xaml" />
+        <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/DropShadowView.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

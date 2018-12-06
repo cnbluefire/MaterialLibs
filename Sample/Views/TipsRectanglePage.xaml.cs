@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -28,9 +29,17 @@ namespace Sample.Views
         {
             this.InitializeComponent();
             Items = new ObservableCollection<ListViewModel>();
-            for(int i = 0; i < 20; i++)
+            this.Loaded += TipsRectanglePage_Loaded;
+
+        }
+
+        private async void TipsRectanglePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Yield();
+            for (int i = 0; i < 20; i++)
             {
-                Items.Add(new ListViewModel() { Title = "Item" + i, Content = "This is Item" + i,Image = new Uri("ms-appx:///Assets/imgs/" + i + ".jpg")});
+                Items.Add(new ListViewModel() { Title = "Item" + i, Content = "This is Item" + i, Image = new Uri("ms-appx:///Assets/imgs/" + i + ".jpg") });
+                await Task.Yield();
             }
         }
 

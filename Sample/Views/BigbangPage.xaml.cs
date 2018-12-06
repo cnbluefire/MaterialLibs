@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,7 +27,14 @@ namespace Sample.Views
         public BigbangPage()
         {
             this.InitializeComponent();
-            for(int i = 0; i < 50; i++)
+            this.Loaded += BigbangPage_Loaded;
+
+        }
+
+        private async void BigbangPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Yield();
+            for (int i = 0; i < 50; i++)
             {
                 list.Add(rnd.Next(100000).ToString());
             }

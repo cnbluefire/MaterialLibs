@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -27,6 +28,13 @@ namespace Sample.Views
         {
             this.InitializeComponent();
             items = new ObservableCollection<string>();
+            this.Loaded += CardViewPage_Loaded;
+
+        }
+
+        private async void CardViewPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Yield();
             for (int i = 0; i < 30; i++)
             {
                 items.Add(i.ToString());

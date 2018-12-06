@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas;
+﻿using MaterialLibs.Common;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Composition;
 using System;
@@ -30,8 +31,6 @@ namespace MaterialLibs.Helpers
         #region Property
         private static TappedEventHandler ele_TappedEventHandler = new TappedEventHandler(ele_Tapped);
         private static Compositor compositor => Window.Current.Compositor;
-        private static CanvasDevice canvasDevice => CanvasDevice.GetSharedDevice();
-        private static CompositionGraphicsDevice graphicsDevice => CanvasComposition.CreateCompositionGraphicsDevice(compositor, canvasDevice);
         private static ExpressionAnimation SizeBind
         {
             get
@@ -51,17 +50,16 @@ namespace MaterialLibs.Helpers
                 if (_CoreSocialistValuesSurfaces == null)
                 {
                     _CoreSocialistValuesSurfaces = new List<CompositionSurfaceBrush>();
-                    var _graphicsDevice = graphicsDevice;
                     foreach (var value in CoreSocialistValues)
                     {
-                        var surface = _graphicsDevice.CreateDrawingSurface(new Windows.Foundation.Size(50, 30), DirectXPixelFormat.B8G8R8A8UIntNormalized, DirectXAlphaMode.Premultiplied);
-                        using (var session = CanvasComposition.CreateDrawingSession(surface))
+                        var drawer = new SurfaceDrawer(compositor, new Windows.Foundation.Size(50, 30));
+                        drawer.Draw((surface, session) =>
                         {
                             session.Clear(Colors.Transparent);
                             session.DrawText(value, 0f, 0f, Colors.Red, new CanvasTextFormat() { FontSize = 20 });
                             session.Flush();
-                        }
-                        var brush = compositor.CreateSurfaceBrush(surface);
+                        });
+                        var brush = compositor.CreateSurfaceBrush(drawer.Surface);
                         _CoreSocialistValuesSurfaces.Add(brush);
                     }
                 }

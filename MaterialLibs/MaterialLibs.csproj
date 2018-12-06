@@ -114,6 +114,10 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\Shadow\ShadowBehavior.cs" />
+    <Compile Include="Behaviors\Shadow\TargetObservers\ITargetObserver.cs" />
+    <Compile Include="Behaviors\Shadow\TargetObservers\TargetChangedEvent.cs" />
+    <Compile Include="Behaviors\Shadow\TargetObservers\TargetObserver.cs" />
     <Compile Include="Behaviors\Transitions\BackgroundTransitionBehavior.cs" />
     <Compile Include="Brushes\FluentAccentBrushesResources.cs" />
     <Compile Include="Brushes\FluentAccentColorBrush.cs" />
@@ -121,6 +125,7 @@
     <Compile Include="Brushes\FluentCompositeBrush.cs" />
     <Compile Include="Brushes\FluentSolidColorBrush.cs" />
     <Compile Include="Brushes\IFluentBrush.cs" />
+    <Compile Include="Common\SurfaceDrawer.cs" />
     <Compile Include="Common\VisualTreeExtension.cs" />
     <Compile Include="Controls\AnimationHamburgerIcon.xaml.cs">
       <DependentUpon>AnimationHamburgerIcon.xaml</DependentUpon>
@@ -130,9 +135,9 @@
     <Compile Include="Controls\CardView.cs" />
     <Compile Include="Controls\DivideView.cs" />
     <Compile Include="Controls\DraggedBadge.cs" />
+    <Compile Include="Controls\DropShadowView.cs" />
     <Compile Include="Controls\HamburgerView.cs" />
     <Compile Include="Controls\HamburgerViewItem.cs" />
-    <Compile Include="Controls\InnerShadow.cs" />
     <Compile Include="Controls\SwipeBackView.cs" />
     <Compile Include="Controls\ToggleSwitcher.cs" />
     <Compile Include="CustomTransitions\Bases\CustomTransitionMode.cs" />
@@ -147,11 +152,14 @@
     <Compile Include="CustomTransitions\OpacityShowTransition.cs" />
     <Compile Include="CustomTransitions\ScaleHideTransition.cs" />
     <Compile Include="CustomTransitions\ScaleShowTransition.cs" />
-    <Compile Include="Factorys\InnerShadowFactory.cs" />
+    <Compile Include="Factorys\EventPipeBase.cs" />
+    <Compile Include="Factorys\TestEventPipe.cs" />
     <Compile Include="Helpers\CoreSocialistValuesHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Helpers\HostShadowPresenter.cs" />
     <Compile Include="Helpers\ImplicitHelper.cs" />
     <Compile Include="Helpers\ScrollGroupHelper.cs" />
+    <Compile Include="Helpers\Shadow.cs" />
     <Compile Include="Helpers\TransitionsHelper.cs" />
     <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Models\DelayExpressionAnimationSource.cs" />
@@ -164,6 +172,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\TipsRectangleHelper.cs" />
     <Compile Include="CustomTransitions\Bases\CustomTransitionBase.cs" />
+    <Compile Include="Services\Interfaces\INavigationBloomTransitionService.cs" />
+    <Compile Include="Services\NavigationBloomTransitionService.cs" />
+    <Compile Include="Styles\BorderlessResources.cs" />
+    <Compile Include="Styles\ChromeFlyoutMenuResources.cs" />
     <None Include="Targets\MaterialLibs.targets">
       <SubType>Designer</SubType>
     </None>
@@ -209,6 +221,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DropShadowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\HamburgerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -222,6 +238,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ToggleSwitcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Borderless.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ChromeFlyoutMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

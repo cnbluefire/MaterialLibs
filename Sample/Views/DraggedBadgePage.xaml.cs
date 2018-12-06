@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -28,8 +29,15 @@ namespace Sample.Views
         public DraggedBadgePage()
         {
             this.InitializeComponent();
-            var rnd = new Random();
+            rnd = new Random();
             list = new ObservableCollection<TestClass>();
+
+            this.Loaded += DraggedBadgePage_Loaded;
+        }
+
+        private async void DraggedBadgePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Yield();
             list.Add(new TestClass("1", rnd.Next(1, 100).ToString()));
             list.Add(new TestClass("2", rnd.Next(1, 100).ToString()));
             list.Add(new TestClass("3", rnd.Next(1, 100).ToString()));
@@ -44,6 +52,7 @@ namespace Sample.Views
         }
 
         ObservableCollection<TestClass> list { get; set; }
+        Random rnd { get; set; }
 
         private void _DragCompleted(object sender, MaterialLibs.Controls.DragCompletedEventArgs args)
         {
