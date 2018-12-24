@@ -100,7 +100,7 @@
                                                                 Background="{TemplateBinding Background}"
                                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                                RenderTransformOrigin="0.5,0.5" m_factory:PointerEventPipe.IsDisableMultipleClicks="True">
+                                                                RenderTransformOrigin="0.5,0.5">
                                                             <Grid.RenderTransform>
                                                                 <ScaleTransform x:Name="ContentBorderScale" />
                                                             </Grid.RenderTransform>

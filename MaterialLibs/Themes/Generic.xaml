@@ -13,5 +13,9 @@
         <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/SwipeBackView.xaml" />
         <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/ToggleSwitcher.xaml" />
         <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/DropShadowView.xaml" />
+        <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/Tab/Tab.xaml" />
+        <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/Tab/TabItem.xaml" />
+        <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/Tab/TabHeaderView.xaml" />
+        <ResourceDictionary Source="ms-appx:///MaterialLibs/Controls/Tab/TabHeaderItem.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

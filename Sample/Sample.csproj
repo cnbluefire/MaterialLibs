@@ -120,9 +120,6 @@
     <Compile Include="Views\CardViewPage.xaml.cs">
       <DependentUpon>CardViewPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChromeFlyoutPage.xaml.cs">
-      <DependentUpon>ChromeFlyoutPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DraggedBadgePage.xaml.cs">
       <DependentUpon>DraggedBadgePage.xaml</DependentUpon>
     </Compile>
@@ -135,8 +132,8 @@
     <Compile Include="Views\SwipeBackPage.xaml.cs">
       <DependentUpon>SwipeBackPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TipsRectanglePage.xaml.cs">
-      <DependentUpon>TipsRectanglePage.xaml</DependentUpon>
+    <Compile Include="Views\IndicatorPage.xaml.cs">
+      <DependentUpon>IndicatorPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ParticlePage.xaml.cs">
       <DependentUpon>ParticlePage.xaml</DependentUpon>
@@ -234,10 +231,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChromeFlyoutPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\DraggedBadgePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -254,7 +247,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TipsRectanglePage.xaml">
+    <Page Include="Views\IndicatorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

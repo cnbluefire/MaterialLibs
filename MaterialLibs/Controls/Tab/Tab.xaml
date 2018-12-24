@@ -1,0 +1,52 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MaterialLibs.Controls.Tab">
+    <Style TargetType="local:Tab">
+        <Setter Property="TabNavigation" Value="Once" />
+        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="SingleSelectionFollowsFocus" Value="True" />
+        <Setter Property="IndicatorColor" Value="{ThemeResource SystemAccentColor}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel AreScrollSnapPointsRegular="True" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Tab">
+                    <Grid
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="HeaderRoot">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <local:TabHeaderView x:Name="TabsHeaderView" Grid.Column="1"
+                                             HorizontalAlignment="Center" 
+                                             UseSystemFocusVisuals="False" SingleSelectionFollowsFocus="{TemplateBinding SingleSelectionFollowsFocus}"
+                                             ItemTemplate="{TemplateBinding HeaderTemplate}"
+                                             IndicatorColor="{TemplateBinding IndicatorColor}"
+                                             IndicatorHeight="{TemplateBinding IndicatorHeight}"
+                                             IndicatorWidth="{TemplateBinding IndicatorWidth}"/>
+                            <ContentPresenter x:Name="LeftHeader" Content="{TemplateBinding LeftHeader}" ContentTemplate="{TemplateBinding LeftHeaderTemplate}" />
+                            <ContentPresenter x:Name="RightHeader" Grid.Column="2" Content="{TemplateBinding RightHeader}" ContentTemplate="{TemplateBinding RightHeaderTemplate}" />
+                        </Grid>
+                        <Border x:Name="ContentBorder" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <ItemsPresenter />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

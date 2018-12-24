@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="Sample.Views.TipsRectanglePage"
+    x:Class="Sample.Views.IndicatorPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Sample.Views"
@@ -8,13 +8,13 @@
     xmlns:m_helper="using:MaterialLibs.Helpers"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+    <Grid >
         <ScrollViewer IsVerticalScrollChainingEnabled="True">
             <StackPanel Orientation="Vertical" Margin="20">
                 <TextBlock>ListView like PivotHeader use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Margin="40,10">
-                    <ListView ItemContainerStyle="{StaticResource PivotHeaderListViewItemContainerStyle}" ItemsSource="{x:Bind Items}" SelectedIndex="{Binding ElementName=DemoPivot,Path=SelectedIndex,Mode=TwoWay}" SelectionMode="Extended" 
-                              m_helper:TipsRectangleHelper.TipTargetName="FocusPipe"
+                    <ListView x:Name="DemoPivotHeaderList" ItemContainerStyle="{StaticResource PivotHeaderListViewItemContainerStyle}" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
+                              m_helper:IndicatorHelper.Name="BorderBackground"
                               ScrollViewer.IsVerticalScrollChainingEnabled="True" 
                               ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                               ScrollViewer.HorizontalScrollMode="Auto"
@@ -34,7 +34,7 @@
                 </Border>
                 <TextBlock>Pivot use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
-                    <Pivot x:Name="DemoPivot" Style="{StaticResource AnimationHeaderPivot}" ItemsSource="{x:Bind Items}">
+                    <Pivot x:Name="DemoPivot" Style="{StaticResource AnimationHeaderPivot}" ItemsSource="{x:Bind Items}" SelectedIndex="{Binding ElementName=DemoPivotHeaderList,Path=SelectedIndex,Mode=TwoWay}">
                         <Pivot.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Title}" />
@@ -57,7 +57,7 @@
                 <TextBlock>ListView use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
                     <ListView ItemContainerStyle="{StaticResource ListViewItemWithoutTipsContainerStyle}" ItemsSource="{x:Bind Items}"  SelectionMode="Extended" 
-                              m_helper:TipsRectangleHelper.TipTargetName="BorderBackground"
+                              m_helper:IndicatorHelper.Name="BorderBackground"
                               ScrollViewer.IsVerticalScrollChainingEnabled="True" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -68,7 +68,7 @@
                 </Border>
                 <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
                     <ListView ItemContainerStyle="{StaticResource ListViewItemWithTipsContainerStyle}" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
-                              m_helper:TipsRectangleHelper.TipTargetName="FocusPipe"
+                              m_helper:IndicatorHelper.Name="BorderBackground"
                               ScrollViewer.IsVerticalScrollChainingEnabled="True" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -80,7 +80,7 @@
                 <TextBlock>ListBox use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="300" Margin="40,10">
                     <ListBox ItemContainerStyle="{StaticResource ListBoxItemWithoutTipsContainerStyle}" ItemsSource="{x:Bind Items}"  SelectionMode="Extended" 
-                              m_helper:TipsRectangleHelper.TipTargetName="PressedBackground"
+                              m_helper:IndicatorHelper.Name="PressedBackground"
                               ScrollViewer.IsVerticalScrollChainingEnabled="True" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -92,7 +92,7 @@
                 <TextBlock>GridView use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
                     <GridView ItemContainerStyle="{StaticResource GridViewItemWithoutTipsContainerStyle}" ItemsSource="{x:Bind Items}" SelectionMode="Extended" 
-                              m_helper:TipsRectangleHelper.TipTargetName="BorderBackground"
+                              m_helper:IndicatorHelper.Name="BorderBackground"
                               ScrollViewer.IsVerticalScrollChainingEnabled="True" >
                         <GridView.ItemTemplate>
                             <DataTemplate>

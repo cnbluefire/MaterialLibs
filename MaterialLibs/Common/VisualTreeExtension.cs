@@ -76,5 +76,23 @@ namespace MaterialLibs.Common
             }
             return retValue;
         }
+
+        public static IList<T> VisualTreeFindAll<T>(this DependencyObject element)
+            where T : DependencyObject
+        {
+            List<T> retValues = new List<T>();
+            var childrenCount = VisualTreeHelper.GetChildrenCount(element);
+            for (var i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+                var type = child as T;
+                if (type != null)
+                {
+                    retValues.Add(type);
+                }
+                retValues.AddRange(VisualTreeFindAll<T>(child));
+            }
+            return retValues;
+        }
     }
 }

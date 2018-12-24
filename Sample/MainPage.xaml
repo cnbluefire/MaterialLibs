@@ -8,46 +8,30 @@
     xmlns:view="using:Sample.Views"
     xmlns:m_helper="using:MaterialLibs.Helpers"
     xmlns:m_control="using:MaterialLibs.Controls"
+    xmlns:m_tab="using:MaterialLibs.Controls.Tab"
     mc:Ignorable="d" Loaded="Page_Loaded">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="True">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="Normal"/>
-                <VisualState x:Name="Inline">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="601" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="_HamburgerView.DisplayMode" Value="Inline" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        <m_control:HamburgerView x:Name="_HamburgerView" PrimaryItemsSource="{x:Bind PrimaryList}" SecondaryItemsSource="{x:Bind SecondaryList}" LeftHeader="{Binding RelativeSource={RelativeSource Self},Path=SelectedItem}" IsBackButtonEnable="False" ItemClick="_HamburgerView_ItemClick" SelectionChanging="_HamburgerView_SelectionChanging" BackButtonVisibility="Collapsed" BackButtonClick="_HamburgerView_BackButtonClick" >
-            <m_control:HamburgerView.LeftHeaderTemplate>
-                <DataTemplate>
-                    <Grid >
-                        <TextBlock Margin="8,32,0,16" Style="{StaticResource SubheaderTextBlockStyle}" Text="{Binding Content}" />
-                    </Grid>
-                </DataTemplate>
-            </m_control:HamburgerView.LeftHeaderTemplate>
-            <m_control:HamburgerView.RightHeaderTemplate>
-                <DataTemplate>
-                    <Grid >
-                        <m_control:ToggleSwitcher FontFamily="Segoe MDL2 Assets" Margin="0,36,8,12"
-                                                  LeftContent="&#xE706;" RightContent="&#xE708;" 
-                                                  BorderThickness="0"
-                                                  SelectedBackground="White"
-                                                  SelectedForeground="{ThemeResource SystemControlForegroundAccentBrush}"
-                                                  Background="{ThemeResource SystemControlBackgroundAccentBrush}"
-                                                  Foreground="White"
-                                                  StateChanged="ToggleSwitcher_StateChanged" Loaded="ToggleSwitcher_Loaded" />
-                    </Grid>
-                </DataTemplate>
-            </m_control:HamburgerView.RightHeaderTemplate>
-            <Frame x:Name="ContentFrame" Margin="8,0,8,0" Navigated="ContentFrame_Navigated" />
-        </m_control:HamburgerView>
+    <Grid m_helper:TransitionsHelper.Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <m_tab:Tab x:Name="MainTab" Grid.Row="1" Loaded="MainTab_Loaded">
+            <m_tab:Tab.RightHeader>
+                <Grid>
+                    <m_control:ToggleSwitcher FontFamily="Segoe MDL2 Assets" Margin="5,5"
+                                    LeftContent="&#xE706;" RightContent="&#xE708;" 
+                                    BorderThickness="0"
+                                    SelectedBackground="White"
+                                    SelectedForeground="{ThemeResource SystemControlForegroundAccentBrush}"
+                                    Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+                                    Foreground="White"
+                                    StateChanged="ToggleSwitcher_StateChanged" Loaded="ToggleSwitcher_Loaded" />
+                </Grid>
+            </m_tab:Tab.RightHeader>
+        </m_tab:Tab>
+
+
         <Grid x:Name="AppTitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0" Background="Transparent" />
     </Grid>
 </Page>

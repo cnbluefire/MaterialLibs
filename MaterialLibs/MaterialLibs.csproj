@@ -139,6 +139,13 @@
     <Compile Include="Controls\HamburgerView.cs" />
     <Compile Include="Controls\HamburgerViewItem.cs" />
     <Compile Include="Controls\SwipeBackView.cs" />
+    <Compile Include="Controls\Tab\ITabHeader.cs" />
+    <Compile Include="Controls\Tab\ITabItem.cs" />
+    <Compile Include="Controls\Tab\SelectionChangedEvent.cs" />
+    <Compile Include="Controls\Tab\Tab.cs" />
+    <Compile Include="Controls\Tab\TabHeaderItem.cs" />
+    <Compile Include="Controls\Tab\TabHeaderView.cs" />
+    <Compile Include="Controls\Tab\TabItem.cs" />
     <Compile Include="Controls\ToggleSwitcher.cs" />
     <Compile Include="CustomTransitions\Bases\CustomTransitionMode.cs" />
     <Compile Include="CustomTransitions\Bases\HideTransitionBase.cs" />
@@ -152,12 +159,11 @@
     <Compile Include="CustomTransitions\OpacityShowTransition.cs" />
     <Compile Include="CustomTransitions\ScaleHideTransition.cs" />
     <Compile Include="CustomTransitions\ScaleShowTransition.cs" />
-    <Compile Include="Factorys\EventPipeBase.cs" />
-    <Compile Include="Factorys\TestEventPipe.cs" />
     <Compile Include="Helpers\CoreSocialistValuesHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Helpers\HostShadowPresenter.cs" />
     <Compile Include="Helpers\ImplicitHelper.cs" />
+    <Compile Include="Helpers\IndicatorHelper.cs" />
     <Compile Include="Helpers\ScrollGroupHelper.cs" />
     <Compile Include="Helpers\Shadow.cs" />
     <Compile Include="Helpers\TransitionsHelper.cs" />
@@ -172,8 +178,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\TipsRectangleHelper.cs" />
     <Compile Include="CustomTransitions\Bases\CustomTransitionBase.cs" />
-    <Compile Include="Services\Interfaces\INavigationBloomTransitionService.cs" />
-    <Compile Include="Services\NavigationBloomTransitionService.cs" />
     <Compile Include="Styles\BorderlessResources.cs" />
     <Compile Include="Styles\ChromeFlyoutMenuResources.cs" />
     <None Include="Targets\MaterialLibs.targets">
@@ -237,6 +241,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Tab\Tab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Tab\TabHeaderItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Tab\TabHeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Tab\TabItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\ToggleSwitcher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -254,7 +274,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Factorys\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
