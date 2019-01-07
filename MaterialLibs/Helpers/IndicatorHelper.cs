@@ -41,7 +41,6 @@ namespace MaterialLibs.Helpers
                 {
                     if (d is Selector selector)
                     {
-                        Debug.WriteLine(selector.SelectedIndex);
                         selector.SelectionChanged -= OnSelectionChanged;
                         selector.SelectionChanged += OnSelectionChanged;
                     }
@@ -93,7 +92,8 @@ namespace MaterialLibs.Helpers
             if (e.AddedItems.Count != 1 || e.RemovedItems.Count != 1) return;
             if (sender is Selector selector)
             {
-                TryStartSelectorAnimation(selector, e.AddedItems.FirstOrDefault(), e.RemovedItems.FirstOrDefault());
+                if (IsLoaded(selector))
+                    TryStartSelectorAnimation(selector, e.AddedItems.FirstOrDefault(), e.RemovedItems.FirstOrDefault());
             }
             if (sender is Pivot pivot)
             {

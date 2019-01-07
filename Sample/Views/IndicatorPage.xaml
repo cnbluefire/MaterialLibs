@@ -34,7 +34,7 @@
                 </Border>
                 <TextBlock>Pivot use TipsRectangleHelper:</TextBlock>
                 <Border BorderBrush="Black" BorderThickness="1" Height="400" Margin="40,10">
-                    <Pivot x:Name="DemoPivot" Style="{StaticResource AnimationHeaderPivot}" ItemsSource="{x:Bind Items}" SelectedIndex="{Binding ElementName=DemoPivotHeaderList,Path=SelectedIndex,Mode=TwoWay}">
+                    <Pivot x:Name="DemoPivot" Style="{StaticResource AnimationHeaderPivot}" ItemsSource="{x:Bind Items}" SelectedIndex="{Binding ElementName=DemoPivotHeaderList,Path=SelectedIndex,Mode=OneWay}">
                         <Pivot.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Title}" />

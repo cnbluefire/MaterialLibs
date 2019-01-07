@@ -35,7 +35,6 @@ namespace Sample.Views
 
         private async void TipsRectanglePage_Loaded(object sender, RoutedEventArgs e)
         {
-            await Task.Yield();
             for (int i = 0; i < 20; i++)
             {
                 Items.Add(new ListViewModel() { Title = "Item" + i, Content = "This is Item" + i, Image = new Uri("ms-appx:///Assets/imgs/" + i + ".jpg") });
