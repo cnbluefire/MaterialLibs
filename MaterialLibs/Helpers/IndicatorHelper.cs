@@ -12,6 +12,7 @@ using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 
@@ -125,50 +126,12 @@ namespace MaterialLibs.Helpers
 
             if (newIndicator != null)
             {
-
                 if (oldIndicator != null)
                 {
-                    var oldContainerState = GetCurrentState(oldContainer, "CommonStates");
-                    var newContainerState = GetCurrentState(newContainer, "CommonStates");
-
-                    var oldVisibility = oldIndicator.Visibility;
-                    var oldOpacity = oldIndicator.Opacity;
-
-                    bool HasChanged = oldVisibility != newIndicator.Visibility || oldOpacity != newIndicator.Opacity;
-
-                    if (HasChanged)
-                    {
-                        oldIndicator.Visibility = newIndicator.Visibility;
-                        oldIndicator.Opacity = newIndicator.Opacity;
-                    }
-
                     var token = selector.GetHashCode().ToString();
-                    TryStartAnimation(token, newIndicator, oldIndicator);
-
-                    if (HasChanged)
-                    {
-                        //为了动画连贯性，新旧指示器至少有很小一段时间同时存在，但是这段时间里控件的VisualState可能会发生变化
-                        //所以：
-                        //1.先获取当前也就是最终State
-                        //2.进行延时
-                        //3.将Container还原到延时之前的State
-                        //4.将Visibility和Opacity设置回最终状态的值
-                        //5.将Container设置为最终State
-                        var lastOldState = GetCurrentState(oldContainer, "CommonStates");
-                        if (oldContainer is Control && oldContainerState != null && lastOldState != null)
-                        {
-                            await Task.Delay(50);
-                            VisualStateManager.GoToState((Control)oldContainer, oldContainerState.Name, false);
-                            oldIndicator.Visibility = oldVisibility;
-                            oldIndicator.Opacity = oldOpacity;
-                            VisualStateManager.GoToState((Control)oldContainer, lastOldState.Name, false);
-                        }
-                    }
+                    //TryStartAnimation(token, newIndicator, oldIndicator);
+                    TryStartVisualAnimation(newIndicator, oldIndicator);
                 }
-            }
-            else
-            {
-                VisualStateManager.GoToState((Control)newContainer, "Selected", false);
             }
         }
 
@@ -238,14 +201,12 @@ namespace MaterialLibs.Helpers
 
         private static void TryStartPivotHeaderAnimation(PivotHeaderPanel panel, FrameworkElement NewIndicator, FrameworkElement OldIndicator)
         {
-            OldIndicator.Visibility = Visibility.Visible;
-            NewIndicator.Visibility = Visibility.Visible;
-
-            var token = panel.GetHashCode().ToString();
-            TryStartAnimation(token, NewIndicator, OldIndicator);
-
             OldIndicator.Visibility = Visibility.Collapsed;
             NewIndicator.Visibility = Visibility.Visible;
+
+            //TryStartAnimation(token, NewIndicator, OldIndicator);
+            TryStartVisualAnimation(NewIndicator, OldIndicator);
+
         }
 
         private static VisualState GetCurrentState(FrameworkElement element, string GroupName)
@@ -253,6 +214,77 @@ namespace MaterialLibs.Helpers
             if (VisualTreeHelper.GetChildrenCount(element) > 0 && VisualTreeHelper.GetChild(element, 0) is FrameworkElement child)
                 return VisualStateManager.GetVisualStateGroups(child).FirstOrDefault(c => c.Name == GroupName)?.CurrentState;
             return null;
+        }
+
+        private static void CreateDuration(FrameworkElement element, string groupName, string From, string To)
+        {
+            if (VisualTreeHelper.GetChildrenCount(element) > 0 && VisualTreeHelper.GetChild(element, 0) is FrameworkElement child)
+            {
+                var group = VisualStateManager.GetVisualStateGroups(child).FirstOrDefault(c => c.Name == groupName);
+                if (group != null)
+                {
+                    var trans = group.Transitions.FirstOrDefault(c => c.From == From && c.To == To);
+                    if (trans != null)
+                    {
+                        if (trans.GeneratedDuration.HasTimeSpan && trans.GeneratedDuration.TimeSpan < TimeSpan.FromSeconds(0.01)
+                            || !trans.GeneratedDuration.HasTimeSpan)
+                        {
+                            trans.GeneratedDuration = new Duration(TimeSpan.FromSeconds(0.01));
+                        }
+                    }
+                    else
+                    {
+                        group.Transitions.Add(new VisualTransition()
+                        {
+                            From = From,
+                            To = To,
+                            GeneratedDuration = new Duration(TimeSpan.FromSeconds(0.01))
+                        });
+                    }
+                }
+            }
+        }
+
+        private static void TryStartVisualAnimation(FrameworkElement newIndicator, FrameworkElement oldIndicator)
+        {
+            var compositor = Window.Current.Compositor;
+
+            var oldSize = new Vector2((float)oldIndicator.ActualWidth, (float)oldIndicator.ActualHeight);
+            var newSize = new Vector2((float)newIndicator.ActualWidth, (float)newIndicator.ActualHeight);
+
+            var oldScale = oldSize / newSize;
+
+            var oldOffset = oldIndicator.TransformToVisual(newIndicator).TransformPoint(new Windows.Foundation.Point(0, 0)).ToVector2();
+
+            var old_target = ElementCompositionPreview.GetElementVisual(oldIndicator);
+            var new_target = ElementCompositionPreview.GetElementVisual(newIndicator);
+
+            var duration = TimeSpan.FromSeconds(0.23);
+            var delay = TimeSpan.FromSeconds(0.01);
+
+            var centerAnimation = compositor.CreateVector3KeyFrameAnimation();
+            centerAnimation.InsertExpressionKeyFrame(0f, "Vector3(new_target.Size.X / 2,new_target.Size.Y / 2,0f)");
+            centerAnimation.InsertExpressionKeyFrame(1f, "Vector3(new_target.Size.X / 2,new_target.Size.Y / 2,0f)");
+            centerAnimation.SetReferenceParameter("new_target", new_target);
+            centerAnimation.Duration = duration;
+
+            var offsetAnimation = compositor.CreateVector2KeyFrameAnimation();
+            offsetAnimation.InsertExpressionKeyFrame(0f, "oldOffset");
+            offsetAnimation.InsertExpressionKeyFrame(1f, "This.StartingValue");
+            offsetAnimation.SetVector2Parameter("oldOffset", oldOffset);
+            offsetAnimation.Duration = duration;
+
+            var scaleAnimation = compositor.CreateVector2KeyFrameAnimation();
+            scaleAnimation.InsertExpressionKeyFrame(0f, "oldScale");
+            scaleAnimation.InsertExpressionKeyFrame(1f, "This.StartingValue");
+            scaleAnimation.SetVector2Parameter("oldScale", oldScale);
+            scaleAnimation.Duration = duration;
+
+            ElementCompositionPreview.SetIsTranslationEnabled(newIndicator, true);
+
+            new_target.StartAnimation("CenterPoint", centerAnimation);
+            new_target.StartAnimation("Translation.XY", offsetAnimation);
+            new_target.StartAnimation("Scale.XY", scaleAnimation);
         }
 
         private static void TryStartAnimation(string token, FrameworkElement newIndicator, FrameworkElement oldIndicator)
