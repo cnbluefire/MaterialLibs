@@ -32,6 +32,7 @@ namespace MaterialLibs.Controls.Tab
 
         private List<double> ContainerWidths = new List<double>();
 
+        private Grid LayoutRoot;
         private ScrollViewer ScrollViewer;
 
         private Compositor Compositor => Window.Current.Compositor;
@@ -55,7 +56,7 @@ namespace MaterialLibs.Controls.Tab
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
+            LayoutRoot = GetTemplateChild("LayoutRoot") as Grid;
             ScrollViewer = GetTemplateChild("ScrollViewer") as ScrollViewer;
             ScrollViewerVisual = ElementCompositionPreview.GetElementVisual(ScrollViewer);
             HeaderScrollPropertySet = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(ScrollViewer);
@@ -127,6 +128,11 @@ namespace MaterialLibs.Controls.Tab
 
                 Indicator = Compositor.CreateSpriteVisual();
                 Indicator.Brush = Window.Current.Compositor.CreateColorBrush(IndicatorColor);
+            }
+
+            if(LayoutRoot != null)
+            {
+                ElementCompositionPreview.GetElementVisual(LayoutRoot).Clip = Compositor.CreateInsetClip();
             }
 
             TrySetupExpression();

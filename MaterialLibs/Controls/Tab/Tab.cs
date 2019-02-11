@@ -438,10 +438,12 @@ namespace MaterialLibs.Controls.Tab
                 tracker.MaxPosition = new Vector3(Convert.ToSingle(ItemsPanelRoot.ActualWidth + this.ActualWidth / 3), 0f, 0f);
             }
 
-            SizeChangedToken?.Cancel();
-            SizeChangedToken = new CancellationTokenSource();
-            Task.Run(() => Task.Delay(50), SizeChangedToken.Token)
-                .ContinueWith((t) => SyncSelectedIndex(SelectedIndex, true), TaskScheduler.FromCurrentSynchronizationContext());
+            SyncSelectedIndex(SelectedIndex, true);
+
+            //SizeChangedToken?.Cancel();
+            //SizeChangedToken = new CancellationTokenSource();
+            //Task.Run(() => Task.Delay(50), SizeChangedToken.Token)
+            //    .ContinueWith((t) => SyncSelectedIndex(SelectedIndex, true), TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         #endregion Events Methods

@@ -33,13 +33,13 @@ namespace Sample.Views
 
         }
 
-        private async void TipsRectanglePage_Loaded(object sender, RoutedEventArgs e)
+        private void TipsRectanglePage_Loaded(object sender, RoutedEventArgs e)
         {
             for (int i = 0; i < 20; i++)
             {
                 Items.Add(new ListViewModel() { Title = "Item" + i, Content = "This is Item" + i, Image = new Uri("ms-appx:///Assets/imgs/" + i + ".jpg") });
-                await Task.Yield();
             }
+            Items.Insert(4,new ListViewModel() { Title = "哈哈哈哈嘻嘻嘻嘻我就是这么长略略略233333", Content = "再说一次我就是这么长23333" });
         }
 
         ObservableCollection<ListViewModel> Items { get; set; }

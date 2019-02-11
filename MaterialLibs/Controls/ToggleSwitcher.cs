@@ -40,8 +40,6 @@ namespace MaterialLibs.Controls
 
         Storyboard SelectedPieToLeftStoryboard;
         Storyboard SelectedPieToRightStoryboard;
-        Storyboard SelectedContentGridClipToLeftStoryboard;
-        Storyboard SelectedContentGridClipToRightStoryboard;
 
         DoubleAnimation SelectedPieToLeftAnimation;
         DoubleAnimation SelectedPieToRightAnimation;
@@ -168,11 +166,9 @@ namespace MaterialLibs.Controls
         {
             SelectedPieToLeftStoryboard = new Storyboard();
             SelectedPieToRightStoryboard = new Storyboard();
-            SelectedContentGridClipToLeftStoryboard = new Storyboard();
-            SelectedContentGridClipToRightStoryboard = new Storyboard();
 
             var easingFunc = new CubicEase() { EasingMode = EasingMode.EaseOut };
-            var Duration = TimeSpan.FromSeconds(0.2d);
+            var Duration = TimeSpan.FromSeconds(0.1d);
 
             SelectedPieToLeftAnimation = new DoubleAnimation() { EasingFunction = easingFunc, To = 0, Duration = Duration };
             SelectedPieToRightAnimation = new DoubleAnimation() { EasingFunction = easingFunc, To = PieMaxTranslationX, Duration = Duration };
@@ -190,9 +186,28 @@ namespace MaterialLibs.Controls
             Storyboard.SetTargetProperty(SelectedContentGridClipToRightAnimation, "X");
 
             SelectedPieToLeftStoryboard.Children.Add(SelectedPieToLeftAnimation);
+            SelectedPieToLeftStoryboard.Children.Add(SelectedContentGridClipToLeftAnimation);
             SelectedPieToRightStoryboard.Children.Add(SelectedPieToRightAnimation);
-            SelectedContentGridClipToLeftStoryboard.Children.Add(SelectedContentGridClipToLeftAnimation);
-            SelectedContentGridClipToRightStoryboard.Children.Add(SelectedContentGridClipToRightAnimation);
+            SelectedPieToRightStoryboard.Children.Add(SelectedContentGridClipToRightAnimation);
+
+            SelectedPieToLeftStoryboard.Completed += SelectedPieAnimation_Completed;
+            SelectedPieToRightStoryboard.Completed += SelectedPieAnimation_Completed;
+        }
+
+        private void SelectedPieAnimation_Completed(object sender, object e)
+        {
+            if (IsCoreChange)
+            {
+                if (SelectedPieTrans.X > PieMaxTranslationX / 2)
+                {
+                    State = ToggleSwitcherState.Right;
+                }
+                else
+                {
+                    State = ToggleSwitcherState.Left;
+                }
+                IsCoreChange = false;
+            }
         }
 
         private void UpdateSize()
@@ -252,12 +267,10 @@ namespace MaterialLibs.Controls
                     if (State == ToggleSwitcherState.Left)
                     {
                         SelectedPieToLeftStoryboard.Begin();
-                        SelectedContentGridClipToLeftStoryboard.Begin();
                     }
                     else
                     {
                         SelectedPieToRightStoryboard.Begin();
-                        SelectedContentGridClipToRightStoryboard.Begin();
                     }
                 }
                 else
@@ -266,16 +279,14 @@ namespace MaterialLibs.Controls
                     if (SelectedPieTrans.X > PieMaxTranslationX / 2)
                     {
                         SelectedPieToRightStoryboard.Begin();
-                        SelectedContentGridClipToRightStoryboard.Begin();
-                        State = ToggleSwitcherState.Right;
+                        //State = ToggleSwitcherState.Right;
                     }
                     else
                     {
                         SelectedPieToLeftStoryboard.Begin();
-                        SelectedContentGridClipToLeftStoryboard.Begin();
-                        State = ToggleSwitcherState.Left;
+                        //State = ToggleSwitcherState.Left;
                     }
-                    IsCoreChange = false;
+                    //IsCoreChange = false;
                 }
             }
         }
@@ -366,11 +377,9 @@ namespace MaterialLibs.Controls
                                 {
                                     case ToggleSwitcherState.Left:
                                         sender.SelectedPieToLeftStoryboard?.Begin();
-                                        sender.SelectedContentGridClipToLeftStoryboard?.Begin();
                                         break;
                                     case ToggleSwitcherState.Right:
                                         sender.SelectedPieToRightStoryboard?.Begin();
-                                        sender.SelectedContentGridClipToRightStoryboard?.Begin();
                                         break;
                                 }
                             }

@@ -31,9 +31,8 @@ namespace Sample.Views
 
         }
 
-        private async void BigbangPage_Loaded(object sender, RoutedEventArgs e)
+        private void BigbangPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await Task.Yield();
             for (int i = 0; i < 50; i++)
             {
                 list.Add(rnd.Next(100000).ToString());

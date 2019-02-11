@@ -11,7 +11,7 @@
     xmlns:m_tab="using:MaterialLibs.Controls.Tab"
     mc:Ignorable="d" Loaded="Page_Loaded">
 
-    <Grid m_helper:TransitionsHelper.Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="True">
+    <Grid m_helper:TransitionsHelper.Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
