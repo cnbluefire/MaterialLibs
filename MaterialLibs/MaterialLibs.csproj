@@ -138,6 +138,9 @@
     <Compile Include="Controls\DropShadowView.cs" />
     <Compile Include="Controls\HamburgerView.cs" />
     <Compile Include="Controls\HamburgerViewItem.cs" />
+    <Compile Include="Controls\PivotHeader\PivotHeader.cs" />
+    <Compile Include="Controls\PivotHeader\PivotHeaderItem.cs" />
+    <Compile Include="Controls\PivotHeader\PivotHeaderView.cs" />
     <Compile Include="Controls\SwipeBackView.cs" />
     <Compile Include="Controls\Tab\ITabHeader.cs" />
     <Compile Include="Controls\Tab\ITabItem.cs" />
@@ -234,6 +237,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ParticleCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PivotHeader\PivotHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PivotHeader\PivotHeaderItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

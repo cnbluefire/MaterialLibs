@@ -6,12 +6,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:m_helper="using:MaterialLibs.Helpers"
+    xmlns:m_controls="using:MaterialLibs.Controls.PivotHeader"
     mc:Ignorable="d">
 
     <Grid >
         <ScrollViewer IsVerticalScrollChainingEnabled="True">
             <StackPanel Orientation="Vertical" Margin="20">
                 <ToggleSwitch x:Name="ScaleToggle" IsOn="True">IsScaleEnable</ToggleSwitch>
+                <m_controls:PivotHeader ItemsSource="{x:Bind Items}"
+                                        m_helper:IndicatorHelper.Name="SelectionIndicatorGrid"
+                                        m_helper:IndicatorHelper.IsScaleEnabled="{Binding ElementName=ScaleToggle,Path=IsOn}">
+                    <m_controls:PivotHeader.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}" />
+                        </DataTemplate>
+                    </m_controls:PivotHeader.ItemTemplate>
+                </m_controls:PivotHeader>
+                
                 <TextBlock>ListView like PivotHeader use TipsRectangleHelper:</TextBlock>
                 <Grid BorderBrush="Black" BorderThickness="1" Margin="40,10">
                     <Grid.RowDefinitions>
