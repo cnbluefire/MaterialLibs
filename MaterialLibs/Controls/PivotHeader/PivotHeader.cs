@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,14 +18,31 @@ using Windows.UI.Xaml.Media;
 
 namespace MaterialLibs.Controls.PivotHeader
 {
-    public class PivotHeader : ItemsControl
+    public class PivotHeader : ListView
     {
-        //private object lastItem;
-
         public PivotHeader()
         {
             this.DefaultStyleKey = typeof(PivotHeader);
+            RegisterPropertyChangedCallback(SelectedIndexProperty, SelectedIndexPropertyChanged);
+            Loaded += PivotHeader_Loaded;
         }
+
+        #region Fields
+
+        private int oldSelectedIndex = -1;
+
+        #endregion Fields
+
+        #region Property Changed Events
+
+        private void SelectedIndexPropertyChanged(DependencyObject sender, DependencyProperty dp)
+        {
+            var index = (int)sender.GetValue(dp);
+            TryStartAnimationWithIndex(oldSelectedIndex, index);
+            oldSelectedIndex = index;
+        }
+
+        #endregion Property Changed Events
 
         #region Const Values
 
@@ -43,8 +61,12 @@ namespace MaterialLibs.Controls.PivotHeader
 
         #endregion Composition Resource
 
-
         #region ItemsControl Overrides
+
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+        }
 
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
@@ -56,193 +78,22 @@ namespace MaterialLibs.Controls.PivotHeader
             return new PivotHeaderItem();
         }
 
-        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-        {
-            base.PrepareContainerForItemOverride(element, item);
-            if (element is PivotHeaderItem container)
-            {
-                container.PointerExited += Container_PointerExited;
-                container.PointerEntered += Container_PointerEntered;
-                container.PointerPressed += Container_PointerPressed;
-                container.PointerReleased += Container_PointerReleased;
-                container.PointerCaptureLost += Container_PointerCaptureLost;
-            }
-        }
-
-        protected override void ClearContainerForItemOverride(DependencyObject element, object item)
-        {
-            base.ClearContainerForItemOverride(element, item);
-            if (element is PivotHeaderItem container)
-            {
-                container.PointerExited -= Container_PointerExited;
-                container.PointerEntered -= Container_PointerEntered;
-                container.PointerPressed -= Container_PointerPressed;
-                container.PointerReleased -= Container_PointerReleased;
-                container.PointerCaptureLost -= Container_PointerCaptureLost;
-            }
-        }
-
         #endregion ItemsControl Overrides
 
-        #region Container Event Methods
+        #region Event Methods
 
-        private void Container_PointerEntered(object sender, PointerRoutedEventArgs e)
+        private void PivotHeader_Loaded(object sender, RoutedEventArgs e)
         {
-            ((PivotHeaderItem)sender).UpdateState();
-        }
-
-        private void Container_PointerExited(object sender, PointerRoutedEventArgs e)
-        {
-            ((PivotHeaderItem)sender).UpdateState();
-        }
-
-        private void Container_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            ((PivotHeaderItem)sender).UpdateState();
-        }
-
-        private void Container_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            var container = (PivotHeaderItem)sender;
-            container.IsSelected = true;
-            container.UpdateState();
-            SelectedIndex = IndexFromContainer(container);
-        }
-
-        private void Container_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
-        {
-            ((PivotHeaderItem)sender).UpdateState();
-        }
-
-        #endregion Container Event Methods
-
-        #region Dependency Properties
-
-        public int SelectedIndex
-        {
-            get { return (int)GetValue(SelectedIndexProperty); }
-            set { SetValue(SelectedIndexProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedIndexProperty =
-            DependencyProperty.Register("SelectedIndex", typeof(int), typeof(PivotHeader), new PropertyMetadata(-1, (s, a) =>
+            if (SelectedIndex > -1)
             {
-                if (a.OldValue != a.NewValue)
+                if (ContainerFromIndex(SelectedIndex) is PivotHeaderItem container)
                 {
-                    if (s is PivotHeader sender)
-                    {
-                        var newIndex = (int)a.NewValue;
-                        var oldIndex = (int)a.OldValue;
-
-                        if (newIndex < -1)
-                        {
-                            throw new IndexOutOfRangeException();
-                        }
-
-                        object newItem = null;
-
-                        if (oldIndex > -1 && sender.ContainerFromIndex((int)a.OldValue) is PivotHeaderItem oldContainer)
-                        {
-                            oldContainer.IsSelected = false;
-                        }
-
-                        //get new item
-                        if (newIndex > -1)
-                        {
-                            if (sender.ContainerFromIndex(newIndex) is PivotHeaderItem newContainer)
-                            {
-                                newContainer.IsSelected = true;
-
-                                newItem = sender.ItemFromContainer(newContainer);
-
-                                var oldItem = sender.SelectedItem;
-                                sender.SelectedItem = newItem;
-                                sender.TryStartAnimationWithIndex(oldIndex, newIndex);
-                                sender.OnSelectionChanged(oldItem, newItem);
-                            }
-                            else
-                            {
-                                throw new ArgumentException("Value does not fall within the expected range.");
-                            }
-                        }
-                        else if (newIndex == -1)
-                        {
-                            var oldItem = sender.SelectedItem;
-                            sender.SelectedItem = null;
-                            sender.OnSelectionChanged(oldItem, sender.SelectedItem);
-                        }
-                        else
-                        {
-                            throw new ArgumentException("Value does not fall within the expected range.");
-                        }
-                    }
+                    container.IsSelected = true;
                 }
-            }));
-
-
-
-        public object SelectedItem
-        {
-            get { return (object)GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
+            }
         }
 
-        public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedItem", typeof(object), typeof(PivotHeader), new PropertyMetadata(null, (s, a) =>
-            {
-                if (a.OldValue != a.NewValue)
-                {
-                    if (s is PivotHeader sender)
-                    {
-                        if (a.NewValue == null)
-                        {
-                            sender.SelectedIndex = -1;
-                        }
-                        else
-                        {
-                            var container = sender.ContainerFromItem(a.NewValue);
-                            if (container == null)
-                            {
-                                sender.SelectedItem = null;
-                            }
-                            else
-                            {
-                                sender.SelectedIndex = sender.IndexFromContainer(container);
-                            }
-                        }
-                    }
-                }
-            }));
-
-
-
-        public Pivot Target
-        {
-            get { return (Pivot)GetValue(TargetProperty); }
-            set { SetValue(TargetProperty, value); }
-        }
-
-        public static readonly DependencyProperty TargetProperty =
-            DependencyProperty.Register("Target", typeof(Pivot), typeof(PivotHeader), new PropertyMetadata(null, (s, a) =>
-            {
-
-            }));
-
-
-
-
-        #endregion Dependency Properties
-
-        #region Events
-
-        protected virtual void OnSelectionChanged(object oldItem, object newItem)
-        {
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(oldItem, newItem));
-        }
-
-        public event SelectionChangedEventHandler SelectionChanged;
-
-        #endregion Events
+        #endregion Event Methods
 
         #region Compositions
 
@@ -253,11 +104,10 @@ namespace MaterialLibs.Controls.PivotHeader
 
         private void TryStartAnimationWithIndex(int oldIndex, int newIndex)
         {
-            var oldContainer = ContainerFromIndex(oldIndex) as PivotHeaderItem;
-            var newContainer = ContainerFromIndex(newIndex) as PivotHeaderItem;
 
-            if (oldContainer == null)
+            if (oldIndex == -1)
             {
+                var newContainer = ContainerFromIndex(newIndex) as PivotHeaderItem;
                 if (newContainer != null)
                 {
                     newContainer.IsSelected = true;
@@ -266,15 +116,18 @@ namespace MaterialLibs.Controls.PivotHeader
             }
             else
             {
+                var oldContainer = ContainerFromIndex(oldIndex) as PivotHeaderItem;
+                var newContainer = ContainerFromIndex(newIndex) as PivotHeaderItem;
+
                 oldContainer.IsSelected = false;
-            }
 
-            if (newContainer != null)
-            {
-                TryStartAnimationWithContainer(oldContainer, newContainer);
-                newContainer.IsSelected = true;
+                if (newContainer != null)
+                {
+                    TryStartAnimationWithContainer(oldContainer, newContainer);
+                    newContainer.IsSelected = true;
+                    newContainer.StartBringIntoView();
+                }
             }
-
         }
 
         private static void ResetCompositionValue(FrameworkElement element)
@@ -367,22 +220,5 @@ namespace MaterialLibs.Controls.PivotHeader
             new_target.StartAnimation("Scale.XY", scaleAnimation);
         }
         #endregion Compositions
-    }
-
-    public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
-
-
-    public class SelectionChangedEventArgs
-    {
-        public SelectionChangedEventArgs(object oldItem, object newItem)
-        {
-            OldItem = oldItem;
-            NewItem = newItem;
-        }
-
-
-        public object OldItem { get; }
-
-        public object NewItem { get; }
     }
 }

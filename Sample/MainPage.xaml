@@ -9,6 +9,8 @@
     xmlns:m_helper="using:MaterialLibs.Helpers"
     xmlns:m_control="using:MaterialLibs.Controls"
     xmlns:m_tab="using:MaterialLibs.Controls.Tab"
+    xmlns:helper="using:Simple.Helpers"
+    xmlns:m_pivot="using:MaterialLibs.Controls.PivotHeader"
     mc:Ignorable="d" Loaded="Page_Loaded">
 
     <Grid m_helper:TransitionsHelper.Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" m_helper:CoreSocialistValuesHelper.IsCoreSocialistValuesEnable="False">
@@ -16,22 +18,33 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <m_tab:Tab x:Name="MainTab" Grid.Row="1" Loaded="MainTab_Loaded">
-            <m_tab:Tab.RightHeader>
-                <Grid>
-                    <m_control:ToggleSwitcher FontFamily="Segoe MDL2 Assets" Margin="5,5"
-                                    LeftContent="&#xE706;" RightContent="&#xE708;" 
+        <Grid Grid.Row="1">
+            <m_pivot:PivotHeaderView>
+                <m_pivot:PivotHeaderView.RightHeader>
+                    <m_control:ToggleSwitcher Grid.Column="1" FontFamily="Segoe MDL2 Assets" Margin="5,2" Height="36"
+                                    LeftContent="&#xE706;" RightContent="&#xE708;" FontSize="12"
                                     BorderThickness="0"
                                     SelectedBackground="White"
                                     SelectedForeground="{ThemeResource SystemControlForegroundAccentBrush}"
                                     Background="{ThemeResource SystemControlBackgroundAccentBrush}"
                                     Foreground="White"
                                     StateChanged="ToggleSwitcher_StateChanged" Loaded="ToggleSwitcher_Loaded" />
-                </Grid>
-            </m_tab:Tab.RightHeader>
-        </m_tab:Tab>
 
-
-        <Grid x:Name="AppTitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0" Background="Transparent" />
+                </m_pivot:PivotHeaderView.RightHeader>
+                <Pivot x:Name="MainPivot" ItemsSource="{x:Bind Pages}" >
+                    <Pivot.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}" />
+                        </DataTemplate>
+                    </Pivot.HeaderTemplate>
+                    <Pivot.ItemTemplate>
+                        <DataTemplate>
+                            <Frame helper:FrameHelper.NavigateType="{Binding PageType}" />
+                        </DataTemplate>
+                    </Pivot.ItemTemplate>
+                </Pivot>
+            </m_pivot:PivotHeaderView>
+        </Grid>
+        <Grid x:Name="AppTitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" />
     </Grid>
 </Page>
