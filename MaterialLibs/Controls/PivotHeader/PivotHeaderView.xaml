@@ -85,6 +85,7 @@
     <Thickness x:Key="PivotHeaderViewHeight">40</Thickness>
 
     <Style TargetType="local:PivotHeaderView">
+        <Setter Property="HeaderBackground" Value="{ThemeResource PivotHeaderViewBackground}" />
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -108,8 +109,8 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+                            <local:PivotHeader x:Name="PivotHeader" Grid.Column="1" ItemContainerStyle="{TemplateBinding ItemContainerStyle}" Background="{TemplateBinding HeaderBackground}" SelectionMode="Single"/>
                             <ContentPresenter x:Name="LeftHeaderContentPresenter" Content="{TemplateBinding LeftHeader}" ContentTemplate="{TemplateBinding LeftHeaderTemplate}" />
-                            <local:PivotHeader x:Name="PivotHeader" Grid.Column="1" ItemContainerStyle="{TemplateBinding ItemContainerStyle}" SelectionMode="Single"/>
                             <ContentPresenter x:Name="RightHeaderContentPresenter" Grid.Column="2" Content="{TemplateBinding RightHeader}" ContentTemplate="{TemplateBinding RightHeaderTemplate}" />
                         </Grid>
                         <ContentPresenter x:Name="PivotContentPresenter" Grid.Row="1" Content="{TemplateBinding Pivot}" />

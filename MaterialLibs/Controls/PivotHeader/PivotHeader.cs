@@ -73,7 +73,7 @@ namespace MaterialLibs.Controls.PivotHeader
                 {
                     TryStartAnimationWithContainer(oldContainer, newContainer);
                     newContainer.IsSelected = true;
-                    newContainer.StartBringIntoView();
+                    this.ScrollIntoView(ItemFromContainer(newContainer));
                 }
             }
         }

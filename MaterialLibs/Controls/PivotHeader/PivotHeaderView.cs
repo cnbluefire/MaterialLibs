@@ -275,10 +275,19 @@ namespace MaterialLibs.Controls.PivotHeader
             set { SetValue(RightHeaderTemplateProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for RightHeaderTemplate.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RightHeaderTemplateProperty =
             DependencyProperty.Register("RightHeaderTemplate", typeof(DataTemplate), typeof(PivotHeaderView), new PropertyMetadata(null));
 
+
+
+        public Brush HeaderBackground
+        {
+            get { return (Brush)GetValue(HeaderBackgroundProperty); }
+            set { SetValue(HeaderBackgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty HeaderBackgroundProperty =
+            DependencyProperty.Register("HeaderBackground", typeof(Brush), typeof(PivotHeaderView), new PropertyMetadata(null));
 
 
 
