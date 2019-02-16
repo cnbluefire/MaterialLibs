@@ -58,33 +58,22 @@ namespace MaterialLibs.Controls.PivotHeader
 
         private void UpdatePivot(Pivot pivot)
         {
-            var templateBinding = new Binding();
-            templateBinding.Source = pivot;
-            templateBinding.Path = new PropertyPath("HeaderTemplate");
-            templateBinding.Mode = BindingMode.OneWay;
-
             if (pivot.ItemsSource == null)
             {
                 pivot.Items.VectorChanged += Items_VectorChanged;
                 ResetPivotHeaderItems();
-                VisualStateManager.GoToState(this, "FromItems", false);
             }
             else
             {
-                VisualStateManager.GoToState(this, "FromItemSource", false);
-                var sourceBinding = new Binding();
-                sourceBinding.Source = pivot;
-                sourceBinding.Mode = BindingMode.OneWay;
-                sourceBinding.Path = new PropertyPath("ItemsSource");
-                PivotHeader.SetBinding(PivotHeader.ItemsSourceProperty, sourceBinding);
+                SetItemSourceBinding(pivot);
             }
 
-            PivotHeader.SetBinding(PivotHeader.ItemTemplateProperty, templateBinding);
+            SetTemplateSourceBinding(pivot);
 
             if (IsLoaded(pivot))
             {
                 SetPivotHeaderVisibility(pivot, false);
-                SetIndexBinding();
+                SetIndexBinding(pivot);
             }
             else
             {
@@ -92,17 +81,45 @@ namespace MaterialLibs.Controls.PivotHeader
             }
         }
 
-        private void SetIndexBinding()
+        #region Set Bindings
+
+        private void SetIndexBinding(Pivot pivot)
         {
             if (Pivot != null)
             {
                 var indexBinding = new Binding();
-                indexBinding.Source = Pivot;
+                indexBinding.Source = pivot;
                 indexBinding.Path = new PropertyPath("SelectedIndex");
                 indexBinding.Mode = BindingMode.TwoWay;
                 PivotHeader.SetBinding(PivotHeader.SelectedIndexProperty, indexBinding);
             }
         }
+
+        private void SetItemSourceBinding(Pivot pivot)
+        {
+            if (Pivot != null)
+            {
+                var sourceBinding = new Binding();
+                sourceBinding.Source = pivot;
+                sourceBinding.Mode = BindingMode.OneWay;
+                sourceBinding.Path = new PropertyPath("ItemsSource");
+                PivotHeader.SetBinding(PivotHeader.ItemsSourceProperty, sourceBinding);
+            }
+        }
+
+        private void SetTemplateSourceBinding(Pivot pivot)
+        {
+            if (Pivot != null)
+            {
+                var templateBinding = new Binding();
+                templateBinding.Source = pivot;
+                templateBinding.Path = new PropertyPath("HeaderTemplate");
+                templateBinding.Mode = BindingMode.OneWay;
+                PivotHeader.SetBinding(PivotHeader.ItemTemplateProperty, templateBinding);
+            }
+        }
+
+        #endregion Set Bindings
 
         #region Items Operations
 
@@ -177,7 +194,7 @@ namespace MaterialLibs.Controls.PivotHeader
         {
             var pivot = (Pivot)sender;
             pivot.Loaded -= Pivot_Loaded;
-            SetIndexBinding();
+            SetIndexBinding(pivot);
             SetPivotHeaderVisibility(pivot, false);
 
         }

@@ -98,19 +98,6 @@
                                 <ContentPresenter Content="{Binding Header}" />
                             </DataTemplate>
                         </Grid.Resources>
-
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="ItemSourceState">
-                                <VisualState x:Name="FromItemSource" />
-                                <VisualState x:Name="FromItems">
-                                    <!--<Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PivotHeader" Storyboard.TargetProperty="ItemTemplate" Duration="0">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ItemsTemplate}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>-->
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
